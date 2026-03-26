@@ -6,9 +6,10 @@ import type { Movie } from '@/types/tmdb';
 
 interface MovieCardProps {
   movie: Movie;
+  index: number;
 }
 
-export function MovieCard({ movie }: MovieCardProps) {
+export function MovieCard({ movie, index }: MovieCardProps) {
   const poster = posterUrl(movie.poster_path, 'w342');
   const year = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
   const rating = movie.vote_average.toFixed(1);
@@ -25,6 +26,7 @@ export function MovieCard({ movie }: MovieCardProps) {
             alt={movie.title}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+            loading={index < 5 ? 'eager' : 'lazy'}
             className="object-cover transition-opacity group-hover:opacity-90"
           />
         ) : (

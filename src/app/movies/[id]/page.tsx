@@ -44,6 +44,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
             src={backdrop}
             alt={movie.title}
             fill
+            sizes="100vw"
             className="object-cover"
             priority
           />
@@ -59,6 +60,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
               src={poster}
               alt={movie.title}
               fill
+              sizes="(max-width: 640px) 128px, 176px"
               className="rounded-lg object-cover shadow-2xl"
             />
           </div>
@@ -102,6 +104,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
                         src={profile}
                         alt={member.name}
                         fill
+                        sizes="64px"
                         className="object-cover"
                       />
                     )}
