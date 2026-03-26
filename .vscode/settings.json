@@ -1,0 +1,38 @@
+{
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "js/ts.preferences.importModuleSpecifier": "shortest",
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "editor.codeActionsOnSave": [
+    "source.fixAll.eslint",
+    "source.fixAll.stylelint",
+    "source.addMissingImports"
+  ],
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "eslint.validate": [
+    "javascript",
+    "typescript"
+  ],
+  "html.format.wrapAttributes": "preserve",
+  "html.format.wrapLineLength": 9999,
+  "html.format.maxPreserveNewLines": 2,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "package-lock.json": true,
+  },
+}
