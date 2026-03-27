@@ -1,32 +1,68 @@
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import GitHub from 'next-auth/providers/github';
-import Google from 'next-auth/providers/google';
+
+const TMDB_BASE = 'https://api.themoviedb.org/3';
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-    GitHub({
-      clientId: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    }),
     Credentials({
-      name: 'Email & Password',
+      id: 'tmdb',
+      name: 'TMDB',
       credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'you@example.com' },
-        password: { label: 'Password', type: 'password' },
+        username: { label: 'TMDB Username', type: 'text' },
+        password: { label: 'TMDB Password', type: 'password' },
       },
       async authorize(credentials) {
-        // TODO: Replace with real database lookup + bcrypt comparison
-        // Example: const user = await db.user.findUnique({ where: { email } })
-        // if (!user || !await bcrypt.compare(password, user.hashedPassword)) return null
-        if (credentials?.email === 'user@example.com' && credentials?.password === 'password') {
-          return { id: '1', name: 'Demo User', email: credentials.email as string };
-        }
-        return null;
+        const username = credentials?.username as string | undefined;
+        const password = credentials?.password as string | undefined;
+        if (!username || !password) return null;
+
+        const headers = {
+          Authorization: `Bearer ${process.env.TMDB_ACCESS_TOKEN}`,
+          'Content-Type': 'application/json',
+        };
+
+        // Step 1: Get a short-lived request token
+        const tokenRes = await fetch(`${TMDB_BASE}/authentication/token/new`, {
+          headers,
+          cache: 'no-store',
+        });
+        if (!tokenRes.ok) return null;
+        const { request_token } = (await tokenRes.json()) as { request_token: string };
+
+        // Step 2: Validate the token with the user's TMDB username + password
+        const validateRes = await fetch(`${TMDB_BASE}/authentication/token/validate_with_login`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ username, password, request_token }),
+          cache: 'no-store',
+        });
+        if (!validateRes.ok) return null;
+
+        // Step 3: Exchange the approved token for a session ID
+        const sessionRes = await fetch(`${TMDB_BASE}/authentication/session/new`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ request_token }),
+          cache: 'no-store',
+        });
+        if (!sessionRes.ok) return null;
+        const { session_id } = (await sessionRes.json()) as { session_id: string };
+
+        // Step 4: Fetch account details
+        const accountRes = await fetch(`${TMDB_BASE}/account?session_id=${session_id}`, {
+          headers,
+          cache: 'no-store',
+        });
+        if (!accountRes.ok) return null;
+        const account = (await accountRes.json()) as { id: number; name: string; username: string };
+
+        return {
+          id: `tmdb:${account.id}`,
+          name: account.name || account.username,
+          // TMDB has no email — placeholder so NextAuth's User type is satisfied
+          email: `${account.username}@tmdb.local`,
+        };
       },
     }),
   ],

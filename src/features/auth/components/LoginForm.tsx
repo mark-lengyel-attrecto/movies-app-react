@@ -9,26 +9,22 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') ?? '/';
 
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
-  async function handleCredentialsSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: { preventDefault(): void }) {
     e.preventDefault();
     setError(null);
     setIsPending(true);
 
-    const result = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
-    });
+    const result = await signIn('tmdb', { username, password, redirect: false });
 
     setIsPending(false);
 
     if (result?.error) {
-      setError('Invalid email or password');
+      setError('Invalid username or password');
       return;
     }
 
@@ -37,47 +33,23 @@ export function LoginForm() {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* OAuth Providers */}
-      <div className="flex flex-col gap-3">
-        <button
-          onClick={() => signIn('google', { callbackUrl })}
-          className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-600 bg-transparent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/5"
-        >
-          Sign in with Google
-        </button>
-        <button
-          onClick={() => signIn('github', { callbackUrl })}
-          className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-600 bg-transparent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/5"
-        >
-          Sign in with GitHub
-        </button>
-      </div>
-
-      <div className="relative flex items-center">
-        <div className="flex-grow border-t border-gray-700" />
-        <span className="mx-4 flex-shrink text-xs text-gray-500">or continue with email</span>
-        <div className="flex-grow border-t border-gray-700" />
-      </div>
-
-      {/* Credentials Form */}
-      <form onSubmit={handleCredentialsSubmit} className="flex flex-col gap-4">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {error && (
           <p className="rounded-lg bg-red-900/30 px-4 py-3 text-sm text-red-400">{error}</p>
         )}
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="email" className="text-sm font-medium text-gray-300">
-            Email
+          <label htmlFor="username" className="text-sm font-medium text-gray-300">
+            Username
           </label>
           <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            id="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
             className="rounded-lg border border-gray-600 bg-gray-800 px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
-            placeholder="you@example.com"
+            placeholder="your_username"
           />
         </div>
 
@@ -103,7 +75,6 @@ export function LoginForm() {
         >
           {isPending ? 'Signing in…' : 'Sign in'}
         </button>
-      </form>
-    </div>
+    </form>
   );
 }

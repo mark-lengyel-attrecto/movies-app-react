@@ -14,7 +14,7 @@ Built as a learning project with production-grade patterns.
 | Styling | Tailwind CSS v4 | Utility-first, no context-switching, Prettier plugin for class sorting |
 | Server state | TanStack Query v5 | Caching, deduplication, loading/error states, pagination |
 | Client state | Zustand | Minimal boilerplate, TypeScript-first, `persist` middleware for localStorage |
-| Auth | Auth.js v5 (next-auth@beta) | Next.js-native, handles OAuth + credentials, JWT sessions |
+| Auth | Auth.js v5 (next-auth@beta) | Next.js-native, TMDB credentials provider, JWT sessions |
 | Linting | ESLint v9 (flat config) | TypeScript rules, React hooks rules, import sorting |
 | Formatting | Prettier + prettier-plugin-tailwindcss | Consistent style, Tailwind class order enforced |
 
@@ -135,8 +135,7 @@ Copy `.env.local.example` to `.env.local` and fill in the values.
 |---|---|---|
 | `TMDB_ACCESS_TOKEN` | Yes | TMDB v4 Read Access Token |
 | `AUTH_SECRET` | Yes | Random secret for JWT signing (`npx auth secret`) |
-| `GOOGLE_CLIENT_ID/SECRET` | No | Google OAuth |
-| `GITHUB_CLIENT_ID/SECRET` | No | GitHub OAuth |
+| `AUTH_URL` | No | Base URL for Auth.js callbacks (defaults to `localhost:3000`) |
 
 ---
 

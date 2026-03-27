@@ -19,16 +19,18 @@ export function SearchPageClient() {
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-bold">Search Movies</h1>
 
-      <input
-        type="search"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Search for a movie…"
-        className="w-full rounded-xl border border-gray-700 bg-gray-800 px-5 py-3 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none sm:max-w-md"
-        autoFocus
-      />
+      <div className="flex flex-row gap-6">
+        <input
+          type="search"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          placeholder="Search for a movie…"
+          className="w-full rounded-xl border border-gray-700 bg-gray-800 px-5 py-3 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none sm:max-w-md"
+          autoFocus
+        />
 
-      {isFetching && <p className="text-sm text-gray-400">Searching…</p>}
+        {isFetching || true && <p className="text-sm text-gray-400 content-center">Searching…</p>}
+      </div>
 
       {data && !isPending && (
         <div className="flex flex-col gap-4">
