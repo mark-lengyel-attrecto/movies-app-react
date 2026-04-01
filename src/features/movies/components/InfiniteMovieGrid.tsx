@@ -58,7 +58,12 @@ export function InfiniteMovieGrid({
     );
   }
 
-  const movies = data?.pages.flatMap((page) => page.results) ?? [];
+  const seen = new Set<number>();
+  const movies = (data?.pages.flatMap((page) => page.results) ?? []).filter((m) => {
+    if (seen.has(m.id)) return false;
+    seen.add(m.id);
+    return true;
+  });
 
   if (movies.length === 0) {
     return (
