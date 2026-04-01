@@ -5,6 +5,8 @@
 
 /* ─── Semantic design tokens ─────────────────────────────── */
 :root {
+  color-scheme: light;
+
   /* Backgrounds */
   --bg-base:     #ffffff;
   --bg-surface:  #f3f4f6;   /* gray-100  — header, footer */
@@ -26,6 +28,8 @@
 }
 
 .dark {
+  color-scheme: dark;
+
   /* Backgrounds */
   --bg-base:     #030712;              /* gray-950 */
   --bg-surface:  #111827;              /* gray-900 */
