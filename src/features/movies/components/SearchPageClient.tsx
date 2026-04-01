@@ -6,20 +6,23 @@ import { useDebounce } from 'use-debounce';
 
 import { useSearchMovies } from '@/features/movies/api/use-search-movies';
 
-import { MovieGrid } from './MovieGrid';
+import { InfiniteMovieGrid } from './InfiniteMovieGrid';
 
-// Note: install `use-debounce` → npm install use-debounce
 export function SearchPageClient() {
   const [input, setInput] = useState('');
   const [debouncedQuery] = useDebounce(input, 400);
 
-  const { data, isPending, isFetching } = useSearchMovies(debouncedQuery);
+  const { data, isPending, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useSearchMovies(debouncedQuery);
+
+  const totalResults = data?.pages[0]?.total_results;
+  const hasResults = (data?.pages[0]?.results.length ?? 0) > 0;
 
   return (
     <div className="flex flex-col gap-6">
       <h1 className="text-3xl font-bold">Search Movies</h1>
 
-      <div className="flex flex-row gap-6">
+      <div className="flex flex-row items-center gap-6">
         <input
           type="search"
           value={input}
@@ -28,19 +31,23 @@ export function SearchPageClient() {
           className="w-full rounded-xl border border-gray-700 bg-gray-800 px-5 py-3 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none sm:max-w-md"
           autoFocus
         />
-
-        {isFetching || true && <p className="text-sm text-gray-400 content-center">Searching…</p>}
+        {isFetching && <p className="text-sm text-gray-400">Searching…</p>}
       </div>
 
-      {data && !isPending && (
-        <div className="flex flex-col gap-4">
-          <p className="text-sm text-gray-400">{data.total_results.toLocaleString()} results</p>
-          <MovieGrid movies={data.results} />
-        </div>
+      {totalResults !== undefined && (
+        <p className="text-sm text-gray-400">{totalResults.toLocaleString()} results</p>
       )}
 
-      {debouncedQuery.length >= 2 && !isFetching && data?.results.length === 0 && (
+      {debouncedQuery.length >= 2 && !isFetching && !hasResults ? (
         <p className="text-gray-400">No results for &quot;{debouncedQuery}&quot;</p>
+      ) : (
+        <InfiniteMovieGrid
+          data={data}
+          fetchNextPage={fetchNextPage}
+          hasNextPage={hasNextPage}
+          isFetchingNextPage={isFetchingNextPage}
+          isPending={isPending && debouncedQuery.length >= 2}
+        />
       )}
     </div>
   );

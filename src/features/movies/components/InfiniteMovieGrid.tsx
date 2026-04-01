@@ -1,0 +1,89 @@
+'use client';
+
+import { useEffect, useRef } from 'react';
+
+import type { InfiniteData } from '@tanstack/react-query';
+
+import type { Movie, PaginatedResponse } from '@/types/tmdb';
+
+import { MovieCard } from './MovieCard';
+
+interface InfiniteMovieGridProps {
+  data: InfiniteData<PaginatedResponse<Movie>> | undefined;
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+  isPending: boolean;
+}
+
+const SKELETON_COUNTS = { initial: 20, nextPage: 10 };
+
+function MovieSkeleton() {
+  return <div className="aspect-[2/3] animate-pulse rounded-lg bg-gray-800" />;
+}
+
+export function InfiniteMovieGrid({
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  isPending,
+}: InfiniteMovieGridProps) {
+  const sentinelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      { rootMargin: '300px' },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  if (isPending) {
+    return (
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {Array.from({ length: SKELETON_COUNTS.initial }).map((_, i) => (
+          <MovieSkeleton key={i} />
+        ))}
+      </div>
+    );
+  }
+
+  const movies = data?.pages.flatMap((page) => page.results) ?? [];
+
+  if (movies.length === 0) {
+    return (
+      <div className="flex h-48 items-center justify-center text-gray-400">No movies found.</div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        {movies.map((movie, i) => (
+          <MovieCard key={movie.id} movie={movie} index={i} />
+        ))}
+      </div>
+
+      {/* Fetches the next page when scrolled into view */}
+      <div ref={sentinelRef} />
+
+      {isFetchingNextPage && (
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          {Array.from({ length: SKELETON_COUNTS.nextPage }).map((_, i) => (
+            <MovieSkeleton key={i} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

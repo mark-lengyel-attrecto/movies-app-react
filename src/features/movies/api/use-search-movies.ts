@@ -1,12 +1,12 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import type { Movie, PaginatedResponse } from '@/types/tmdb';
 
 export const searchKeys = {
   all: ['movies', 'search'] as const,
-  query: (query: string, page: number) => [...searchKeys.all, query, page] as const,
+  query: (query: string) => [...searchKeys.all, query] as const,
 };
 
 async function fetchSearchMovies(query: string, page: number): Promise<PaginatedResponse<Movie>> {
@@ -16,13 +16,13 @@ async function fetchSearchMovies(query: string, page: number): Promise<Paginated
   return res.json();
 }
 
-export function useSearchMovies(query: string, page = 1) {
-  return useQuery({
-    queryKey: searchKeys.query(query, page),
-    queryFn: () => fetchSearchMovies(query, page),
-    // Don't fire the query until the user has typed at least 2 characters
+export function useSearchMovies(query: string) {
+  return useInfiniteQuery({
+    queryKey: searchKeys.query(query),
+    queryFn: ({ pageParam }) => fetchSearchMovies(query, pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
     enabled: query.trim().length >= 2,
-    // Keep previous page data visible while fetching the next page
-    placeholderData: (prev) => prev,
   });
 }

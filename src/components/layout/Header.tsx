@@ -16,10 +16,10 @@ export async function Header() {
 
         <nav className="hidden items-center gap-6 md:flex">
           <Link
-            href="/movies"
+            href="/popular"
             className="text-sm text-gray-300 transition-colors hover:text-white"
           >
-            Movies
+            Popular
           </Link>
           <Link
             href="/search"

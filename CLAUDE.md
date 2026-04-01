@@ -139,6 +139,12 @@ Copy `.env.local.example` to `.env.local` and fill in the values.
 
 ---
 
+## Styling
+
+Use Tailwind classes wherever possible. Only fall back to `globals.css` for things Tailwind cannot express.
+
+---
+
 ## Commands
 
 ```bash

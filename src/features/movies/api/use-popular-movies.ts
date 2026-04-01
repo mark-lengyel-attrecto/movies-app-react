@@ -1,14 +1,11 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import type { Movie, PaginatedResponse } from '@/types/tmdb';
 
-// Query keys are centralised in each hook file.
-// This prevents key typos and makes invalidation explicit.
 export const popularMoviesKeys = {
   all: ['movies', 'popular'] as const,
-  page: (page: number) => [...popularMoviesKeys.all, page] as const,
 };
 
 async function fetchPopularMovies(page: number): Promise<PaginatedResponse<Movie>> {
@@ -17,9 +14,12 @@ async function fetchPopularMovies(page: number): Promise<PaginatedResponse<Movie
   return res.json();
 }
 
-export function usePopularMovies(page = 1) {
-  return useQuery({
-    queryKey: popularMoviesKeys.page(page),
-    queryFn: () => fetchPopularMovies(page),
+export function usePopularMovies() {
+  return useInfiniteQuery({
+    queryKey: popularMoviesKeys.all,
+    queryFn: ({ pageParam }) => fetchPopularMovies(pageParam),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) =>
+      lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
   });
 }
