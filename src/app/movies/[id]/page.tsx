@@ -49,7 +49,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-base via-base/60 to-transparent" />
       </div>
 
       {/* Details */}
@@ -68,8 +68,8 @@ export default async function MoviePage({ params }: MoviePageProps) {
 
         <div className="flex flex-col gap-3">
           <h1 className="text-3xl font-bold">{movie.title}</h1>
-          {movie.tagline && <p className="italic text-gray-400">{movie.tagline}</p>}
-          <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+          {movie.tagline && <p className="italic text-muted">{movie.tagline}</p>}
+          <div className="flex flex-wrap gap-4 text-sm text-muted">
             <span>★ {movie.vote_average.toFixed(1)}</span>
             {movie.runtime && <span>{movie.runtime} min</span>}
             <span>{new Date(movie.release_date).getFullYear()}</span>
@@ -79,13 +79,13 @@ export default async function MoviePage({ params }: MoviePageProps) {
             {movie.genres.map((genre) => (
               <span
                 key={genre.id}
-                className="rounded-full bg-gray-800 px-3 py-1 text-xs text-gray-300"
+                className="rounded-full bg-elevated px-3 py-1 text-xs text-secondary"
               >
                 {genre.name}
               </span>
             ))}
           </div>
-          <p className="max-w-2xl text-gray-300">{movie.overview}</p>
+          <p className="max-w-2xl text-secondary">{movie.overview}</p>
         </div>
       </div>
 
@@ -98,7 +98,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
               const profile = profileUrl(member.profile_path, 'w185');
               return (
                 <div key={member.id} className="flex flex-col items-center gap-1 text-center">
-                  <div className="relative h-16 w-16 overflow-hidden rounded-full bg-gray-700">
+                  <div className="relative h-16 w-16 overflow-hidden rounded-full bg-subtle">
                     {profile && (
                       <Image
                         src={profile}
@@ -109,8 +109,8 @@ export default async function MoviePage({ params }: MoviePageProps) {
                       />
                     )}
                   </div>
-                  <p className="text-xs font-medium text-white">{member.name}</p>
-                  <p className="text-xs text-gray-500">{member.character}</p>
+                  <p className="text-xs font-medium text-foreground">{member.name}</p>
+                  <p className="text-xs text-muted">{member.character}</p>
                 </div>
               );
             })}

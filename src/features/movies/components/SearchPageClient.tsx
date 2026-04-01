@@ -28,18 +28,18 @@ export function SearchPageClient() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Search for a movie…"
-          className="w-full rounded-xl border border-gray-700 bg-gray-800 px-5 py-3 text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none sm:max-w-md"
+          className="w-full rounded-xl border border-input bg-elevated px-5 py-3 text-foreground placeholder-gray-400 focus:border-blue-500 focus:outline-none sm:max-w-md"
           autoFocus
         />
-        {isFetching && <p className="text-sm text-gray-400">Searching…</p>}
+        {isFetching && <p className="text-sm text-muted">Searching…</p>}
       </div>
 
       {totalResults !== undefined && (
-        <p className="text-sm text-gray-400">{totalResults.toLocaleString()} results</p>
+        <p className="text-sm text-muted">{totalResults.toLocaleString()} results</p>
       )}
 
       {debouncedQuery.length >= 2 && !isFetching && !hasResults ? (
-        <p className="text-gray-400">No results for &quot;{debouncedQuery}&quot;</p>
+        <p className="text-muted">No results for &quot;{debouncedQuery}&quot;</p>
       ) : (
         <InfiniteMovieGrid
           data={data}

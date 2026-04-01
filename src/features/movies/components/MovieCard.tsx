@@ -17,9 +17,9 @@ export function MovieCard({ movie, index }: MovieCardProps) {
   return (
     <Link
       href={`/movies/${movie.id}`}
-      className="group relative flex flex-col overflow-hidden rounded-lg bg-gray-800 transition-transform hover:-translate-y-1 hover:shadow-xl"
+      className="group relative flex flex-col overflow-hidden rounded-lg bg-elevated transition-transform hover:-translate-y-1 hover:shadow-xl"
     >
-      <div className="relative aspect-[2/3] w-full bg-gray-700">
+      <div className="relative aspect-[2/3] w-full bg-subtle">
         {poster ? (
           <Image
             src={poster}
@@ -42,8 +42,8 @@ export function MovieCard({ movie, index }: MovieCardProps) {
       </div>
 
       <div className="flex flex-col gap-1 p-3">
-        <h3 className="line-clamp-2 text-sm font-medium text-white">{movie.title}</h3>
-        {year && <p className="text-xs text-gray-400">{year}</p>}
+        <h3 className="line-clamp-2 text-sm font-medium text-foreground">{movie.title}</h3>
+        {year && <p className="text-xs text-muted">{year}</p>}
       </div>
     </Link>
   );

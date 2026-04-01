@@ -143,6 +143,34 @@ Copy `.env.local.example` to `.env.local` and fill in the values.
 
 Use Tailwind classes wherever possible. Only fall back to `globals.css` for things Tailwind cannot express.
 
+### Dark / Light Mode
+
+Dark mode uses the `.dark` class on `<html>` (toggled by `ThemeToggle`, persisted in `localStorage`, applied before paint by an inline script in `layout.tsx`). The `dark:` variant is configured in `globals.css` via `@custom-variant dark`.
+
+**Use semantic color tokens — never raw gray-* classes for theme-aware colors.**
+Tokens are defined as CSS custom properties in `:root` / `.dark` and exposed as Tailwind utilities via `@theme inline` in `globals.css`.
+
+| Token | Usage | Light | Dark |
+|---|---|---|---|
+| `bg-base` | Page background | white | gray-950 |
+| `bg-surface` | Header, footer | gray-100 | gray-900 |
+| `bg-elevated` | Cards, inputs, badges | gray-100 | gray-800 |
+| `bg-subtle` | Skeletons, image placeholders | gray-200 | gray-700 |
+| `text-foreground` | Primary text | gray-900 | white |
+| `text-secondary` | Secondary / descriptive text | gray-600 | gray-300 |
+| `text-muted` | Meta, timestamps, placeholders | gray-500 | gray-400 |
+| `border-ui` | UI borders (header, cards) | gray-200 | white/10 |
+| `border-input` | Form input borders | gray-300 | gray-600 |
+| `bg-error-surface` | Error message background | red-50 | red-900/30 |
+| `text-error` | Error message text | red-600 | red-400 |
+
+**Accent colors** are not theme-aware and stay as raw Tailwind classes:
+- Accent: `bg-blue-600 hover:bg-blue-700 text-white`
+- Rating: `text-yellow-400`
+- Overlay: `bg-black/70`
+
+Opacity modifiers work with tokens: `bg-surface/80`, `text-foreground/10`, etc.
+
 ---
 
 ## Commands

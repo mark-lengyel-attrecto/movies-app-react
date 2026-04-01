@@ -1,25 +1,69 @@
 @import "tailwindcss";
 
+/* Use class-based dark mode so JS can toggle it manually */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─── Semantic design tokens ─────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds */
+  --bg-base:     #ffffff;
+  --bg-surface:  #f3f4f6;   /* gray-100  — header, footer */
+  --bg-elevated: #f3f4f6;   /* gray-100  — cards, inputs  */
+  --bg-subtle:   #e5e7eb;   /* gray-200  — skeletons, placeholders */
+
+  /* Text */
+  --fg:           #111827;  /* gray-900 */
+  --fg-secondary: #4b5563;  /* gray-600 */
+  --fg-muted:     #6b7280;  /* gray-500 */
+
+  /* Borders */
+  --border-ui:    #e5e7eb;  /* gray-200 */
+  --border-input: #d1d5db;  /* gray-300 */
+
+  /* Error */
+  --error-bg: #fef2f2;      /* red-50  */
+  --error-fg: #dc2626;      /* red-600 */
 }
 
+.dark {
+  /* Backgrounds */
+  --bg-base:     #030712;              /* gray-950 */
+  --bg-surface:  #111827;              /* gray-900 */
+  --bg-elevated: #1f2937;              /* gray-800 */
+  --bg-subtle:   #374151;              /* gray-700 */
+
+  /* Text */
+  --fg:           #ffffff;
+  --fg-secondary: #d1d5db;  /* gray-300 */
+  --fg-muted:     #9ca3af;  /* gray-400 */
+
+  /* Borders */
+  --border-ui:    rgba(255, 255, 255, 0.1);
+  --border-input: #4b5563;  /* gray-600 */
+
+  /* Error */
+  --error-bg: rgba(127, 29, 29, 0.3);  /* red-900/30 */
+  --error-fg: #f87171;                  /* red-400    */
+}
+
+/* ─── Tailwind color utilities ───────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-base:       var(--bg-base);       /* bg-base      */
+  --color-surface:    var(--bg-surface);    /* bg-surface   */
+  --color-elevated:   var(--bg-elevated);   /* bg-elevated  */
+  --color-subtle:     var(--bg-subtle);     /* bg-subtle    */
+  --color-foreground: var(--fg);            /* text-foreground */
+  --color-secondary:  var(--fg-secondary);  /* text-secondary  */
+  --color-muted:      var(--fg-muted);      /* text-muted      */
+  --color-ui:            var(--border-ui);     /* border-ui       */
+  --color-input:         var(--border-input);  /* border-input    */
+  --color-error-surface: var(--error-bg);      /* bg-error-surface */
+  --color-error:         var(--error-fg);      /* text-error       */
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   scrollbar-gutter: stable;
 }
-

@@ -9,7 +9,7 @@ interface MovieGridProps {
 export function MovieGrid({ movies }: MovieGridProps) {
   if (movies.length === 0) {
     return (
-      <div className="flex h-48 items-center justify-center text-gray-400">
+      <div className="flex h-48 items-center justify-center text-muted">
         No movies found.
       </div>
     );

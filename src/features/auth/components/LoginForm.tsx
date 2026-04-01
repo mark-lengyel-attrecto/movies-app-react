@@ -35,11 +35,11 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         {error && (
-          <p className="rounded-lg bg-red-900/30 px-4 py-3 text-sm text-red-400">{error}</p>
+          <p className="rounded-lg bg-error-surface px-4 py-3 text-sm text-error">{error}</p>
         )}
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="username" className="text-sm font-medium text-gray-300">
+          <label htmlFor="username" className="text-sm font-medium text-foreground">
             Username
           </label>
           <input
@@ -48,13 +48,13 @@ export function LoginForm() {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
-            className="rounded-lg border border-gray-600 bg-gray-800 px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-input bg-elevated px-4 py-2.5 text-sm text-foreground placeholder-gray-400 focus:border-blue-500 focus:outline-none"
             placeholder="your_username"
           />
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="password" className="text-sm font-medium text-gray-300">
+          <label htmlFor="password" className="text-sm font-medium text-foreground">
             Password
           </label>
           <input
@@ -63,7 +63,7 @@ export function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="rounded-lg border border-gray-600 bg-gray-800 px-4 py-2.5 text-sm text-white placeholder-gray-500 focus:border-blue-500 focus:outline-none"
+            className="rounded-lg border border-input bg-elevated px-4 py-2.5 text-sm text-foreground placeholder-gray-400 focus:border-blue-500 focus:outline-none"
             placeholder="••••••••"
           />
         </div>
