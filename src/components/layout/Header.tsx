@@ -22,6 +22,12 @@ export async function Header() {
           >
             Popular
           </Link>
+          <Link
+            href="/top-rated"
+            className="text-sm text-secondary transition-colors hover:text-foreground"
+          >
+            Top rated
+          </Link>
           {session?.user && (
             <Link
               href="/watchlist"
