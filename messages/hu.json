@@ -1,0 +1,60 @@
+{
+  "Header": {
+    "brand": "Movies",
+    "popular": "Népszerű",
+    "topRated": "Legjobb értékelésű",
+    "watchlist": "Nézési lista"
+  },
+  "Footer": {
+    "poweredBy": "Film adatok forrása: <tmdb>TMDB</tmdb>"
+  },
+  "UserMenu": {
+    "signIn": "Bejelentkezés",
+    "signOut": "Kijelentkezés"
+  },
+  "Auth": {
+    "pageHeading": "Bejelentkezés",
+    "usernameLabel": "Felhasználónév",
+    "usernamePlaceholder": "felhasználónév",
+    "passwordLabel": "Jelszó",
+    "passwordPlaceholder": "••••••••",
+    "submitButton": "Bejelentkezés",
+    "submitting": "Bejelentkezés…",
+    "error": "Érvénytelen felhasználónév vagy jelszó"
+  },
+  "ThemeToggle": {
+    "toDark": "Váltás sötét módra",
+    "toLight": "Váltás világos módra"
+  },
+  "Search": {
+    "placeholder": "Film keresése…",
+    "searching": "Keresés…",
+    "results": "{count, number} találat",
+    "noResults": "Nincs találat erre: \"{query}\"",
+    "heading": "Filmek keresése",
+    "resultsFor": "Találatok: \"{query}\""
+  },
+  "Popular": {
+    "heading": "Népszerű filmek",
+    "subtitle": "Amit mindenki néz most"
+  },
+  "TopRated": {
+    "heading": "Legjobban értékelt filmek",
+    "subtitle": "A legjobb értékelésű filmek"
+  },
+  "MovieCard": {
+    "noImage": "Nincs kép"
+  },
+  "MovieGrid": {
+    "empty": "Nem található film."
+  },
+  "MovieDetail": {
+    "cast": "Szereplők",
+    "director": "Rendezte: {name}"
+  },
+  "NotFound": {
+    "heading": "Az oldal nem található",
+    "description": "A keresett oldal nem létezik vagy áthelyezték.",
+    "backHome": "Vissza a főoldalra"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "Header": {
+    "brand": "Movies",
+    "popular": "Popular",
+    "topRated": "Top Rated",
+    "watchlist": "Watchlist"
+  },
+  "Footer": {
+    "poweredBy": "Movie data provided by <tmdb>TMDB</tmdb>"
+  },
+  "UserMenu": {
+    "signIn": "Sign in",
+    "signOut": "Sign out"
+  },
+  "Auth": {
+    "pageHeading": "Sign in to Movies",
+    "usernameLabel": "Username",
+    "usernamePlaceholder": "your_username",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "submitButton": "Sign in",
+    "submitting": "Signing in…",
+    "error": "Invalid username or password"
+  },
+  "ThemeToggle": {
+    "toDark": "Switch to dark mode",
+    "toLight": "Switch to light mode"
+  },
+  "Search": {
+    "placeholder": "Search movies…",
+    "searching": "Searching…",
+    "results": "{count, number} results",
+    "noResults": "No results for \"{query}\"",
+    "heading": "Search Movies",
+    "resultsFor": "Results for \"{query}\""
+  },
+  "Popular": {
+    "heading": "Popular Movies",
+    "subtitle": "What everyone is watching right now"
+  },
+  "TopRated": {
+    "heading": "Top Rated Movies",
+    "subtitle": "The best rated movies"
+  },
+  "MovieCard": {
+    "noImage": "No Image"
+  },
+  "MovieGrid": {
+    "empty": "No movies found."
+  },
+  "MovieDetail": {
+    "cast": "Cast",
+    "director": "Dir. {name}"
+  },
+  "NotFound": {
+    "heading": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to home"
+  }
+}

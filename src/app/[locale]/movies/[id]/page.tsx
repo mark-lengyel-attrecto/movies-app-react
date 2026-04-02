@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { getTranslations } from 'next-intl/server';
 
 import { backdropUrl, posterUrl, profileUrl } from '@/lib/tmdb/client';
 import { getMovieCredits, getMovieDetails } from '@/lib/tmdb/endpoints';
@@ -29,6 +30,8 @@ export default async function MoviePage({ params }: MoviePageProps) {
   ]);
 
   if (!movie) notFound();
+
+  const t = await getTranslations('MovieDetail');
 
   const backdrop = backdropUrl(movie.backdrop_path, 'w1280');
   const poster = posterUrl(movie.poster_path, 'w500');
@@ -73,7 +76,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
             <span>★ {movie.vote_average.toFixed(1)}</span>
             {movie.runtime && <span>{movie.runtime} min</span>}
             <span>{new Date(movie.release_date).getFullYear()}</span>
-            {director && <span>Dir. {director.name}</span>}
+            {director && <span>{t('director', { name: director.name })}</span>}
           </div>
           <div className="flex flex-wrap gap-2">
             {movie.genres.map((genre) => (
@@ -92,7 +95,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
       {/* Cast */}
       {topCast.length > 0 && (
         <div className="flex flex-col gap-4">
-          <h2 className="text-xl font-semibold">Cast</h2>
+          <h2 className="text-xl font-semibold">{t('cast')}</h2>
           <div className="grid grid-cols-4 gap-3 sm:grid-cols-8">
             {topCast.map((member) => {
               const profile = profileUrl(member.profile_path, 'w185');

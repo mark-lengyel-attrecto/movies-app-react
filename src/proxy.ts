@@ -1,6 +1,9 @@
-export { auth as proxy } from '@/lib/auth';
+import createMiddleware from 'next-intl/middleware';
+
+import { routing } from '@/i18n/routing';
+
+export default createMiddleware(routing);
 
 export const config = {
-  // Run on all routes except static files and Next.js internals
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)'],
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 };

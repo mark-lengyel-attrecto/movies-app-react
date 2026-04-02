@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 
 import type { InfiniteData } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 
 import type { Movie, PaginatedResponse } from '@/types/tmdb';
 
@@ -30,6 +31,7 @@ export function InfiniteMovieGrid({
   isPending,
 }: InfiniteMovieGridProps) {
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const t = useTranslations('MovieGrid');
 
   useEffect(() => {
     const el = sentinelRef.current;
@@ -67,7 +69,7 @@ export function InfiniteMovieGrid({
 
   if (movies.length === 0) {
     return (
-      <div className="flex h-48 items-center justify-center text-muted">No movies found.</div>
+      <div className="flex h-48 items-center justify-center text-muted">{t('empty')}</div>
     );
   }
 

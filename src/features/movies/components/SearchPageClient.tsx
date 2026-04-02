@@ -1,6 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 
 import { useSearchMovies } from '@/features/movies/api/use-search-movies';
 
@@ -9,6 +10,7 @@ import { InfiniteMovieGrid } from './InfiniteMovieGrid';
 export function SearchPageClient() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') ?? '';
+  const t = useTranslations('Search');
 
   const { data, isPending, isFetching, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useSearchMovies(query);
@@ -20,17 +22,17 @@ export function SearchPageClient() {
     <div className="flex flex-col gap-6">
       <div className="flex items-baseline gap-4">
         <h1 className="text-3xl font-bold">
-          {query ? `Results for "${query}"` : 'Search Movies'}
+          {query ? t('resultsFor', { query }) : t('heading')}
         </h1>
-        {isFetching && <p className="text-sm text-muted">Searching…</p>}
+        {isFetching && <p className="text-sm text-muted">{t('searching')}</p>}
       </div>
 
       {totalResults !== undefined && (
-        <p className="text-sm text-muted">{totalResults.toLocaleString()} results</p>
+        <p className="text-sm text-muted">{t('results', { count: totalResults })}</p>
       )}
 
       {query.length >= 2 && !isFetching && !hasResults ? (
-        <p className="text-muted">No results for &quot;{query}&quot;</p>
+        <p className="text-muted">{t('noResults', { query })}</p>
       ) : (
         <InfiniteMovieGrid
           data={data}

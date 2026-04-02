@@ -1,6 +1,7 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
+import { Link } from '@/i18n/navigation';
 import { posterUrl } from '@/lib/tmdb/client';
 import type { Movie } from '@/types/tmdb';
 
@@ -10,6 +11,7 @@ interface MovieCardProps {
 }
 
 export function MovieCard({ movie, index }: MovieCardProps) {
+  const t = useTranslations('MovieCard');
   const poster = posterUrl(movie.poster_path, 'w342');
   const year = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
   const rating = movie.vote_average.toFixed(1);
@@ -30,8 +32,8 @@ export function MovieCard({ movie, index }: MovieCardProps) {
             className="object-cover transition-opacity group-hover:opacity-90"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-gray-500">
-            No Image
+          <div className="flex h-full items-center justify-center text-muted">
+            {t('noImage')}
           </div>
         )}
 

@@ -15,6 +15,7 @@ Built as a learning project with production-grade patterns.
 | Server state | TanStack Query v5 | Caching, deduplication, loading/error states, pagination |
 | Client state | Zustand | Minimal boilerplate, TypeScript-first, `persist` middleware for localStorage |
 | Auth | Auth.js v5 (next-auth@beta) | Next.js-native, TMDB credentials provider, JWT sessions |
+| i18n | next-intl v4 | URL-prefix routing (`/en/`, `/hu/`), Server + Client Component support |
 | Linting | ESLint v9 (flat config) | TypeScript rules, React hooks rules, import sorting |
 | Formatting | Prettier + prettier-plugin-tailwindcss | Consistent style, Tailwind class order enforced |
 
@@ -44,10 +45,20 @@ The most important mental model for this codebase:
 ```
 src/
 ├── app/                  # Next.js routing ONLY — pages should be thin shells
-│   ├── (auth)/           # Route group — shares no layout with main app
-│   ├── movies/[id]/      # Dynamic route for movie detail
-│   ├── api/auth/         # Auth.js route handler
-│   └── layout.tsx        # Root layout with QueryProvider + Header/Footer
+│   ├── [locale]/         # All user-facing routes live under the locale segment
+│   │   ├── (auth)/       # Route group — login page
+│   │   ├── movies/[id]/  # Dynamic route for movie detail
+│   │   ├── popular/      # Popular movies page
+│   │   ├── search/       # Search results page (driven by ?q= param)
+│   │   ├── top-rated/    # Top rated movies page
+│   │   ├── not-found.tsx # Locale-aware 404
+│   │   └── layout.tsx    # Root layout — QueryProvider, NextIntlClientProvider, Header/Footer
+│   └── api/auth/         # Auth.js route handler (no locale prefix)
+│
+├── i18n/
+│   ├── routing.ts        # Defines locales (['en', 'hu']) and defaultLocale
+│   ├── request.ts        # Loads messages per request for Server Components
+│   └── navigation.ts     # Locale-aware Link, useRouter, usePathname, redirect
 │
 ├── features/             # All domain logic lives here
 │   ├── movies/
@@ -61,7 +72,7 @@ src/
 ├── lib/
 │   ├── tmdb/
 │   │   ├── client.ts     # TMDBClient class with fetch + image URL helpers
-│   │   └── endpoints.ts  # All TMDB API calls as plain async functions
+│   │   └── endpoints.ts  # All TMDB API calls as plain async functions (server-only)
 │   ├── auth.ts           # Auth.js config (providers, callbacks, session)
 │   └── query-client.ts   # QueryClient factory — staleTime, gcTime, retry config
 │
@@ -71,7 +82,11 @@ src/
 │
 ├── components/
 │   ├── providers/        # React context providers (QueryProvider)
-│   └── layout/           # Header, Footer — shared across all pages
+│   └── layout/           # Header, Footer, ThemeToggle, HeaderSearch
+│
+├── messages/
+│   ├── en.json           # English translations
+│   └── hu.json           # Hungarian translations
 │
 └── types/
     └── tmdb.ts           # Raw TMDB API response types (Movie, MovieDetails, etc.)
@@ -79,7 +94,7 @@ src/
 
 ### Key rule: `app/` is routing, `features/` is logic
 
-A page file (`app/movies/page.tsx`) should import from `features/` and do almost nothing else.
+A page file (`app/[locale]/popular/page.tsx`) should import from `features/` and do almost nothing else.
 All business logic, data fetching hooks, and domain components belong in `features/`.
 
 ---
@@ -88,17 +103,17 @@ All business logic, data fetching hooks, and domain components belong in `featur
 
 ### Server Components (preferred for initial data)
 ```tsx
-// app/movies/page.tsx
-export default async function MoviesPage() {
-  const { results } = await getPopularMovies(); // runs on server, no useEffect
-  return <MovieGrid movies={results} />;
+// app/[locale]/movies/[id]/page.tsx
+export default async function MoviePage() {
+  const movie = await getMovieDetails(id); // runs on server, no useEffect
+  return <MovieDetail movie={movie} />;
 }
 ```
 
 ### TanStack Query hooks (for interactive / client-driven data)
 ```tsx
 // features/movies/components/SearchPageClient.tsx  ('use client')
-const { data, isPending } = useSearchMovies(debouncedQuery);
+const { data, isPending } = useSearchMovies(query);
 ```
 
 ### Query key conventions
@@ -112,6 +127,42 @@ This prevents typos and makes targeted cache invalidation explicit.
 
 ---
 
+## Internationalisation (i18n)
+
+Routes are prefixed with the locale: `/en/popular`, `/hu/popular`. The middleware (`src/proxy.ts`) handles detection and redirects.
+
+**Rules:**
+- All user-facing pages live under `app/[locale]/`
+- `api/` routes stay at the root — no locale prefix
+- Always use navigation utilities from `@/i18n/navigation` — never `next/link` or `next/navigation` directly
+
+```tsx
+// ✅ Correct — locale-aware
+import { Link, useRouter, usePathname, redirect } from '@/i18n/navigation';
+
+// ❌ Wrong — loses locale prefix
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+```
+
+- `useSearchParams` and plain `redirect`/`notFound` are exceptions — they still come from `next/navigation`
+- The i18n `redirect` from `@/i18n/navigation` takes `{ href, locale }` and is only needed when redirecting to a specific locale explicitly
+
+**Using translations:**
+```tsx
+// Sync Server Components and Client Components
+const t = useTranslations('Popular');
+
+// Async Server Components and generateMetadata
+const t = await getTranslations('Popular'); // import from 'next-intl/server'
+```
+
+Translation files live in `messages/en.json` and `messages/hu.json`. Add new keys to both files.
+
+**Adding a new locale:** add it to the `locales` array in `src/i18n/routing.ts` and create the matching `messages/<locale>.json`.
+
+---
+
 ## Auth Patterns
 
 ```tsx
@@ -122,7 +173,7 @@ const session = await auth();
 const { user, isAuthenticated } = useSession(); // from features/auth/hooks/use-session.ts
 ```
 
-Protected routes are handled by the `authorized` callback in `lib/auth.ts` + `middleware.ts`.
+Protected routes are handled by the `authorized` callback in `lib/auth.ts`.
 Add paths to the `protectedPaths` array in `lib/auth.ts` to require login.
 
 ---
@@ -190,5 +241,4 @@ npm run format    # Prettier (add to package.json scripts: "prettier --write .")
 - [ ] Add a real database (Prisma + PostgreSQL) for user accounts and server-side watchlist
 - [ ] Add `loading.tsx` files next to pages for streaming skeleton UIs
 - [ ] Add `error.tsx` files for per-route error boundaries
-- [ ] Add pagination to the movies list
 - [ ] Add genre filtering using `useUIStore`

@@ -1,21 +1,25 @@
 'use client';
 
-import Link from 'next/link';
 import type { Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
+
+import { Link } from '@/i18n/navigation';
 
 interface UserMenuProps {
   user: Session['user'] | null;
 }
 
 export function UserMenu({ user }: UserMenuProps) {
+  const t = useTranslations('UserMenu');
+
   if (!user) {
     return (
       <Link
         href="/login"
         className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
       >
-        Sign in
+        {t('signIn')}
       </Link>
     );
   }
@@ -27,7 +31,7 @@ export function UserMenu({ user }: UserMenuProps) {
         onClick={() => signOut({ callbackUrl: '/' })}
         className="rounded-lg border border-input px-3 py-1.5 text-sm text-secondary transition-colors hover:border-muted hover:text-foreground"
       >
-        Sign out
+        {t('signOut')}
       </button>
     </div>
   );

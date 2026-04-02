@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl';
+
 import type { Movie } from '@/types/tmdb';
 
 import { MovieCard } from './MovieCard';
@@ -7,10 +9,12 @@ interface MovieGridProps {
 }
 
 export function MovieGrid({ movies }: MovieGridProps) {
+  const t = useTranslations('MovieGrid');
+
   if (movies.length === 0) {
     return (
       <div className="flex h-48 items-center justify-center text-muted">
-        No movies found.
+        {t('empty')}
       </div>
     );
   }

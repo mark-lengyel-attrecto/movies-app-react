@@ -1,18 +1,20 @@
-import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
 
 import { UserMenu } from '@/features/auth/components/UserMenu';
 import { auth } from '@/lib/auth';
+import { Link } from '@/i18n/navigation';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { HeaderSearch } from '@/components/layout/HeaderSearch';
 
 export async function Header() {
   const session = await auth();
+  const t = await getTranslations('Header');
 
   return (
     <header className="sticky top-0 z-50 border-b border-ui bg-surface/80 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-8 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="shrink-0 text-xl font-bold tracking-tight text-foreground">
-          Movies
+          {t('brand')}
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
@@ -20,20 +22,20 @@ export async function Header() {
             href="/popular"
             className="text-sm text-secondary transition-colors hover:text-foreground"
           >
-            Popular
+            {t('popular')}
           </Link>
           <Link
             href="/top-rated"
             className="text-sm text-secondary transition-colors hover:text-foreground"
           >
-            Top rated
+            {t('topRated')}
           </Link>
           {session?.user && (
             <Link
               href="/watchlist"
               className="text-sm text-secondary transition-colors hover:text-foreground"
             >
-              Watchlist
+              {t('watchlist')}
             </Link>
           )}
         </nav>
