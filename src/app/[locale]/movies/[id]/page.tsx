@@ -7,7 +7,7 @@ import { backdropUrl, posterUrl, profileUrl } from '@/lib/tmdb/client';
 import { getMovieCredits, getMovieDetails } from '@/lib/tmdb/endpoints';
 
 interface MoviePageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; locale: string }>;
 }
 
 export async function generateMetadata({ params }: MoviePageProps): Promise<Metadata> {
@@ -21,12 +21,12 @@ export async function generateMetadata({ params }: MoviePageProps): Promise<Meta
 }
 
 export default async function MoviePage({ params }: MoviePageProps) {
-  const { id } = await params;
+  const { id, locale } = await params;
   const movieId = Number(id);
 
   const [movie, credits] = await Promise.all([
-    getMovieDetails(movieId).catch(() => null),
-    getMovieCredits(movieId).catch(() => null),
+    getMovieDetails(movieId, locale).catch(() => null),
+    getMovieCredits(movieId, locale).catch(() => null),
   ]);
 
   if (!movie) notFound();
