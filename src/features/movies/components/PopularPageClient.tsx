@@ -1,7 +1,7 @@
 'use client';
 
-import { usePopularMovies } from "../api/use-popular-movies";
-import { InfiniteMovieGrid } from "./InfiniteMovieGrid";
+import { usePopularMovies } from '../api/use-popular-movies';
+import { InfiniteMovieGrid } from './InfiniteMovieGrid';
 
 export default function PopularPageClient() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = usePopularMovies();

@@ -40,8 +40,11 @@ export default async function LocaleLayout({
   const isDark = cookieStore.get('theme')?.value === 'dark';
 
   return (
-    <html lang={locale} className={`${geist.variable} h-full overflow-hidden antialiased${isDark ? ' dark' : ''}`}>
-      <body className="flex h-full flex-col overflow-x-clip overflow-y-auto bg-base text-foreground">
+    <html
+      lang={locale}
+      className={`${geist.variable} h-full overflow-hidden antialiased${isDark ? ' dark' : ''}`}
+    >
+      <body className="bg-base text-foreground flex h-full flex-col overflow-x-clip overflow-y-auto">
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
             <Header isDark={isDark} />

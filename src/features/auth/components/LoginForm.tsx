@@ -36,12 +36,10 @@ export function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      {error && (
-        <p className="rounded-lg bg-error-surface px-4 py-3 text-sm text-error">{error}</p>
-      )}
+      {error && <p className="bg-error-surface text-error rounded-lg px-4 py-3 text-sm">{error}</p>}
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="username" className="text-sm font-medium text-foreground">
+        <label htmlFor="username" className="text-foreground text-sm font-medium">
           {t('usernameLabel')}
         </label>
         <input
@@ -50,13 +48,13 @@ export function LoginForm() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          className="rounded-lg border border-input bg-elevated px-4 py-2.5 text-sm text-foreground placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+          className="border-input bg-elevated text-foreground rounded-lg border px-4 py-2.5 text-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none"
           placeholder={t('usernamePlaceholder')}
         />
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="password" className="text-sm font-medium text-foreground">
+        <label htmlFor="password" className="text-foreground text-sm font-medium">
           {t('passwordLabel')}
         </label>
         <input
@@ -65,7 +63,7 @@ export function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className="rounded-lg border border-input bg-elevated px-4 py-2.5 text-sm text-foreground placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+          className="border-input bg-elevated text-foreground rounded-lg border px-4 py-2.5 text-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none"
           placeholder={t('passwordPlaceholder')}
         />
       </div>

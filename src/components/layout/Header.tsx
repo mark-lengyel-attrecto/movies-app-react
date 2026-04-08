@@ -12,29 +12,29 @@ export async function Header({ isDark }: { isDark: boolean }) {
   const t = await getTranslations('Header');
 
   return (
-    <header className="sticky top-0 z-50 border-b border-ui bg-surface/80 backdrop-blur-sm">
+    <header className="border-ui bg-surface/80 sticky top-0 z-50 border-b backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-8 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="shrink-0 text-xl font-bold tracking-tight text-foreground">
+        <Link href="/" className="text-foreground shrink-0 text-xl font-bold tracking-tight">
           {t('brand')}
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
           <Link
             href="/popular"
-            className="text-sm text-secondary transition-colors hover:text-foreground"
+            className="text-secondary hover:text-foreground text-sm transition-colors"
           >
             {t('popular')}
           </Link>
           <Link
             href="/top-rated"
-            className="text-sm text-secondary transition-colors hover:text-foreground"
+            className="text-secondary hover:text-foreground text-sm transition-colors"
           >
             {t('topRated')}
           </Link>
           {session?.user && (
             <Link
               href="/watchlist"
-              className="text-sm text-secondary transition-colors hover:text-foreground"
+              className="text-secondary hover:text-foreground text-sm transition-colors"
             >
               {t('watchlist')}
             </Link>

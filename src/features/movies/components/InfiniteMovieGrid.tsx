@@ -20,7 +20,7 @@ interface InfiniteMovieGridProps {
 const SKELETON_COUNTS = { initial: 20, nextPage: 10 };
 
 function MovieSkeleton() {
-  return <div className="aspect-[2/3] animate-pulse rounded-lg bg-subtle" />;
+  return <div className="bg-subtle aspect-[2/3] animate-pulse rounded-lg" />;
 }
 
 export function InfiniteMovieGrid({
@@ -68,9 +68,7 @@ export function InfiniteMovieGrid({
   });
 
   if (movies.length === 0) {
-    return (
-      <div className="flex h-48 items-center justify-center text-muted">{t('empty')}</div>
-    );
+    return <div className="text-muted flex h-48 items-center justify-center">{t('empty')}</div>;
   }
 
   return (

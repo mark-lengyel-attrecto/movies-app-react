@@ -16,7 +16,7 @@ Built as a learning project with production-grade patterns.
 | Client state | Zustand | Minimal boilerplate, TypeScript-first, `persist` middleware for localStorage |
 | Auth | Auth.js v5 (next-auth@beta) | Next.js-native, TMDB credentials provider, JWT sessions |
 | i18n | next-intl v4 | URL-prefix routing (`/en/`, `/hu/`), Server + Client Component support |
-| Linting | ESLint v9 (flat config) | TypeScript rules, React hooks rules, import sorting |
+| Linting | ESLint v9 (flat config) | TypeScript rules, React hooks rules, import sorting, unused import removal |
 | Formatting | Prettier + prettier-plugin-tailwindcss | Consistent style, Tailwind class order enforced |
 
 ---
@@ -51,9 +51,11 @@ src/
 │   │   ├── popular/      # Popular movies page
 │   │   ├── search/       # Search results page (driven by ?q= param)
 │   │   ├── top-rated/    # Top rated movies page
+│   │   ├── [...rest]/    # Catch-all — calls notFound() so locale 404 renders with full layout
 │   │   ├── not-found.tsx # Locale-aware 404
 │   │   └── layout.tsx    # Root layout — QueryProvider, NextIntlClientProvider, Header/Footer
-│   └── api/auth/         # Auth.js route handler (no locale prefix)
+│   ├── api/auth/         # Auth.js route handler (no locale prefix)
+│   └── api/movies/       # Route handlers for popular, top-rated, search (used by TanStack Query)
 │
 ├── i18n/
 │   ├── routing.ts        # Defines locales (['en', 'hu']) and defaultLocale
@@ -82,7 +84,7 @@ src/
 │
 ├── components/
 │   ├── providers/        # React context providers (QueryProvider)
-│   └── layout/           # Header, Footer, ThemeToggle, HeaderSearch
+│   └── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher
 │
 ├── messages/
 │   ├── en.json           # English translations
@@ -196,7 +198,7 @@ Use Tailwind classes wherever possible. Only fall back to `globals.css` for thin
 
 ### Dark / Light Mode
 
-Dark mode uses the `.dark` class on `<html>` (toggled by `ThemeToggle`, persisted in `localStorage`, applied before paint by an inline script in `layout.tsx`). The `dark:` variant is configured in `globals.css` via `@custom-variant dark`.
+Dark mode uses the `.dark` class on `<html>` (toggled by `ThemeToggle`, persisted in a `theme` cookie, applied server-side in `[locale]/layout.tsx` before render to avoid flash). The `dark:` variant is configured in `globals.css` via `@custom-variant dark`.
 
 **Use semantic color tokens — never raw gray-* classes for theme-aware colors.**
 Tokens are defined as CSS custom properties in `:root` / `.dark` and exposed as Tailwind utilities via `@theme inline` in `globals.css`.
@@ -224,6 +226,17 @@ Opacity modifiers work with tokens: `bg-surface/80`, `text-foreground/10`, etc.
 
 ---
 
+## Linting
+
+ESLint runs on `.ts` and `.tsx` files via the flat config (`eslint.config.mjs`). Two plugins handle imports automatically on save in VS Code:
+
+- **`eslint-plugin-simple-import-sort`** — sorts imports into groups: React/Next → external packages → `@/` aliases → relative → CSS.
+- **`eslint-plugin-unused-imports`** — auto-removes unused imports. Replaces `@typescript-eslint/no-unused-vars` for imports (that rule is turned off to avoid duplicate reports).
+
+VS Code applies both fixes on save via `source.fixAll.eslint` in `.vscode/settings.json`. The ESLint extension must validate `typescriptreact` (already configured) for this to work on `.tsx` files.
+
+---
+
 ## Commands
 
 ```bash
@@ -237,7 +250,6 @@ npm run format    # Prettier (add to package.json scripts: "prettier --write .")
 
 ## Next Steps
 
-- [ ] Add API route handlers (`app/api/movies/`) so client-side TanStack Query hooks work
 - [ ] Add a real database (Prisma + PostgreSQL) for user accounts and server-side watchlist
 - [ ] Add `loading.tsx` files next to pages for streaming skeleton UIs
 - [ ] Add `error.tsx` files for per-route error boundaries

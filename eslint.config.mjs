@@ -6,6 +6,7 @@ import tsParser from "@typescript-eslint/parser";
 import reactPlugin from "eslint-plugin-react";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
+import unusedImports from "eslint-plugin-unused-imports";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
@@ -27,10 +28,13 @@ const eslintConfig = defineConfig([
       react: reactPlugin,
       "react-hooks": reactHooksPlugin,
       "simple-import-sort": simpleImportSort,
+      "unused-imports": unusedImports,
     },
     rules: {
       // TypeScript
-      "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+      "@typescript-eslint/no-unused-vars": "off", // handled by unused-imports below
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/consistent-type-imports": ["error", { prefer: "type-imports" }],
       "@typescript-eslint/no-non-null-assertion": "warn",

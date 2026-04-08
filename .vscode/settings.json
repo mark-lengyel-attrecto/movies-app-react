@@ -14,7 +14,9 @@
   "scss.validate": false,
   "eslint.validate": [
     "javascript",
-    "typescript"
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
   ],
   "html.format.wrapAttributes": "preserve",
   "html.format.wrapLineLength": 9999,
@@ -28,6 +30,10 @@
     "editor.formatOnSave": true
   },
   "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },

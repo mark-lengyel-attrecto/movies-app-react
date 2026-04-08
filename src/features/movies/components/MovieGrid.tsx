@@ -12,11 +12,7 @@ export function MovieGrid({ movies }: MovieGridProps) {
   const t = useTranslations('MovieGrid');
 
   if (movies.length === 0) {
-    return (
-      <div className="flex h-48 items-center justify-center text-muted">
-        {t('empty')}
-      </div>
-    );
+    return <div className="text-muted flex h-48 items-center justify-center">{t('empty')}</div>;
   }
 
   return (

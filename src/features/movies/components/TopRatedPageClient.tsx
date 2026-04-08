@@ -1,10 +1,10 @@
 'use client';
 
-import { useTopRatedMovies } from "../api/use-top-rated-movies";
-import { InfiniteMovieGrid } from "./InfiniteMovieGrid";
+import { useTopRatedMovies } from '../api/use-top-rated-movies';
+import { InfiniteMovieGrid } from './InfiniteMovieGrid';
 
 export default function TopRatedPageClient() {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending} = useTopRatedMovies();
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = useTopRatedMovies();
 
   return (
     <InfiniteMovieGrid
@@ -14,5 +14,5 @@ export default function TopRatedPageClient() {
       isFetchingNextPage={isFetchingNextPage}
       isPending={isPending}
     />
-  )
+  );
 }

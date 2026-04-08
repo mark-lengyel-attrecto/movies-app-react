@@ -19,9 +19,9 @@ export function MovieCard({ movie, index }: MovieCardProps) {
   return (
     <Link
       href={`/movies/${movie.id}`}
-      className="group relative flex flex-col overflow-hidden rounded-lg bg-elevated transition-transform hover:-translate-y-1 hover:shadow-xl"
+      className="group bg-elevated relative flex flex-col overflow-hidden rounded-lg transition-transform hover:-translate-y-1 hover:shadow-xl"
     >
-      <div className="relative aspect-[2/3] w-full bg-subtle">
+      <div className="bg-subtle relative aspect-[2/3] w-full">
         {poster ? (
           <Image
             src={poster}
@@ -32,22 +32,20 @@ export function MovieCard({ movie, index }: MovieCardProps) {
             className="object-cover transition-opacity group-hover:opacity-90"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-muted">
-            {t('noImage')}
-          </div>
+          <div className="text-muted flex h-full items-center justify-center">{t('noImage')}</div>
         )}
 
         {/* Rating badge */}
         {rating && (
-          <div className="absolute right-2 top-2 rounded bg-black/70 px-1.5 py-0.5 text-xs font-semibold text-yellow-400">
+          <div className="absolute top-2 right-2 rounded bg-black/70 px-1.5 py-0.5 text-xs font-semibold text-yellow-400">
             ★ {rating}
           </div>
         )}
       </div>
 
       <div className="flex flex-col gap-1 p-3">
-        <h3 className="line-clamp-2 text-sm font-medium text-foreground">{movie.title}</h3>
-        {year && <p className="text-xs text-muted">{year}</p>}
+        <h3 className="text-foreground line-clamp-2 text-sm font-medium">{movie.title}</h3>
+        {year && <p className="text-muted text-xs">{year}</p>}
       </div>
     </Link>
   );

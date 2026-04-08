@@ -21,14 +21,12 @@ export function SearchPageClient() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-baseline gap-4">
-        <h1 className="text-3xl font-bold">
-          {query ? t('resultsFor', { query }) : t('heading')}
-        </h1>
-        {isFetching && <p className="text-sm text-muted">{t('searching')}</p>}
+        <h1 className="text-3xl font-bold">{query ? t('resultsFor', { query }) : t('heading')}</h1>
+        {isFetching && <p className="text-muted text-sm">{t('searching')}</p>}
       </div>
 
       {totalResults !== undefined && (
-        <p className="text-sm text-muted">{t('results', { count: totalResults })}</p>
+        <p className="text-muted text-sm">{t('results', { count: totalResults })}</p>
       )}
 
       {query.length >= 2 && !isFetching && !hasResults ? (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
@@ -19,7 +19,9 @@ export function HeaderSearch() {
   const originRef = useRef<string | null>(null);
   const isSearchPage = pathname === '/search';
 
-  const displayValue = isSearchPage && input === '' && urlQuery ? urlQuery : input;
+  useEffect(() => {
+    setInput(urlQuery);
+  }, [urlQuery]);
 
   const navigate = useDebouncedCallback((query: string) => {
     if (!query) {
@@ -50,10 +52,10 @@ export function HeaderSearch() {
   return (
     <input
       type="search"
-      value={displayValue}
+      value={input}
       onChange={handleChange}
       placeholder={t('placeholder')}
-      className="w-full max-w-xs rounded-lg border border-input bg-elevated px-3 py-1.5 text-sm text-foreground placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+      className="border-input bg-elevated text-foreground w-full max-w-xs rounded-lg border px-3 py-1.5 text-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none"
     />
   );
 }

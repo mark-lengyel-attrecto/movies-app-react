@@ -10,8 +10,8 @@ export default function PopularPage() {
   return (
     <div className="flex flex-col gap-8">
       <div>
-        <h1 className="text-3xl font-bold text-foreground">{t('heading')}</h1>
-        <p className="mt-1 text-muted">{t('subtitle')}</p>
+        <h1 className="text-foreground text-3xl font-bold">{t('heading')}</h1>
+        <p className="text-muted mt-1">{t('subtitle')}</p>
       </div>
       <PopularPageClient />
     </div>
