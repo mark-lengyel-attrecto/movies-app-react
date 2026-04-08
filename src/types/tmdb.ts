@@ -106,6 +106,88 @@ export interface MovieVideos {
   results: Video[];
 }
 
+// ─── Core TV Types ────────────────────────────────────────────────────────────
+
+export interface TVSeries {
+  id: number;
+  name: string;
+  original_name: string;
+  overview: string;
+  poster_path: string | null;
+  backdrop_path: string | null;
+  first_air_date: string;
+  vote_average: number;
+  vote_count: number;
+  popularity: number;
+  genre_ids: number[];
+  adult: boolean;
+  original_language: string;
+  origin_country: string[];
+}
+
+export interface TVSeriesDetails extends Omit<TVSeries, 'genre_ids'> {
+  genres: Genre[];
+  status: string;
+  tagline: string;
+  homepage: string | null;
+  number_of_seasons: number;
+  number_of_episodes: number;
+  seasons: Season[];
+  created_by: Creator[];
+  networks: Network[];
+  last_air_date: string | null;
+  episode_run_time: number[];
+  in_production: boolean;
+  type: string;
+}
+
+export interface Season {
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string | null;
+  season_number: number;
+  episode_count: number;
+  air_date: string | null;
+}
+
+export interface Creator {
+  id: number;
+  name: string;
+  profile_path: string | null;
+}
+
+export interface Network {
+  id: number;
+  name: string;
+  logo_path: string | null;
+  origin_country: string;
+}
+
+export interface TVCredits {
+  id: number;
+  cast: CastMember[];
+  crew: CrewMember[];
+}
+
+export interface TVVideos {
+  id: number;
+  results: Video[];
+}
+
+// ─── Multi-Search ─────────────────────────────────────────────────────────────
+
+export type MultiSearchMovie = Movie & { media_type: 'movie' };
+export type MultiSearchTV = TVSeries & { media_type: 'tv' };
+export type MultiSearchPerson = {
+  id: number;
+  name: string;
+  profile_path: string | null;
+  popularity: number;
+  media_type: 'person';
+};
+export type MultiSearchResult = MultiSearchMovie | MultiSearchTV | MultiSearchPerson;
+
 // ─── API Response Wrappers ───────────────────────────────────────────────────
 
 export interface PaginatedResponse<T> {

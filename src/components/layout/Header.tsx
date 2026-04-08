@@ -4,6 +4,7 @@ import { HeaderSearch } from '@/components/layout/HeaderSearch';
 import { LocaleSwitcher } from '@/components/layout/LocaleSwitcher';
 import { MobileMenuButtons } from '@/components/layout/MobileMenuButtons';
 import { MobilePanels } from '@/components/layout/MobilePanels';
+import { NavDropdown } from '@/components/layout/NavDropdown';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { UserMenu } from '@/features/auth/components/UserMenu';
 import { Link } from '@/i18n/navigation';
@@ -21,25 +22,25 @@ export async function Header({ isDark }: { isDark: boolean }) {
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
-          <Link
-            href="/popular"
-            className="text-secondary hover:text-foreground text-sm transition-colors"
-          >
-            {t('popular')}
-          </Link>
-          <Link
-            href="/top-rated"
-            className="text-secondary hover:text-foreground text-sm transition-colors"
-          >
-            {t('topRated')}
-          </Link>
+          <NavDropdown
+            label={t('movies')}
+            items={[
+              { href: '/popular', label: t('popular') },
+              { href: '/top-rated', label: t('topRated') },
+            ]}
+          />
+          <NavDropdown
+            label={t('tv')}
+            items={[
+              { href: '/tv/popular', label: t('popular') },
+              { href: '/tv/top-rated', label: t('topRated') },
+            ]}
+          />
           {session?.user && (
-            <Link
-              href="/watchlist"
-              className="text-secondary hover:text-foreground text-sm transition-colors"
-            >
-              {t('watchlist')}
-            </Link>
+            <NavDropdown
+              label={t('watchlist')}
+              items={[{ href: '/watchlist', label: t('watchlist') }]}
+            />
           )}
         </nav>
 

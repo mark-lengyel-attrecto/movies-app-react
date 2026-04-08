@@ -3,6 +3,8 @@
 Next.js 16 app for discovering and tracking movies using the TMDB API.
 Built as a learning project with production-grade patterns.
 
+> **Maintenance rule:** Whenever a notable change is made to the project — new components, architectural decisions, new patterns, store shape changes, or anything that would affect how future work should be approached — update this file to reflect it.
+
 ---
 
 ## Stack
@@ -49,13 +51,18 @@ src/
 │   │   ├── (auth)/       # Route group — login page
 │   │   ├── movies/[id]/  # Dynamic route for movie detail
 │   │   ├── popular/      # Popular movies page
-│   │   ├── search/       # Search results page (driven by ?q= param)
+│   │   ├── search/       # Search results page — multi-search (movies + TV), driven by ?q= param
 │   │   ├── top-rated/    # Top rated movies page
+│   │   ├── tv/popular/   # Popular TV shows page
+│   │   ├── tv/top-rated/ # Top rated TV shows page
+│   │   ├── tv/[id]/      # Dynamic route for TV show detail
 │   │   ├── [...rest]/    # Catch-all — calls notFound() so locale 404 renders with full layout
 │   │   ├── not-found.tsx # Locale-aware 404
 │   │   └── layout.tsx    # Root layout — QueryProvider, NextIntlClientProvider, Header/Footer
 │   ├── api/auth/         # Auth.js route handler (no locale prefix)
-│   └── api/movies/       # Route handlers for popular, top-rated, search (used by TanStack Query)
+│   ├── api/movies/       # Route handlers for popular, top-rated, search (used by TanStack Query)
+│   ├── api/tv/           # Route handlers for tv/popular, tv/top-rated
+│   └── api/search/       # Multi-search route handler (TMDB /search/multi)
 │
 ├── i18n/
 │   ├── routing.ts        # Defines locales (['en', 'hu']) and defaultLocale
@@ -67,6 +74,13 @@ src/
 │   │   ├── api/          # TanStack Query hooks (use-*.ts)
 │   │   ├── components/   # Movie-specific UI components
 │   │   └── types.ts      # UI-level types (not raw TMDB API types)
+│   ├── tv/
+│   │   ├── api/          # use-popular-tv, use-top-rated-tv, use-tv-details
+│   │   ├── components/   # TVCard, InfiniteTVGrid, PopularTVPageClient, TopRatedTVPageClient
+│   │   └── types.ts      # TVListCategory, TV_LIST_OPTIONS
+│   ├── search/
+│   │   ├── api/          # use-multi-search (TMDB /search/multi — movies + TV, filters out persons)
+│   │   └── components/   # MediaCard, InfiniteMediaGrid, SearchPageClient
 │   └── auth/
 │       ├── components/   # LoginForm, UserMenu
 │       └── hooks/        # use-session.ts wrapper
@@ -85,7 +99,7 @@ src/
 ├── components/
 │   ├── providers/        # React context providers (QueryProvider)
 │   └── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher,
-│                         # MobileMenuButtons, MobilePanels
+│                         # MobileMenuButtons, MobilePanels, Dropdown, NavDropdown
 │
 ├── messages/
 │   ├── en.json           # English translations
@@ -115,8 +129,8 @@ export default async function MoviePage() {
 
 ### TanStack Query hooks (for interactive / client-driven data)
 ```tsx
-// features/movies/components/SearchPageClient.tsx  ('use client')
-const { data, isPending } = useSearchMovies(query);
+// features/search/components/SearchPageClient.tsx  ('use client')
+const { data, isPending } = useMultiSearch(query);
 ```
 
 ### Query key conventions
@@ -249,6 +263,17 @@ npm run format    # Prettier (add to package.json scripts: "prettier --write .")
 
 ---
 
+## Header Navigation
+
+The desktop nav (`hidden md:flex`) uses two shared primitives:
+
+- **`Dropdown`** — generic dropdown shell. Accepts `trigger` (ReactNode rendered inside the toggle button), `items` (`DropdownItem[]`), `align`, `triggerClassName`, `panelClassName`. Items with `href` render as `<Link>`, items with `onClick` render as `<button>`. Active items get a checkmark. Closes on outside click via a `pointerdown` listener (not a backdrop overlay — the backdrop approach fails inside the sticky header's stacking context).
+- **`NavDropdown`** — thin wrapper around `Dropdown` for nav links. When `items.length === 1` it skips the dropdown entirely and renders the item directly as a `<Link>` with the same button styling, so single-destination items (e.g. Watchlist) stay visually consistent without an unnecessary chevron.
+
+All nav trigger buttons share the same base: `h-8 rounded-md px-2 hover:bg-elevated` — this is the default `triggerClassName` in `Dropdown`.
+
+---
+
 ## Mobile Header
 
 On mobile (`< md`) the header collapses to: **logo — locale — theme — user — search icon — hamburger**.
@@ -265,3 +290,6 @@ On mobile (`< md`) the header collapses to: **logo — locale — theme — user
 - [ ] Add `loading.tsx` files next to pages for streaming skeleton UIs
 - [ ] Add `error.tsx` files for per-route error boundaries
 - [ ] Add genre filtering using `useUIStore`
+- [ ] Extend watchlist to support TV shows (currently movies only — store uses `Movie` type)
+- [ ] Add TV season/episode detail pages (`/tv/[id]/seasons/[season]`)
+- [ ] Generalize movie/TV/media card and grid components if it makes sense — `MovieCard`, `TVCard`, and `MediaCard` share near-identical structure; same for `InfiniteMovieGrid`, `InfiniteTVGrid`, `InfiniteMediaGrid`

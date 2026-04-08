@@ -4,7 +4,12 @@ import type {
   MovieCredits,
   MovieDetails,
   MovieVideos,
+  MultiSearchResult,
   PaginatedResponse,
+  TVCredits,
+  TVSeries,
+  TVSeriesDetails,
+  TVVideos,
 } from '@/types/tmdb';
 
 import { getTMDBClient } from './client';
@@ -90,5 +95,55 @@ export function getGenres(locale = 'en'): Promise<{ genres: { id: number; name: 
     {
       next: { revalidate: 604800 },
     },
+  );
+}
+
+// ─── TV Lists ────────────────────────────────────────────────────────────────
+
+export function getPopularTV(page = 1, locale = 'en'): Promise<PaginatedResponse<TVSeries>> {
+  return getTMDBClient().fetch('/tv/popular', { page, language: localeToTmdb(locale) });
+}
+
+export function getTopRatedTV(page = 1, locale = 'en'): Promise<PaginatedResponse<TVSeries>> {
+  return getTMDBClient().fetch('/tv/top_rated', { page, language: localeToTmdb(locale) });
+}
+
+// ─── TV Details ──────────────────────────────────────────────────────────────
+
+export function getTVDetails(id: number, locale = 'en'): Promise<TVSeriesDetails> {
+  return getTMDBClient().fetch(
+    `/tv/${id}`,
+    { language: localeToTmdb(locale) },
+    { next: { revalidate: 86400, tags: [`tv-${id}`] } },
+  );
+}
+
+export function getTVCredits(id: number, locale = 'en'): Promise<TVCredits> {
+  return getTMDBClient().fetch(
+    `/tv/${id}/credits`,
+    { language: localeToTmdb(locale) },
+    { next: { revalidate: 86400, tags: [`tv-${id}-credits`] } },
+  );
+}
+
+export function getTVVideos(id: number, locale = 'en'): Promise<TVVideos> {
+  return getTMDBClient().fetch(
+    `/tv/${id}/videos`,
+    { language: localeToTmdb(locale) },
+    { next: { revalidate: 86400, tags: [`tv-${id}-videos`] } },
+  );
+}
+
+// ─── Multi-Search ─────────────────────────────────────────────────────────────
+
+export function multiSearch(
+  query: string,
+  page = 1,
+  locale = 'en',
+): Promise<PaginatedResponse<MultiSearchResult>> {
+  return getTMDBClient().fetch(
+    '/search/multi',
+    { query, page, language: localeToTmdb(locale) },
+    { next: { revalidate: 0 } },
   );
 }

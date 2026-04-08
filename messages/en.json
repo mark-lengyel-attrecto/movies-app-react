@@ -1,6 +1,8 @@
 {
   "Header": {
     "brand": "Movies",
+    "movies": "Movies",
+    "tv": "TV Shows",
     "popular": "Popular",
     "topRated": "Top Rated",
     "watchlist": "Watchlist",
@@ -31,11 +33,11 @@
     "toLight": "Switch to light mode"
   },
   "Search": {
-    "placeholder": "Search movies…",
+    "placeholder": "Search movies & TV…",
     "searching": "Searching…",
     "results": "{count, number} results",
     "noResults": "No results for \"{query}\"",
-    "heading": "Search Movies",
+    "heading": "Search",
     "resultsFor": "Results for \"{query}\""
   },
   "Popular": {
@@ -55,6 +57,20 @@
   "MovieDetail": {
     "cast": "Cast",
     "director": "Dir. {name}"
+  },
+  "TVPopular": {
+    "heading": "Popular TV Shows",
+    "subtitle": "The most popular series right now"
+  },
+  "TVTopRated": {
+    "heading": "Top Rated TV Shows",
+    "subtitle": "The best rated series of all time"
+  },
+  "TVDetail": {
+    "cast": "Cast",
+    "createdBy": "Created by {name}",
+    "seasons": "{count, plural, one {# season} other {# seasons}}",
+    "episodes": "{count, plural, one {# episode} other {# episodes}}"
   },
   "NotFound": {
     "heading": "Page not found",

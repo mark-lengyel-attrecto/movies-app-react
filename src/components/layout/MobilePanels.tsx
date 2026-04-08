@@ -34,6 +34,9 @@ export function MobilePanels({ hasWatchlist, user }: MobilePanelsProps) {
       {isMobileNavOpen && (
         <nav className="border-ui border-t px-4 py-3 md:hidden">
           <div className="flex flex-col">
+            <p className="text-muted px-3 pt-1 pb-0.5 text-xs font-semibold uppercase tracking-wider">
+              {t('movies')}
+            </p>
             <Link
               href="/popular"
               className="text-secondary hover:text-foreground hover:bg-elevated rounded-md px-3 py-2 text-sm transition-colors"
@@ -42,6 +45,21 @@ export function MobilePanels({ hasWatchlist, user }: MobilePanelsProps) {
             </Link>
             <Link
               href="/top-rated"
+              className="text-secondary hover:text-foreground hover:bg-elevated rounded-md px-3 py-2 text-sm transition-colors"
+            >
+              {t('topRated')}
+            </Link>
+            <p className="text-muted px-3 pt-3 pb-0.5 text-xs font-semibold uppercase tracking-wider">
+              {t('tv')}
+            </p>
+            <Link
+              href="/tv/popular"
+              className="text-secondary hover:text-foreground hover:bg-elevated rounded-md px-3 py-2 text-sm transition-colors"
+            >
+              {t('popular')}
+            </Link>
+            <Link
+              href="/tv/top-rated"
               className="text-secondary hover:text-foreground hover:bg-elevated rounded-md px-3 py-2 text-sm transition-colors"
             >
               {t('topRated')}

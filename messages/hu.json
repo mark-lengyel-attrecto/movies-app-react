@@ -1,6 +1,8 @@
 {
   "Header": {
     "brand": "Movies",
+    "movies": "Filmek",
+    "tv": "Sorozatok",
     "popular": "Népszerű",
     "topRated": "Legjobb értékelésű",
     "watchlist": "Nézési lista",
@@ -31,11 +33,11 @@
     "toLight": "Váltás világos módra"
   },
   "Search": {
-    "placeholder": "Film keresése…",
+    "placeholder": "Film vagy sorozat keresése…",
     "searching": "Keresés…",
     "results": "{count, number} találat",
     "noResults": "Nincs találat erre: \"{query}\"",
-    "heading": "Filmek keresése",
+    "heading": "Keresés",
     "resultsFor": "Találatok: \"{query}\""
   },
   "Popular": {
@@ -55,6 +57,20 @@
   "MovieDetail": {
     "cast": "Szereplők",
     "director": "Rendezte: {name}"
+  },
+  "TVPopular": {
+    "heading": "Népszerű sorozatok",
+    "subtitle": "A leginkább nézett sorozatok most"
+  },
+  "TVTopRated": {
+    "heading": "Legjobban értékelt sorozatok",
+    "subtitle": "A legjobb értékelésű sorozatok"
+  },
+  "TVDetail": {
+    "cast": "Szereplők",
+    "createdBy": "Készítette: {name}",
+    "seasons": "{count} évad",
+    "episodes": "{count} epizód"
   },
   "NotFound": {
     "heading": "Az oldal nem található",
