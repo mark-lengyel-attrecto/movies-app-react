@@ -17,14 +17,12 @@ interface MobilePanelsProps {
 export function MobilePanels({ hasWatchlist, user }: MobilePanelsProps) {
   const t = useTranslations('Header');
   const tUser = useTranslations('UserMenu');
-  const { isMobileSearchOpen, isMobileNavOpen, setMobileSearchOpen, setMobileNavOpen } =
-    useUIStore();
+  const { isMobileSearchOpen, isMobileNavOpen, setMobileNavOpen } = useUIStore();
   const pathname = usePathname();
 
   useEffect(() => {
-    setMobileSearchOpen(false);
     setMobileNavOpen(false);
-  }, [pathname, setMobileSearchOpen, setMobileNavOpen]);
+  }, [pathname, setMobileNavOpen]);
 
   return (
     <>

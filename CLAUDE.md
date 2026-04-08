@@ -79,12 +79,13 @@ src/
 │   └── query-client.ts   # QueryClient factory — staleTime, gcTime, retry config
 │
 ├── stores/
-│   ├── ui.store.ts       # Search query, genre filter, mobile nav state
+│   ├── ui.store.ts       # Search query, genre filter, mobile nav/search open state
 │   └── watchlist.store.ts # Persisted watchlist (localStorage via persist middleware)
 │
 ├── components/
 │   ├── providers/        # React context providers (QueryProvider)
-│   └── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher
+│   └── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher,
+│                         # MobileMenuButtons, MobilePanels
 │
 ├── messages/
 │   ├── en.json           # English translations
@@ -245,6 +246,16 @@ npm run build     # Production build
 npm run lint      # ESLint
 npm run format    # Prettier (add to package.json scripts: "prettier --write .")
 ```
+
+---
+
+## Mobile Header
+
+On mobile (`< md`) the header collapses to: **logo — locale — theme — user — search icon — hamburger**.
+
+- `MobileMenuButtons` — renders the two icon buttons (search + hamburger), `md:hidden`. Toggling one closes the other via Zustand (`isMobileSearchOpen`, `isMobileNavOpen` in `ui.store.ts`).
+- `MobilePanels` — renders below the header bar. Search panel stays open while the user is searching (only nav panel closes on route change). Sign in/out lives in the nav panel on mobile — `UserMenu` is `hidden md:block`.
+- `HeaderSearch` accepts an optional `className` prop to override `max-w-xs` (used by the mobile panel to go full-width) and `autoFocus` to focus on mount.
 
 ---
 
