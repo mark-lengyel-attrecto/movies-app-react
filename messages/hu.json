@@ -3,7 +3,11 @@
     "brand": "Movies",
     "popular": "Népszerű",
     "topRated": "Legjobb értékelésű",
-    "watchlist": "Nézési lista"
+    "watchlist": "Nézési lista",
+    "openSearch": "Keresés megnyitása",
+    "closeSearch": "Keresés bezárása",
+    "openMenu": "Menü megnyitása",
+    "closeMenu": "Menü bezárása"
   },
   "Footer": {
     "poweredBy": "Film adatok forrása: <tmdb>TMDB</tmdb>"

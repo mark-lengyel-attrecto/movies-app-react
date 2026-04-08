@@ -3,7 +3,11 @@
     "brand": "Movies",
     "popular": "Popular",
     "topRated": "Top Rated",
-    "watchlist": "Watchlist"
+    "watchlist": "Watchlist",
+    "openSearch": "Open search",
+    "closeSearch": "Close search",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "Footer": {
     "poweredBy": "Movie data provided by <tmdb>TMDB</tmdb>"

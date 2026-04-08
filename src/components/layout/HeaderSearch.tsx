@@ -8,7 +8,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 import { usePathname, useRouter } from '@/i18n/navigation';
 
-export function HeaderSearch() {
+export function HeaderSearch({ className, autoFocus }: { className?: string; autoFocus?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -55,7 +55,8 @@ export function HeaderSearch() {
       value={input}
       onChange={handleChange}
       placeholder={t('placeholder')}
-      className="border-input bg-elevated text-foreground w-full max-w-xs rounded-lg border px-3 py-1.5 text-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none"
+      autoFocus={autoFocus}
+      className={`border-input bg-elevated text-foreground w-full rounded-lg border px-3 py-1.5 text-sm placeholder-gray-400 focus:border-blue-500 focus:outline-none ${className ?? 'max-w-xs'}`}
     />
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useLocale } from 'next-intl';
 
 import type { FlagComponent } from 'country-flag-icons/react/3x2';
@@ -19,12 +20,16 @@ export function LocaleSwitcher() {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   function switchLocale(next: string) {
     setOpen(false);
-    if (next !== locale) router.replace(pathname, { locale: next });
+    if (next !== locale) {
+      const query = searchParams.toString();
+      router.replace(`${pathname}${query ? `?${query}` : ''}`, { locale: next });
+    }
   }
 
   const current = localeConfig[locale];

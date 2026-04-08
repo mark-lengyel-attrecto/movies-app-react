@@ -13,6 +13,11 @@ interface UIStore {
   isMobileNavOpen: boolean;
   setMobileNavOpen: (open: boolean) => void;
   toggleMobileNav: () => void;
+
+  // Mobile search
+  isMobileSearchOpen: boolean;
+  setMobileSearchOpen: (open: boolean) => void;
+  toggleMobileSearch: () => void;
 }
 
 export const useUIStore = create<UIStore>((set) => ({
@@ -24,5 +29,11 @@ export const useUIStore = create<UIStore>((set) => ({
 
   isMobileNavOpen: false,
   setMobileNavOpen: (open) => set({ isMobileNavOpen: open }),
-  toggleMobileNav: () => set((state) => ({ isMobileNavOpen: !state.isMobileNavOpen })),
+  toggleMobileNav: () =>
+    set((state) => ({ isMobileNavOpen: !state.isMobileNavOpen, isMobileSearchOpen: false })),
+
+  isMobileSearchOpen: false,
+  setMobileSearchOpen: (open) => set({ isMobileSearchOpen: open }),
+  toggleMobileSearch: () =>
+    set((state) => ({ isMobileSearchOpen: !state.isMobileSearchOpen, isMobileNavOpen: false })),
 }));
