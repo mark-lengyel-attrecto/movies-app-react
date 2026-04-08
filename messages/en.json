@@ -15,7 +15,7 @@
   "Auth": {
     "pageHeading": "Sign in to Movies",
     "usernameLabel": "Username",
-    "usernamePlaceholder": "your_username",
+    "usernamePlaceholder": "Your username",
     "passwordLabel": "Password",
     "passwordPlaceholder": "••••••••",
     "submitButton": "Sign in",

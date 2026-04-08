@@ -15,7 +15,7 @@
   "Auth": {
     "pageHeading": "Bejelentkezés",
     "usernameLabel": "Felhasználónév",
-    "usernamePlaceholder": "felhasználónév",
+    "usernamePlaceholder": "Felhasználónév",
     "passwordLabel": "Jelszó",
     "passwordPlaceholder": "••••••••",
     "submitButton": "Bejelentkezés",

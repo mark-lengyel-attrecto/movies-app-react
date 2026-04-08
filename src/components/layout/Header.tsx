@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 
 import { HeaderSearch } from '@/components/layout/HeaderSearch';
+import { LocaleSwitcher } from '@/components/layout/LocaleSwitcher';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { UserMenu } from '@/features/auth/components/UserMenu';
 import { Link } from '@/i18n/navigation';
@@ -45,6 +46,7 @@ export async function Header({ isDark }: { isDark: boolean }) {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
+          <LocaleSwitcher />
           <ThemeToggle initialTheme={isDark ? 'dark' : 'light'} />
           <UserMenu user={session?.user ?? null} />
         </div>
