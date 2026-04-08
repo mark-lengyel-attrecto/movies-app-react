@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { Geist } from 'next/font/google';
 import { cookies } from 'next/headers';
+import { notFound } from 'next/navigation';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
-import { notFound } from 'next/navigation';
 
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
@@ -44,7 +44,7 @@ export default async function LocaleLayout({
       <body className="flex h-full flex-col overflow-x-clip overflow-y-auto bg-base text-foreground">
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
-            <Header />
+            <Header isDark={isDark} />
             <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
               {children}
             </main>

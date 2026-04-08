@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useTranslations } from 'next-intl';
 
 import type { InfiniteData } from '@tanstack/react-query';
-import { useTranslations } from 'next-intl';
 
 import type { Movie, PaginatedResponse } from '@/types/tmdb';
 

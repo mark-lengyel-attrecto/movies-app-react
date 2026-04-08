@@ -1,29 +1,18 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 
 type Theme = 'light' | 'dark';
 
-function getThemeCookie(): Theme | null {
-  const match = document.cookie.match(/(?:^|;\s*)theme=([^;]*)/);
-  const val = match?.[1];
-  return val === 'light' || val === 'dark' ? val : null;
-}
 
 function setThemeCookie(theme: Theme) {
   document.cookie = `theme=${theme};path=/;max-age=31536000;SameSite=Lax`;
 }
 
-export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme | null>(null);
+export function ThemeToggle({ initialTheme }: { initialTheme: Theme }) {
+  const [theme, setTheme] = useState<Theme>(initialTheme);
   const t = useTranslations('ThemeToggle');
-
-  useEffect(() => {
-    const stored = getThemeCookie();
-    const resolved = stored ?? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    setTheme(resolved);
-  }, []);
 
   function toggle() {
     const next: Theme = theme === 'dark' ? 'light' : 'dark';

@@ -1,12 +1,12 @@
 import { getTranslations } from 'next-intl/server';
 
-import { UserMenu } from '@/features/auth/components/UserMenu';
-import { auth } from '@/lib/auth';
-import { Link } from '@/i18n/navigation';
-import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { HeaderSearch } from '@/components/layout/HeaderSearch';
+import { ThemeToggle } from '@/components/layout/ThemeToggle';
+import { UserMenu } from '@/features/auth/components/UserMenu';
+import { Link } from '@/i18n/navigation';
+import { auth } from '@/lib/auth';
 
-export async function Header() {
+export async function Header({ isDark }: { isDark: boolean }) {
   const session = await auth();
   const t = await getTranslations('Header');
 
@@ -45,7 +45,7 @@ export async function Header() {
         </div>
 
         <div className="flex shrink-0 items-center gap-2">
-          <ThemeToggle />
+          <ThemeToggle initialTheme={isDark ? 'dark' : 'light'} />
           <UserMenu user={session?.user ?? null} />
         </div>
       </div>

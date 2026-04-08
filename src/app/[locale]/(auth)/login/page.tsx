@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
-import { redirect } from 'next/navigation';
 import { LoginForm } from '@/features/auth/components/LoginForm';
 import { auth } from '@/lib/auth';
 
