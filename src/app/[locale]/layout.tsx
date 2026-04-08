@@ -41,7 +41,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className={`${geist.variable} h-full overflow-hidden antialiased${isDark ? ' dark' : ''}`}>
-      <body className="flex h-full flex-col overflow-y-auto bg-base text-foreground">
+      <body className="flex h-full flex-col overflow-x-clip overflow-y-auto bg-base text-foreground">
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
             <Header />

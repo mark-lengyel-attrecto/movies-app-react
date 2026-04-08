@@ -14,7 +14,7 @@ export function MovieCard({ movie, index }: MovieCardProps) {
   const t = useTranslations('MovieCard');
   const poster = posterUrl(movie.poster_path, 'w342');
   const year = movie.release_date ? new Date(movie.release_date).getFullYear() : null;
-  const rating = movie.vote_average.toFixed(1);
+  const rating = movie.vote_average?.toFixed(1);
 
   return (
     <Link
@@ -38,9 +38,11 @@ export function MovieCard({ movie, index }: MovieCardProps) {
         )}
 
         {/* Rating badge */}
-        <div className="absolute right-2 top-2 rounded bg-black/70 px-1.5 py-0.5 text-xs font-semibold text-yellow-400">
-          ★ {rating}
-        </div>
+        {rating && (
+          <div className="absolute right-2 top-2 rounded bg-black/70 px-1.5 py-0.5 text-xs font-semibold text-yellow-400">
+            ★ {rating}
+          </div>
+        )}
       </div>
 
       <div className="flex flex-col gap-1 p-3">

@@ -41,7 +41,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
   return (
     <div className="flex flex-col gap-8">
       {/* Hero */}
-      <div className="relative -mx-4 -mt-8 h-72 sm:-mx-6 sm:h-96 lg:-mx-8">
+      <div className="relative -mx-[calc(50vw-50%)] -mt-8 h-72 sm:h-96">
         {backdrop && (
           <Image
             src={backdrop}
