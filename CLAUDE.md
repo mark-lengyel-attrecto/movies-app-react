@@ -107,7 +107,7 @@ src/
 │   │                     # MobileMenuButtons, MobilePanels, Dropdown, NavDropdown
 │   └── media/            # Shared media display components (cross-feature)
 │       ├── MediaCard.tsx # Single card — renders poster, rating, type badge, watchlist badge
-│       ├── InfiniteGrid.tsx # Generic infinite-scroll grid — accepts a toMedia adapter
+│       ├── InfiniteGrid.tsx # Generic infinite-scroll grid — accepts a toMedia adapter; handles scroll restoration on back-navigation
 │       ├── WatchlistBadge.tsx # ✓ overlay inside MediaCard; reads useTMDBWatchlist cache
 │       └── normalize.ts  # NormalizedMedia type + movieToMedia / tvToMedia / multiSearchResultToMedia
 │
@@ -336,6 +336,16 @@ npm run format    # Prettier (add to package.json scripts: "prettier --write .")
 /sync-ai-docs     # Sync AI docs (CLAUDE.md, AGENTS.md, memory) with commits not yet reviewed
 /find-dead-code   # Detect unused files, exports, and dependencies with knip
 ```
+
+---
+
+## Layout Scroll Container
+
+The root layout uses `<html className="... overflow-hidden h-full">` and `<body className="... h-full overflow-y-auto">`. The **`<body>` is the scroll container**, not the viewport/window.
+
+**Rule: never use `window.scrollY` / `window.scrollTo` for page scroll.** Use `document.body.scrollTop` to read and write the page scroll position instead. `window.scrollY` always returns `0` in this layout.
+
+`InfiniteGrid` uses this when saving and restoring scroll position via `sessionStorage` on back-navigation.
 
 ---
 

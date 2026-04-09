@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 
 import type { InfiniteData } from '@tanstack/react-query';
 
+import { usePathname } from '@/i18n/navigation';
 import type { PaginatedResponse } from '@/types/tmdb';
 
 import { MediaCard } from './MediaCard';
@@ -35,6 +36,16 @@ export function InfiniteGrid<T>({
 }: InfiniteGridProps<T>) {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const t = useTranslations('MovieGrid');
+  const pathname = usePathname();
+  const scrollKey = `scroll:${pathname}`;
+
+  useLayoutEffect(() => {
+    if (isPending) return;
+    const saved = sessionStorage.getItem(scrollKey);
+    if (!saved) return;
+    sessionStorage.removeItem(scrollKey);
+    document.body.scrollTop = Number(saved);
+  }, [scrollKey, isPending]);
 
   useEffect(() => {
     const el = sentinelRef.current;
@@ -78,7 +89,10 @@ export function InfiniteGrid<T>({
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div
+      className="flex flex-col gap-6"
+      onClick={() => sessionStorage.setItem(scrollKey, String(document.body.scrollTop))}
+    >
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {items.map((item, i) => (
           <MediaCard key={item.id} item={item} index={i} />
