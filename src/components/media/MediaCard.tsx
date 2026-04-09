@@ -1,3 +1,5 @@
+'use client';
+
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
@@ -5,6 +7,7 @@ import { Link } from '@/i18n/navigation';
 import { posterUrl } from '@/lib/tmdb/client';
 
 import type { NormalizedMedia } from './normalize';
+import { WatchlistBadge } from './WatchlistBadge';
 
 interface MediaCardProps {
   item: NormalizedMedia;
@@ -46,6 +49,8 @@ export function MediaCard({ item, index }: MediaCardProps) {
             {item.mediaTypeBadge === 'tv' ? 'TV' : 'Movie'}
           </div>
         )}
+
+        <WatchlistBadge item={item} />
       </div>
 
       <div className="flex flex-col gap-1 p-3">

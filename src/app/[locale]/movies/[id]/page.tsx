@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { WatchlistButton } from '@/features/watchlist/components/WatchlistButton';
 import { backdropUrl, posterUrl, profileUrl } from '@/lib/tmdb/client';
 import { getMovieCredits, getMovieDetails } from '@/lib/tmdb/endpoints';
 
@@ -88,6 +89,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
               </span>
             ))}
           </div>
+          <WatchlistButton mediaType="movie" media={movie} />
           <p className="text-secondary max-w-2xl">{movie.overview}</p>
         </div>
       </div>

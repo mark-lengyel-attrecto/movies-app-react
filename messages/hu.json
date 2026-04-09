@@ -76,5 +76,19 @@
     "heading": "Az oldal nem található",
     "description": "A keresett oldal nem létezik vagy áthelyezték.",
     "backHome": "Vissza a főoldalra"
+  },
+  "Watchlist": {
+    "heading": "Nézési listám",
+    "subtitle": "Elmentett filmek és sorozatok",
+    "empty": "A nézési listád üres",
+    "emptyHint": "Böngéssz filmeket és sorozatokat, és add hozzá őket ide.",
+    "itemCount": "{count} elem",
+    "clearAll": "Összes törlése",
+    "remove": "Eltávolítás a listáról",
+    "fetchError": "Nem sikerült betölteni a nézési listát. Kérjük, próbáld újra."
+  },
+  "WatchlistButton": {
+    "add": "Hozzáadás a listához",
+    "inWatchlist": "Listán van"
   }
 }

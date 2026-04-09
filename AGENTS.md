@@ -49,7 +49,8 @@ Full token table is in `CLAUDE.md` → Styling section.
 Card and grid UI for movies, TV, and search results live in `components/media/`, not in feature folders.
 
 - **`InfiniteGrid<T>`** — infinite-scroll grid. Pass a `toMedia` adapter; it handles flattening, dedup, skeletons, and the intersection observer.
-- **`MediaCard`** — single card rendered by the grid. No direct instantiation needed.
+- **`MediaCard`** — single card rendered by the grid. Renders rating, type, and watchlist badges internally. No direct instantiation needed.
+- **`WatchlistBadge`** — rendered inside `MediaCard`; reads `useTMDBWatchlist()` cache. Do not add it elsewhere.
 - **`normalize.ts`** — exports `movieToMedia`, `tvToMedia`, `multiSearchResultToMedia`.
 
 When adding a new list page, wire it like this — do NOT create new card or grid files:
@@ -59,6 +60,11 @@ import { movieToMedia } from '@/components/media/normalize';
 
 <InfiniteGrid data={data} toMedia={movieToMedia} fetchNextPage={…} … />
 ```
+
+### Watchlist — authenticated users only
+- Route `/watchlist` is auth-protected; TMDB API backs the data.
+- `useTMDBWatchlist()` self-manages `enabled` via `useSession()` — never pass an `enabled` arg.
+- `WatchlistButton` accepts a discriminated union prop — narrow through `props`, not destructured variables, to preserve TypeScript type narrowing.
 
 ### i18n — translations in both locale files
 Any new translation key must be added to both `messages/en.json` and `messages/hu.json`.

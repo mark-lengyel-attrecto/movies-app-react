@@ -76,5 +76,19 @@
     "heading": "Page not found",
     "description": "The page you're looking for doesn't exist or has been moved.",
     "backHome": "Back to home"
+  },
+  "Watchlist": {
+    "heading": "My Watchlist",
+    "subtitle": "Movies and TV shows you've saved",
+    "empty": "Your watchlist is empty",
+    "emptyHint": "Browse movies and TV shows and add them here.",
+    "itemCount": "{count, plural, one {# item} other {# items}}",
+    "clearAll": "Clear all",
+    "remove": "Remove from watchlist",
+    "fetchError": "Failed to load your watchlist. Please try again."
+  },
+  "WatchlistButton": {
+    "add": "Add to Watchlist",
+    "inWatchlist": "In Watchlist"
   }
 }

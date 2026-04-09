@@ -62,6 +62,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           name: account.name || account.username,
           // TMDB has no email — placeholder so NextAuth's User type is satisfied
           email: `${account.username}@tmdb.local`,
+          sessionId: session_id,
+          accountId: account.id,
         };
       },
     }),
@@ -87,10 +89,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return true;
     },
 
-    // Attach user id to the session so it's available client-side
+    // Persist TMDB session_id and account_id in the JWT
+    jwt({ token, user }) {
+      if (user) {
+        token.sessionId = user.sessionId;
+        token.accountId = user.accountId;
+      }
+      return token;
+    },
+
+    // Expose user id, sessionId, and accountId on the client-side session
     session({ session, token }) {
-      if (token.sub && session.user) {
-        session.user.id = token.sub;
+      if (session.user) {
+        session.user.id = token.sub ?? '';
+        // JWT extends Record<string, unknown> so reads are `unknown` — narrow at runtime.
+        // This also safely handles tokens issued before these fields existed.
+        session.user.sessionId = typeof token.sessionId === 'string' ? token.sessionId : undefined;
+        session.user.accountId = typeof token.accountId === 'number' ? token.accountId : undefined;
       }
       return session;
     },

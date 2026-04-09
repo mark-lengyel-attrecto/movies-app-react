@@ -58,13 +58,15 @@ src/
 │   │   ├── tv/popular/   # Popular TV shows page
 │   │   ├── tv/top-rated/ # Top rated TV shows page
 │   │   ├── tv/[id]/      # Dynamic route for TV show detail
+│   │   ├── watchlist/    # Auth-protected watchlist page (TMDB-synced)
 │   │   ├── [...rest]/    # Catch-all — calls notFound() so locale 404 renders with full layout
 │   │   ├── not-found.tsx # Locale-aware 404
 │   │   └── layout.tsx    # Root layout — QueryProvider, NextIntlClientProvider, Header/Footer
 │   ├── api/auth/         # Auth.js route handler (no locale prefix)
 │   ├── api/movies/       # Route handlers for popular, top-rated (used by TanStack Query)
 │   ├── api/tv/           # Route handlers for tv/popular, tv/top-rated
-│   └── api/search/       # Multi-search route handler (TMDB /search/multi)
+│   ├── api/search/       # Multi-search route handler (TMDB /search/multi)
+│   └── api/watchlist/    # GET + POST to TMDB account watchlist (requires auth session)
 │
 ├── i18n/
 │   ├── routing.ts        # Defines locales (['en', 'hu']) and defaultLocale
@@ -81,6 +83,9 @@ src/
 │   ├── search/
 │   │   ├── api/          # use-multi-search (TMDB /search/multi — movies + TV, filters out persons)
 │   │   └── components/   # SearchPageClient
+│   ├── watchlist/
+│   │   ├── api/          # use-tmdb-watchlist (query + useToggleWatchlist mutation)
+│   │   └── components/   # WatchlistPageClient, WatchlistButton
 │   └── auth/
 │       ├── components/   # LoginForm, UserMenu
 │       └── hooks/        # use-session.ts wrapper
@@ -101,8 +106,9 @@ src/
 │   ├── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher,
 │   │                     # MobileMenuButtons, MobilePanels, Dropdown, NavDropdown
 │   └── media/            # Shared media display components (cross-feature)
-│       ├── MediaCard.tsx # Single card for movies, TV shows, and search results
+│       ├── MediaCard.tsx # Single card — renders poster, rating, type badge, watchlist badge
 │       ├── InfiniteGrid.tsx # Generic infinite-scroll grid — accepts a toMedia adapter
+│       ├── WatchlistBadge.tsx # ✓ overlay inside MediaCard; reads useTMDBWatchlist cache
 │       └── normalize.ts  # NormalizedMedia type + movieToMedia / tvToMedia / multiSearchResultToMedia
 │
 ├── messages/
@@ -110,7 +116,8 @@ src/
 │   └── hu.json           # Hungarian translations
 │
 └── types/
-    └── tmdb.ts           # Raw TMDB API response types (Movie, MovieDetails, etc.)
+    ├── tmdb.ts           # Raw TMDB API response types (Movie, MovieDetails, etc.)
+    └── next-auth.d.ts    # NextAuth type augmentation — adds sessionId, accountId to Session/User/JWT
 ```
 
 ### Key rule: `app/` is routing, `features/` is logic
@@ -206,6 +213,56 @@ const { user, isAuthenticated } = useSession(); // from features/auth/hooks/use-
 
 Protected routes are handled by the `authorized` callback in `lib/auth.ts`.
 Add paths to the `protectedPaths` array in `lib/auth.ts` to require login.
+
+### Session shape
+
+The TMDB `session_id` and `account_id` obtained at login are stored in the JWT via the `jwt` callback and surfaced on `session.user`:
+
+```ts
+session.user.sessionId  // string | undefined — TMDB session ID
+session.user.accountId  // number | undefined — TMDB account ID
+```
+
+**JWT type-narrowing rule:** `JWT` in Auth.js v5 extends `Record<string, unknown>`, so property reads return `unknown`. Never cast — use runtime type guards:
+
+```ts
+// ✅ type-safe and handles stale tokens
+session.user.sessionId = typeof token.sessionId === 'string' ? token.sessionId : undefined;
+
+// ❌ cast silently passes `unknown` through
+session.user.sessionId = token.sessionId as string;
+```
+
+---
+
+## Watchlist
+
+The watchlist is **authenticated-only** — the `/watchlist` route is in `protectedPaths`.
+
+| Context | Data source |
+|---|---|
+| Watchlist page (always authenticated) | TMDB API via `useTMDBWatchlist()` |
+| `WatchlistButton` on detail pages — authenticated | TMDB API toggle via `useToggleWatchlist()` |
+| `WatchlistButton` on detail pages — unauthenticated | Zustand localStorage (`watchlist.store.ts`) |
+| `WatchlistBadge` inside `MediaCard` on list pages | `useTMDBWatchlist()` cache (no-op when not authenticated) |
+
+**`useTMDBWatchlist()` is self-managing** — it calls `useSession()` internally and sets `enabled: isAuthenticated`. Callers never pass an `enabled` flag.
+
+**`WatchlistButton` props are a discriminated union** — narrow through `props` (not destructured variables) to preserve TypeScript narrowing:
+```ts
+// ✅ — TypeScript knows props.media is MovieDetails here
+if (props.mediaType === 'movie') toggleMovie(toMovie(props.media));
+
+// ❌ — destructuring loses the union relationship
+const { mediaType, media } = props;
+if (mediaType === 'movie') toggleMovie(media); // media is still MovieDetails | TVSeriesDetails
+```
+
+Both `MovieDetails` and `TVSeriesDetails` extend `Omit<Base, 'genre_ids'>`. Reconstruct `genre_ids` before storing in Zustand:
+```ts
+function toMovie(detail: MovieDetails): Movie {
+  return { ...detail, genre_ids: detail.genres.map((g) => g.id) };
+}
 
 ---
 
@@ -308,6 +365,5 @@ On mobile (`< md`) the header collapses to: **logo — locale — theme — user
 - [ ] Add a real database (Prisma + PostgreSQL) for user accounts and server-side watchlist
 - [ ] Add `error.tsx` files for per-route error boundaries
 - [ ] Add genre filtering using `useUIStore`
-- [ ] Extend watchlist to support TV shows (currently movies only — store uses `Movie` type)
 - [ ] Add TV season/episode detail pages (`/tv/[id]/seasons/[season]`)
 - [ ] Display app version in Footer — push a semver git tag before deploying (`git tag v1.x.x && git push origin v1.x.x`), then read `NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF` at build time; fall back to `'dev'` locally

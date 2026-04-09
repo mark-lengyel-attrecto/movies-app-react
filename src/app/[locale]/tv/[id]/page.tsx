@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { WatchlistButton } from '@/features/watchlist/components/WatchlistButton';
 import { backdropUrl, posterUrl, profileUrl } from '@/lib/tmdb/client';
 import { getTVCredits, getTVDetails } from '@/lib/tmdb/endpoints';
 
@@ -94,6 +95,7 @@ export default async function TVPage({ params }: TVPageProps) {
               </span>
             ))}
           </div>
+          <WatchlistButton mediaType="tv" media={show} />
           <p className="text-secondary max-w-2xl">{show.overview}</p>
         </div>
       </div>

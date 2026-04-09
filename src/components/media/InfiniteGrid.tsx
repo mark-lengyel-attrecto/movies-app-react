@@ -25,7 +25,7 @@ function Skeleton() {
   return <div className="bg-subtle aspect-[2/3] animate-pulse rounded-lg" />;
 }
 
-export function InfiniteGrid<T,>({
+export function InfiniteGrid<T>({
   data,
   toMedia,
   fetchNextPage,

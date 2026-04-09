@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { SessionProvider } from 'next-auth/react';
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -17,10 +18,12 @@ export function QueryProvider({ children }: QueryProviderProps) {
   const [queryClient] = useState(() => makeQueryClient());
 
   return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      {/* DevTools are automatically stripped from production builds */}
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        {children}
+        {/* DevTools are automatically stripped from production builds */}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </SessionProvider>
   );
 }
