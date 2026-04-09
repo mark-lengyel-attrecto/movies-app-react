@@ -146,6 +146,16 @@ export const movieKeys = {
 ```
 This prevents typos and makes targeted cache invalidation explicit.
 
+### Streaming skeletons (loading.tsx)
+
+A `loading.tsx` sibling to a `page.tsx` acts as its automatic Suspense fallback — Next.js streams it instantly while the server awaits data. Use `bg-subtle animate-pulse` for placeholder blocks (the project's semantic skeleton token).
+
+Pages that have `loading.tsx`:
+- `movies/[id]/` and `tv/[id]/` — hero bar, poster, meta, genre badges, overview, 8 cast circles
+- `movies/popular/`, `movies/top-rated/`, `tv/popular/`, `tv/top-rated/` — heading + 20-card grid
+
+The detail pages benefit most (they `await` two TMDB calls). The list pages are synchronous shells so their `loading.tsx` is future-proofing; client-side pending state is handled by `InfiniteGrid`'s own `isPending` skeleton.
+
 ---
 
 ## Internationalisation (i18n)
@@ -296,9 +306,8 @@ On mobile (`< md`) the header collapses to: **logo — locale — theme — user
 ## Next Steps
 
 - [ ] Add a real database (Prisma + PostgreSQL) for user accounts and server-side watchlist
-- [ ] Add `loading.tsx` files next to pages for streaming skeleton UIs
 - [ ] Add `error.tsx` files for per-route error boundaries
 - [ ] Add genre filtering using `useUIStore`
 - [ ] Extend watchlist to support TV shows (currently movies only — store uses `Movie` type)
 - [ ] Add TV season/episode detail pages (`/tv/[id]/seasons/[season]`)
-- [x] Generalize movie/TV/media card and grid components — done via `components/media/` adapter pattern
+- [ ] Display app version in Footer — push a semver git tag before deploying (`git tag v1.x.x && git push origin v1.x.x`), then read `NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF` at build time; fall back to `'dev'` locally
