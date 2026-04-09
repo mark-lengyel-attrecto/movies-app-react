@@ -73,13 +73,11 @@ src/
 │
 ├── features/             # All domain logic lives here
 │   ├── movies/
-│   │   ├── api/          # TanStack Query hooks (use-*.ts)
-│   │   ├── components/   # PopularPageClient, TopRatedPageClient, SearchPageClient
-│   │   └── types.ts      # UI-level types (not raw TMDB API types)
+│   │   ├── api/          # TanStack Query hooks — use-popular-movies, use-top-rated-movies
+│   │   └── components/   # PopularPageClient, TopRatedPageClient
 │   ├── tv/
-│   │   ├── api/          # use-popular-tv, use-top-rated-tv, use-tv-details
-│   │   ├── components/   # PopularTVPageClient, TopRatedTVPageClient
-│   │   └── types.ts      # TVListCategory, TV_LIST_OPTIONS
+│   │   ├── api/          # use-popular-tv, use-top-rated-tv
+│   │   └── components/   # PopularTVPageClient, TopRatedTVPageClient
 │   ├── search/
 │   │   ├── api/          # use-multi-search (TMDB /search/multi — movies + TV, filters out persons)
 │   │   └── components/   # SearchPageClient

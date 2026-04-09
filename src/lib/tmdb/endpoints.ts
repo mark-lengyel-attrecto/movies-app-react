@@ -72,20 +72,6 @@ export function getSimilarMovies(
   return getTMDBClient().fetch(`/movie/${id}/similar`, { page, language: localeToTmdb(locale) });
 }
 
-// ─── Search ──────────────────────────────────────────────────────────────────
-
-export function searchMovies(
-  query: string,
-  page = 1,
-  locale = 'en',
-): Promise<PaginatedResponse<Movie>> {
-  return getTMDBClient().fetch(
-    '/search/movie',
-    { query, page, language: localeToTmdb(locale) },
-    { next: { revalidate: 0 } },
-  );
-}
-
 // ─── Genres ──────────────────────────────────────────────────────────────────
 
 export function getGenres(locale = 'en'): Promise<{ genres: { id: number; name: string }[] }> {
