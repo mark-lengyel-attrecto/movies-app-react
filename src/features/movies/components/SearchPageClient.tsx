@@ -3,9 +3,9 @@
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import { InfiniteGrid } from '@/components/media/InfiniteGrid';
+import { movieToMedia } from '@/components/media/normalize';
 import { useSearchMovies } from '@/features/movies/api/use-search-movies';
-
-import { InfiniteMovieGrid } from './InfiniteMovieGrid';
 
 export function SearchPageClient() {
   const searchParams = useSearchParams();
@@ -32,8 +32,9 @@ export function SearchPageClient() {
       {query.length >= 2 && !isFetching && !hasResults ? (
         <p className="text-muted">{t('noResults', { query })}</p>
       ) : (
-        <InfiniteMovieGrid
+        <InfiniteGrid
           data={data}
+          toMedia={movieToMedia}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}

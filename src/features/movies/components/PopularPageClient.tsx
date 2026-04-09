@@ -1,14 +1,17 @@
 'use client';
 
+import { InfiniteGrid } from '@/components/media/InfiniteGrid';
+import { movieToMedia } from '@/components/media/normalize';
+
 import { usePopularMovies } from '../api/use-popular-movies';
-import { InfiniteMovieGrid } from './InfiniteMovieGrid';
 
 export default function PopularPageClient() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isPending } = usePopularMovies();
 
   return (
-    <InfiniteMovieGrid
+    <InfiniteGrid
       data={data}
+      toMedia={movieToMedia}
       fetchNextPage={fetchNextPage}
       hasNextPage={hasNextPage}
       isFetchingNextPage={isFetchingNextPage}

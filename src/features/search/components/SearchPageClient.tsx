@@ -3,9 +3,9 @@
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import { InfiniteGrid } from '@/components/media/InfiniteGrid';
+import { multiSearchResultToMedia } from '@/components/media/normalize';
 import { useMultiSearch } from '@/features/search/api/use-multi-search';
-
-import { InfiniteMediaGrid } from './InfiniteMediaGrid';
 
 export function SearchPageClient() {
   const searchParams = useSearchParams();
@@ -32,8 +32,9 @@ export function SearchPageClient() {
       {query.length >= 2 && !isFetching && !hasResults ? (
         <p className="text-muted">{t('noResults', { query })}</p>
       ) : (
-        <InfiniteMediaGrid
+        <InfiniteGrid
           data={data}
+          toMedia={multiSearchResultToMedia}
           fetchNextPage={fetchNextPage}
           hasNextPage={hasNextPage}
           isFetchingNextPage={isFetchingNextPage}
