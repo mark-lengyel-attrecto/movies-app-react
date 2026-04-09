@@ -41,7 +41,7 @@ Create `src/app/[locale]/<route>/page.tsx` as a thin shell:
 
 Create `src/features/<domain>/components/<PageName>PageClient.tsx` with `'use client'` at the top.
 
-- If the page lists items with infinite scroll, follow the pattern from `InfiniteMovieGrid` or `InfiniteTVGrid`
+- If the page lists items with infinite scroll, use `InfiniteGrid` from `@/components/media/InfiniteGrid` with a `toMedia` adapter from `@/components/media/normalize` — do NOT create a new grid component
 - If it's a detail page, follow `MovieDetail` or the TV detail component
 
 Skip this step for pure server-rendered pages with no interactivity.

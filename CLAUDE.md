@@ -74,15 +74,15 @@ src/
 ├── features/             # All domain logic lives here
 │   ├── movies/
 │   │   ├── api/          # TanStack Query hooks (use-*.ts)
-│   │   ├── components/   # Movie-specific UI components
+│   │   ├── components/   # PopularPageClient, TopRatedPageClient, SearchPageClient
 │   │   └── types.ts      # UI-level types (not raw TMDB API types)
 │   ├── tv/
 │   │   ├── api/          # use-popular-tv, use-top-rated-tv, use-tv-details
-│   │   ├── components/   # TVCard, InfiniteTVGrid, PopularTVPageClient, TopRatedTVPageClient
+│   │   ├── components/   # PopularTVPageClient, TopRatedTVPageClient
 │   │   └── types.ts      # TVListCategory, TV_LIST_OPTIONS
 │   ├── search/
 │   │   ├── api/          # use-multi-search (TMDB /search/multi — movies + TV, filters out persons)
-│   │   └── components/   # MediaCard, InfiniteMediaGrid, SearchPageClient
+│   │   └── components/   # SearchPageClient
 │   └── auth/
 │       ├── components/   # LoginForm, UserMenu
 │       └── hooks/        # use-session.ts wrapper
@@ -100,8 +100,12 @@ src/
 │
 ├── components/
 │   ├── providers/        # React context providers (QueryProvider)
-│   └── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher,
-│                         # MobileMenuButtons, MobilePanels, Dropdown, NavDropdown
+│   ├── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher,
+│   │                     # MobileMenuButtons, MobilePanels, Dropdown, NavDropdown
+│   └── media/            # Shared media display components (cross-feature)
+│       ├── MediaCard.tsx # Single card for movies, TV shows, and search results
+│       ├── InfiniteGrid.tsx # Generic infinite-scroll grid — accepts a toMedia adapter
+│       └── normalize.ts  # NormalizedMedia type + movieToMedia / tvToMedia / multiSearchResultToMedia
 │
 ├── messages/
 │   ├── en.json           # English translations
@@ -265,6 +269,7 @@ npm run format    # Prettier (add to package.json scripts: "prettier --write .")
 
 ```
 /sync-ai-docs     # Sync AI docs (CLAUDE.md, AGENTS.md, memory) with commits not yet reviewed
+/find-dead-code   # Detect unused files, exports, and dependencies with knip
 ```
 
 ---
@@ -298,4 +303,4 @@ On mobile (`< md`) the header collapses to: **logo — locale — theme — user
 - [ ] Add genre filtering using `useUIStore`
 - [ ] Extend watchlist to support TV shows (currently movies only — store uses `Movie` type)
 - [ ] Add TV season/episode detail pages (`/tv/[id]/seasons/[season]`)
-- [ ] Generalize movie/TV/media card and grid components if it makes sense — `MovieCard`, `TVCard`, and `MediaCard` share near-identical structure; same for `InfiniteMovieGrid`, `InfiniteTVGrid`, `InfiniteMediaGrid`
+- [x] Generalize movie/TV/media card and grid components — done via `components/media/` adapter pattern

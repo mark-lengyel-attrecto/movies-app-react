@@ -45,6 +45,21 @@ className="bg-white text-gray-900 border-gray-200"
 ```
 Full token table is in `CLAUDE.md` → Styling section.
 
+### Shared media display components — do not duplicate
+Card and grid UI for movies, TV, and search results live in `components/media/`, not in feature folders.
+
+- **`InfiniteGrid<T>`** — infinite-scroll grid. Pass a `toMedia` adapter; it handles flattening, dedup, skeletons, and the intersection observer.
+- **`MediaCard`** — single card rendered by the grid. No direct instantiation needed.
+- **`normalize.ts`** — exports `movieToMedia`, `tvToMedia`, `multiSearchResultToMedia`.
+
+When adding a new list page, wire it like this — do NOT create new card or grid files:
+```tsx
+import { InfiniteGrid } from '@/components/media/InfiniteGrid';
+import { movieToMedia } from '@/components/media/normalize';
+
+<InfiniteGrid data={data} toMedia={movieToMedia} fetchNextPage={…} … />
+```
+
 ### i18n — translations in both locale files
 Any new translation key must be added to both `messages/en.json` and `messages/hu.json`.
 
