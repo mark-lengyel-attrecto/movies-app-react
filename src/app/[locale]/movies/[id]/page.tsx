@@ -75,7 +75,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
           <div className="text-muted flex flex-wrap gap-4 text-sm">
             <span>★ {movie.vote_average.toFixed(1)}</span>
             {movie.runtime && <span>{movie.runtime} min</span>}
-            <span>{new Date(movie.release_date).getFullYear()}</span>
+            {movie.release_date && <span>{new Date(movie.release_date).getFullYear()}</span>}
             {director && <span>{t('director', { name: director.name })}</span>}
           </div>
           <div className="flex flex-wrap gap-2">

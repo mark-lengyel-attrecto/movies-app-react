@@ -25,8 +25,8 @@ export async function Header({ isDark }: { isDark: boolean }) {
           <NavDropdown
             label={t('movies')}
             items={[
-              { href: '/popular', label: t('popular') },
-              { href: '/top-rated', label: t('topRated') },
+              { href: '/movies/popular', label: t('popular') },
+              { href: '/movies/top-rated', label: t('topRated') },
             ]}
           />
           <NavDropdown
