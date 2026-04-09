@@ -8,8 +8,8 @@ allowed-tools: Read, Write, Edit, Bash, Glob, Grep
 ## Sync State
 
 - Current HEAD: !`git rev-parse HEAD`
-- Last synced commit: !`cat .claude/sync-ai-docs-state 2>/dev/null || echo "(none — first run)"`
-- Commits to review: !`LAST=$(cat .claude/sync-ai-docs-state 2>/dev/null | tr -d '[:space:]'); if [ -z "$LAST" ] || [ "$LAST" = "(none" ]; then echo "(no prior sync — showing last 20 commits:)"; git log --oneline -20; else COUNT=$(git rev-list --count "${LAST}..HEAD" 2>/dev/null || echo 0); if [ "$COUNT" = "0" ]; then echo "(already up to date — no new commits since last sync)"; else echo "(${COUNT} new commit(s) since last sync:)"; git log "${LAST}..HEAD" --oneline; fi; fi`
+- Last synced commit: !`cat .claude/skills/sync-ai-docs/state 2>/dev/null || echo "(none — first run)"`
+- Commits to review: !`LAST=$(cat .claude/skills/sync-ai-docs/state 2>/dev/null | tr -d '[:space:]'); if [ -z "$LAST" ] || [ "$LAST" = "(none" ]; then echo "(no prior sync — showing last 20 commits:)"; git log --oneline -20; else COUNT=$(git rev-list --count "${LAST}..HEAD" 2>/dev/null || echo 0); if [ "$COUNT" = "0" ]; then echo "(already up to date — no new commits since last sync)"; else echo "(${COUNT} new commit(s) since last sync:)"; git log "${LAST}..HEAD" --oneline; fi; fi`
 
 ## Your Task
 
@@ -87,7 +87,7 @@ When updating MEMORY.md index, keep each entry under ~150 characters.
 Write the current HEAD hash to the state file so the next run knows where to start:
 
 1. Run `git rev-parse HEAD` to get the hash
-2. Write just the hash (no trailing newline) to `.claude/sync-ai-docs-state`
+2. Write just the hash (no trailing newline) to `.claude/skills/sync-ai-docs/state`
 
 ---
 
