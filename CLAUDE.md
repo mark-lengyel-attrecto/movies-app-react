@@ -3,7 +3,9 @@
 Next.js 16 app for discovering and tracking movies using the TMDB API.
 Built as a learning project with production-grade patterns.
 
-> **Maintenance rule:** Whenever a notable change is made to the project — new components, architectural decisions, new patterns, store shape changes, or anything that would affect how future work should be approached — update this file to reflect it.
+> **Maintenance rule:** Whenever a notable change is made to the project — new components, architectural decisions, new patterns, store shape changes, or anything that would affect how future work should be approached — run `/sync-ai-docs` to update this file, `AGENTS.md`, and the memory files. If you wrote code manually without Claude, run `/sync-ai-docs` afterwards to bring all AI docs up to date.
+>
+> **Companion file:** `AGENTS.md` (project root) is a condensed summary read by any AI agent (not just Claude Code). It mirrors the most critical rules from this file. Keep them in sync — `/sync-ai-docs` handles this automatically.
 
 ---
 
@@ -50,9 +52,9 @@ src/
 │   ├── [locale]/         # All user-facing routes live under the locale segment
 │   │   ├── (auth)/       # Route group — login page
 │   │   ├── movies/[id]/  # Dynamic route for movie detail
-│   │   ├── popular/      # Popular movies page
+│   │   ├── movies/popular/   # Popular movies page
+│   │   ├── movies/top-rated/ # Top rated movies page
 │   │   ├── search/       # Search results page — multi-search (movies + TV), driven by ?q= param
-│   │   ├── top-rated/    # Top rated movies page
 │   │   ├── tv/popular/   # Popular TV shows page
 │   │   ├── tv/top-rated/ # Top rated TV shows page
 │   │   ├── tv/[id]/      # Dynamic route for TV show detail
@@ -60,7 +62,7 @@ src/
 │   │   ├── not-found.tsx # Locale-aware 404
 │   │   └── layout.tsx    # Root layout — QueryProvider, NextIntlClientProvider, Header/Footer
 │   ├── api/auth/         # Auth.js route handler (no locale prefix)
-│   ├── api/movies/       # Route handlers for popular, top-rated, search (used by TanStack Query)
+│   ├── api/movies/       # Route handlers for popular, top-rated (used by TanStack Query)
 │   ├── api/tv/           # Route handlers for tv/popular, tv/top-rated
 │   └── api/search/       # Multi-search route handler (TMDB /search/multi)
 │
@@ -111,7 +113,7 @@ src/
 
 ### Key rule: `app/` is routing, `features/` is logic
 
-A page file (`app/[locale]/popular/page.tsx`) should import from `features/` and do almost nothing else.
+A page file (`app/[locale]/movies/popular/page.tsx`) should import from `features/` and do almost nothing else.
 All business logic, data fetching hooks, and domain components belong in `features/`.
 
 ---
@@ -146,7 +148,7 @@ This prevents typos and makes targeted cache invalidation explicit.
 
 ## Internationalisation (i18n)
 
-Routes are prefixed with the locale: `/en/popular`, `/hu/popular`. The middleware (`src/proxy.ts`) handles detection and redirects.
+Routes are prefixed with the locale: `/en/movies/popular`, `/hu/movies/popular`. The middleware (`src/proxy.ts`) handles detection and redirects.
 
 **Rules:**
 - All user-facing pages live under `app/[locale]/`
@@ -259,6 +261,10 @@ npm run dev       # Start dev server (Turbopack)
 npm run build     # Production build
 npm run lint      # ESLint
 npm run format    # Prettier (add to package.json scripts: "prettier --write .")
+```
+
+```
+/sync-ai-docs     # Sync AI docs (CLAUDE.md, AGENTS.md, memory) with commits not yet reviewed
 ```
 
 ---
