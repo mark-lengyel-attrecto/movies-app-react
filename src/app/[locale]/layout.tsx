@@ -7,6 +7,7 @@ import { getMessages } from 'next-intl/server';
 
 import { Footer } from '@/components/layout/Footer';
 import { Header } from '@/components/layout/Header';
+import { MobilePanelsServer } from '@/components/layout/MobilePanelsServer';
 import { QueryProvider } from '@/components/providers/QueryProvider';
 import { routing } from '@/i18n/routing';
 
@@ -48,6 +49,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <QueryProvider>
             <Header isDark={isDark} />
+            <MobilePanelsServer />
             <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6 lg:px-8">
               {children}
             </main>

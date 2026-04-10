@@ -24,7 +24,7 @@ export function NavDropdown({ label, items }: NavDropdownProps) {
     <Dropdown
       trigger={label}
       items={items.map((item) => ({ key: item.href, href: item.href, label: item.label }))}
-      panelClassName="min-w-[140px]"
+      panelClassName="min-w-[160px]"
     />
   );
 }

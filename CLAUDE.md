@@ -108,7 +108,7 @@ src/
 ├── components/
 │   ├── providers/        # React context providers (QueryProvider)
 │   ├── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher,
-│   │                     # MobileMenuButtons, MobilePanels, Dropdown, NavDropdown
+│   │                     # MobileMenuButtons, MobilePanels, MobilePanelsServer, Dropdown, NavDropdown
 │   ├── ErrorDisplay.tsx  # Shared error UI (500 card + Try again / Back to home); used by all error.tsx files
 │   └── media/            # Shared media display components (cross-feature)
 │       ├── MediaCard.tsx # Single card — renders poster, rating, type badge, watchlist badge
@@ -270,6 +270,8 @@ The watchlist is **authenticated-only** — the `/watchlist` route is in `protec
 
 **`useWatchlist()` is self-managing** — it calls `useSession()` and `useLocale()` internally; sets `enabled: isAuthenticated` and includes locale in the query key so results are locale-aware. Callers never pass an `enabled` flag or locale.
 
+**Pagination:** The `/api/watchlist` route fetches all pages from TMDB in parallel (page 1 of both movies and TV, then all remaining pages concurrently). The client always receives a complete flat list — no client-side pagination needed.
+
 **`WatchlistButton` props are a discriminated union** — narrow through `props` (not destructured variables) to preserve TypeScript narrowing:
 ```ts
 // ✅ — TypeScript knows props.media is MovieDetails here
@@ -376,7 +378,8 @@ The root layout uses `<html className="... overflow-hidden h-full">` and `<body 
 The desktop nav (`hidden md:flex`) uses two shared primitives:
 
 - **`Dropdown`** — generic dropdown shell. Accepts `trigger` (ReactNode rendered inside the toggle button), `items` (`DropdownItem[]`), `align`, `triggerClassName`, `panelClassName`. Items with `href` render as `<Link>`, items with `onClick` render as `<button>`. Active items get a checkmark. Closes on outside click via a `pointerdown` listener (not a backdrop overlay — the backdrop approach fails inside the sticky header's stacking context).
-- **`NavDropdown`** — thin wrapper around `Dropdown` for nav links. When `items.length === 1` it skips the dropdown entirely and renders the item directly as a `<Link>` with the same button styling, so single-destination items (e.g. Watchlist) stay visually consistent without an unnecessary chevron.
+- **`NavDropdown`** — thin wrapper around `Dropdown` for nav links. When `items.length === 1` it skips the dropdown entirely and renders the item directly as a `<Link>` with the same button styling, so single-destination items stay visually consistent without an unnecessary chevron.
+- **`UserMenu`** — when authenticated, renders a `Dropdown` with the user's name as trigger (`align="right"`), containing a Watchlist link and Sign out button. When unauthenticated, renders a Sign in link.
 
 All nav trigger buttons share the same base: `h-8 rounded-md px-2 hover:bg-elevated` — this is the default `triggerClassName` in `Dropdown`.
 
@@ -384,11 +387,15 @@ All nav trigger buttons share the same base: `h-8 rounded-md px-2 hover:bg-eleva
 
 ## Mobile Header
 
-On mobile (`< md`) the header collapses to: **logo — locale — theme — user — search icon — hamburger**.
+On mobile (`< md`) the header collapses to: **logo — locale — theme — search icon — hamburger**.
 
 - `MobileMenuButtons` — renders the two icon buttons (search + hamburger), `md:hidden`. Toggling one closes the other via Zustand (`isMobileSearchOpen`, `isMobileNavOpen` in `ui.store.ts`).
-- `MobilePanels` — renders below the header bar. Search panel stays open while the user is searching (only nav panel closes on route change). Sign in/out lives in the nav panel on mobile — `UserMenu` is `hidden md:block`.
+- `MobilePanels` (client) + `MobilePanelsServer` (server wrapper) — rendered as a `fixed top-16` sibling of `<Header>` in the locale layout, **not inside `<header>`**. This is intentional: placing it outside the sticky header's stacking context allows `backdrop-blur-sm` to work correctly on the panels. The panels overlap page content without pushing it down.
+- The nav panel closes on route change. The search panel stays open while the user is searching.
+- On mobile, the user's name, Watchlist link, and Sign out are in the nav panel under a user section heading — `UserMenu` is `hidden md:block`.
+- On desktop, `UserMenu` renders a `Dropdown` with the user's name as trigger, containing Watchlist and Sign out items.
 - `HeaderSearch` accepts an optional `className` prop to override `max-w-xs` (used by the mobile panel to go full-width) and `autoFocus` to focus on mount.
+- **Watchlist nav link** lives inside the `UserMenu` dropdown on desktop and the nav panel on mobile — it is not a standalone `NavDropdown` in the header nav.
 
 ---
 

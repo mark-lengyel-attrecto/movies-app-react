@@ -16,7 +16,8 @@
   },
   "UserMenu": {
     "signIn": "Bejelentkezés",
-    "signOut": "Kijelentkezés"
+    "signOut": "Kijelentkezés",
+    "watchlist": "Nézési lista"
   },
   "Auth": {
     "pageHeading": "Bejelentkezés",

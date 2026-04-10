@@ -4,6 +4,7 @@ import type { Session } from 'next-auth';
 import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
+import { Dropdown } from '@/components/layout/Dropdown';
 import { Link } from '@/i18n/navigation';
 
 interface UserMenuProps {
@@ -25,14 +26,14 @@ export function UserMenu({ user }: UserMenuProps) {
   }
 
   return (
-    <div className="flex items-center gap-3">
-      <span className="text-secondary hidden text-sm sm:block">{user.name ?? user.email}</span>
-      <button
-        onClick={() => signOut({ callbackUrl: '/' })}
-        className="border-input text-secondary hover:border-muted hover:text-foreground rounded-lg border px-3 py-1.5 text-sm transition-colors"
-      >
-        {t('signOut')}
-      </button>
-    </div>
+    <Dropdown
+      trigger={user.name ?? user.email ?? ''}
+      align="right"
+      panelClassName="min-w-[160px]"
+      items={[
+        { key: 'watchlist', href: '/watchlist', label: t('watchlist') },
+        { key: 'signout', onClick: () => signOut({ callbackUrl: '/' }), label: t('signOut') },
+      ]}
+    />
   );
 }

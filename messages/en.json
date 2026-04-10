@@ -16,7 +16,8 @@
   },
   "UserMenu": {
     "signIn": "Sign in",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "watchlist": "Watchlist"
   },
   "Auth": {
     "pageHeading": "Sign in to Movies",

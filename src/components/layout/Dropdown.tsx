@@ -72,59 +72,59 @@ export function Dropdown({
 
       {open && (
         <div
-            className={`bg-surface border-ui absolute top-full z-50 mt-1 overflow-hidden rounded-lg border shadow-lg ${align === 'right' ? 'right-0' : 'left-0'} ${panelClassName ?? ''}`}
-          >
-            {items.map((item) => {
-              const content = (
-                <>
-                  {item.label}
-                  {item.active && (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="12"
-                      height="12"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden="true"
-                      className="ml-auto"
-                    >
-                      <path d="M20 6 9 17l-5-5" />
-                    </svg>
-                  )}
-                </>
-              );
-
-              if (item.href) {
-                return (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    onClick={close}
-                    className={`${itemBase} text-secondary hover:text-foreground`}
+          className={`bg-surface border-ui absolute top-full z-50 mt-1 overflow-hidden rounded-lg border shadow-lg ${align === 'right' ? 'right-0' : 'left-0'} ${panelClassName ?? ''}`}
+        >
+          {items.map((item) => {
+            const content = (
+              <>
+                {item.label}
+                {item.active && (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                    className="ml-auto"
                   >
-                    {content}
-                  </Link>
-                );
-              }
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                )}
+              </>
+            );
 
+            if (item.href) {
               return (
-                <button
+                <Link
                   key={item.key}
-                  onClick={() => {
-                    close();
-                    item.onClick?.();
-                  }}
-                  className={`${itemBase} ${item.active ? 'text-foreground' : 'text-secondary hover:text-foreground'}`}
+                  href={item.href}
+                  onClick={close}
+                  className={`${itemBase} text-secondary hover:text-foreground`}
                 >
                   {content}
-                </button>
+                </Link>
               );
-            })}
-          </div>
+            }
+
+            return (
+              <button
+                key={item.key}
+                onClick={() => {
+                  close();
+                  item.onClick?.();
+                }}
+                className={`${itemBase} ${item.active ? 'text-foreground' : 'text-secondary hover:text-foreground'}`}
+              >
+                {content}
+              </button>
+            );
+          })}
+        </div>
       )}
     </div>
   );

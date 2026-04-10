@@ -3,7 +3,6 @@ import { getTranslations } from 'next-intl/server';
 import { HeaderSearch } from '@/components/layout/HeaderSearch';
 import { LocaleSwitcher } from '@/components/layout/LocaleSwitcher';
 import { MobileMenuButtons } from '@/components/layout/MobileMenuButtons';
-import { MobilePanels } from '@/components/layout/MobilePanels';
 import { NavDropdown } from '@/components/layout/NavDropdown';
 import { ThemeToggle } from '@/components/layout/ThemeToggle';
 import { UserMenu } from '@/features/auth/components/UserMenu';
@@ -36,12 +35,6 @@ export async function Header({ isDark }: { isDark: boolean }) {
               { href: '/tv/top-rated', label: t('topRated') },
             ]}
           />
-          {session?.user && (
-            <NavDropdown
-              label={t('watchlist')}
-              items={[{ href: '/watchlist', label: t('watchlist') }]}
-            />
-          )}
         </nav>
 
         <div className="hidden flex-1 justify-center md:flex">
@@ -58,7 +51,6 @@ export async function Header({ isDark }: { isDark: boolean }) {
         </div>
       </div>
 
-      <MobilePanels hasWatchlist={!!session?.user} user={session?.user ?? null} />
     </header>
   );
 }
