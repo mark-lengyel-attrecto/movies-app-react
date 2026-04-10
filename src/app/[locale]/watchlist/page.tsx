@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import WatchlistPageClient from '@/features/watchlist/components/WatchlistPageClient';
 
-export const metadata: Metadata = { title: 'Watchlist' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Watchlist');
+  return { title: t('heading') };
+}
 
-export default function WatchlistPage() {
-  const t = useTranslations('Watchlist');
+export default async function WatchlistPage() {
+  const t = await getTranslations('Watchlist');
   return (
     <div className="flex flex-col gap-8">
       <div>

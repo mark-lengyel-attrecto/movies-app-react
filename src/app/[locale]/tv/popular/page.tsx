@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import PopularTVPageClient from '@/features/tv/components/PopularTVPageClient';
 
-export const metadata: Metadata = { title: 'Popular TV Shows' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('TVPopular');
+  return { title: t('heading') };
+}
 
-export default function PopularTVPage() {
-  const t = useTranslations('TVPopular');
+export default async function PopularTVPage() {
+  const t = await getTranslations('TVPopular');
   return (
     <div className="flex flex-col gap-8">
       <div>

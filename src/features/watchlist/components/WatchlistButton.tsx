@@ -6,7 +6,7 @@ import { useSession } from '@/features/auth/hooks/use-session';
 import { useWatchlistStore } from '@/stores/watchlist.store';
 import type { Movie, MovieDetails, TVSeries, TVSeriesDetails } from '@/types/tmdb';
 
-import { useWatchlist, useToggleWatchlist } from '../api/use-tmdb-watchlist';
+import { useToggleWatchlist, useWatchlist } from '../api/use-tmdb-watchlist';
 
 // Both MovieDetails and TVSeriesDetails extend Omit<Base, 'genre_ids'> and
 // replace it with genres: Genre[]. Reconstruct genre_ids for the Zustand store.

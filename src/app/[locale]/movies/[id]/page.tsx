@@ -12,8 +12,10 @@ interface MoviePageProps {
 }
 
 export async function generateMetadata({ params }: MoviePageProps): Promise<Metadata> {
-  const { id } = await params;
-  const movie = await getMovieDetails(Number(id)).catch(() => null);
+  const { id, locale } = await params;
+  const movieId = Number(id);
+
+  const movie = await getMovieDetails(movieId, locale).catch(() => null);
   if (!movie) return {};
   return {
     title: movie.title,

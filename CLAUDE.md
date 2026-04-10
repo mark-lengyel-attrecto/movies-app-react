@@ -217,6 +217,15 @@ const t = useTranslations('Popular');
 const t = await getTranslations('Popular'); // import from 'next-intl/server'
 ```
 
+**Page metadata rule:** All locale pages use `generateMetadata` (async function) with `getTranslations` — never `export const metadata` with hard-coded strings. This ensures the browser tab title is locale-aware.
+```ts
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Popular');
+  return { title: t('heading') };
+}
+```
+`generateMetadata` needs no `params` argument for locale — `next-intl` picks it up from the request context automatically.
+
 Translation files live in `messages/en.json` and `messages/hu.json`. Add new keys to both files.
 
 **Adding a new locale:** add it to the `locales` array in `src/i18n/routing.ts` and create the matching `messages/<locale>.json`.

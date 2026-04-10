@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 
 import TopRatedTVPageClient from '@/features/tv/components/TopRatedTVPageClient';
 
-export const metadata: Metadata = { title: 'Top Rated TV Shows' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('TVTopRated');
+  return { title: t('heading') };
+}
 
-export default function TopRatedTVPage() {
-  const t = useTranslations('TVTopRated');
+export default async function TopRatedTVPage() {
+  const t = await getTranslations('TVTopRated');
   return (
     <div className="flex flex-col gap-8">
       <div>

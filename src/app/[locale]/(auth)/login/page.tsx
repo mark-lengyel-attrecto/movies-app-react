@@ -5,7 +5,10 @@ import { getTranslations } from 'next-intl/server';
 import { LoginForm } from '@/features/auth/components/LoginForm';
 import { auth } from '@/lib/auth';
 
-export const metadata: Metadata = { title: 'Sign In' };
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations('Auth');
+  return { title: t('pageHeading') };
+}
 
 export default async function LoginPage() {
   const session = await auth();
