@@ -52,17 +52,20 @@ src/
 ├── app/                  # Next.js routing ONLY — pages should be thin shells
 │   ├── [locale]/         # All user-facing routes live under the locale segment
 │   │   ├── (auth)/       # Route group — login page
-│   │   ├── movies/[id]/  # Dynamic route for movie detail
+│   │   ├── movies/[id]/  # Dynamic route for movie detail — has error.tsx for TMDB errors
+│   │   ├── tv/[id]/      # Dynamic route for TV detail — has error.tsx for TMDB errors (listed below)
 │   │   ├── movies/popular/   # Popular movies page
 │   │   ├── movies/top-rated/ # Top rated movies page
 │   │   ├── search/       # Search results page — multi-search (movies + TV), driven by ?q= param
 │   │   ├── tv/popular/   # Popular TV shows page
 │   │   ├── tv/top-rated/ # Top rated TV shows page
-│   │   ├── tv/[id]/      # Dynamic route for TV show detail
+│   │   ├── tv/[id]/      # Dynamic route for TV show detail (error.tsx noted above)
 │   │   ├── watchlist/    # Auth-protected watchlist page (TMDB-synced)
 │   │   ├── [...rest]/    # Catch-all — calls notFound() so locale 404 renders with full layout
+│   │   ├── error.tsx     # Locale-level error boundary — catches unhandled errors in any page
 │   │   ├── not-found.tsx # Locale-aware 404
 │   │   └── layout.tsx    # Root layout — QueryProvider, NextIntlClientProvider, Header/Footer
+│   ├── global-error.tsx  # Root error boundary — no providers available, hard-coded English
 │   ├── api/auth/         # Auth.js route handler (no locale prefix)
 │   ├── api/movies/       # Route handlers for popular, top-rated (used by TanStack Query)
 │   ├── api/tv/           # Route handlers for tv/popular, tv/top-rated
@@ -106,6 +109,7 @@ src/
 │   ├── providers/        # React context providers (QueryProvider)
 │   ├── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher,
 │   │                     # MobileMenuButtons, MobilePanels, Dropdown, NavDropdown
+│   ├── ErrorDisplay.tsx  # Shared error UI (500 card + Try again / Back to home); used by all error.tsx files
 │   └── media/            # Shared media display components (cross-feature)
 │       ├── MediaCard.tsx # Single card — renders poster, rating, type badge, watchlist badge
 │       ├── InfiniteGrid.tsx # Generic infinite-scroll grid — accepts a toMedia adapter; handles scroll restoration on back-navigation
@@ -163,6 +167,23 @@ Pages that have `loading.tsx`:
 - `movies/popular/`, `movies/top-rated/`, `tv/popular/`, `tv/top-rated/` — heading + 20-card grid
 
 The detail pages benefit most (they `await` two TMDB calls). The list pages are synchronous shells so their `loading.tsx` is future-proofing; client-side pending state is handled by `InfiniteGrid`'s own `isPending` skeleton.
+
+### Error boundaries (error.tsx)
+
+Three levels of error boundary exist:
+
+| File | Scope | Notes |
+|---|---|---|
+| `src/app/global-error.tsx` | Root layout crash | No providers — hard-coded English, inline styles, `window.location.href` for navigation |
+| `src/app/[locale]/error.tsx` | Any page under `[locale]/` | Full locale layout available — uses `ErrorDisplay` component with `useTranslations` |
+| `src/app/[locale]/movies/[id]/error.tsx` | Movie detail only | Same as above, scoped so `reset()` only retries the detail fetch |
+| `src/app/[locale]/tv/[id]/error.tsx` | TV detail only | Same as above |
+
+`ErrorDisplay` (`components/ErrorDisplay.tsx`) is the shared error UI — 500 heading, description, "Try again" + "Back to home" buttons. It reads from the `Error` translation namespace.
+
+**Detail page error contract:** `movies/[id]/page.tsx` and `tv/[id]/page.tsx` distinguish errors:
+- TMDB 404 → `.catch` returns `null` → `notFound()` → locale `not-found.tsx`
+- Any other error → re-throws → caught by route-level `error.tsx`
 
 ---
 
@@ -373,9 +394,6 @@ On mobile (`< md`) the header collapses to: **logo — locale — theme — user
 
 ## Next Steps
 
-- [ ] Add a real database (Prisma + PostgreSQL) for user accounts and server-side watchlist
-- [ ] Add `error.tsx` files for per-route error boundaries
-- [ ] Add genre filtering using `useUIStore`
 - [ ] Add TV season/episode detail pages (`/tv/[id]/seasons/[season]`)
 - [ ] Display app version in Footer — push a semver git tag before deploying (`git tag v1.x.x && git push origin v1.x.x`), then read `NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF` at build time; fall back to `'dev'` locally
 - [ ] Upgrade ESLint 9 → 10 — check flat config API changes and `eslint-plugin-simple-import-sort` v13 compatibility at the same time (the `@typescript-eslint` peer dep conflict also resolves here)

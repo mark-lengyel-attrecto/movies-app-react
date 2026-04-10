@@ -26,7 +26,10 @@ export default async function MoviePage({ params }: MoviePageProps) {
   const movieId = Number(id);
 
   const [movie, credits] = await Promise.all([
-    getMovieDetails(movieId, locale).catch(() => null),
+    getMovieDetails(movieId, locale).catch((err: unknown) => {
+      if (err instanceof Error && err.message.includes('404')) return null;
+      throw err;
+    }),
     getMovieCredits(movieId, locale).catch(() => null),
   ]);
 

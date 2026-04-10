@@ -26,7 +26,10 @@ export default async function TVPage({ params }: TVPageProps) {
   const showId = Number(id);
 
   const [show, credits] = await Promise.all([
-    getTVDetails(showId, locale).catch(() => null),
+    getTVDetails(showId, locale).catch((err: unknown) => {
+      if (err instanceof Error && err.message.includes('404')) return null;
+      throw err;
+    }),
     getTVCredits(showId, locale).catch(() => null),
   ]);
 

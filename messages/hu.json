@@ -90,5 +90,11 @@
   "WatchlistButton": {
     "add": "Hozzáadás a listához",
     "inWatchlist": "Listán van"
+  },
+  "Error": {
+    "heading": "Valami hiba történt",
+    "description": "Váratlan hiba lépett fel. Kérjük, próbáld újra.",
+    "tryAgain": "Próbáld újra",
+    "backHome": "Vissza a főoldalra"
   }
 }

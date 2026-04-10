@@ -90,5 +90,11 @@
   "WatchlistButton": {
     "add": "Add to Watchlist",
     "inWatchlist": "In Watchlist"
+  },
+  "Error": {
+    "heading": "Something went wrong",
+    "description": "An unexpected error occurred. Please try again.",
+    "tryAgain": "Try again",
+    "backHome": "Back to home"
   }
 }

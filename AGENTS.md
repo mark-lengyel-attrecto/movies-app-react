@@ -66,6 +66,13 @@ import { movieToMedia } from '@/components/media/normalize';
 - `useTMDBWatchlist()` self-manages `enabled` via `useSession()` — never pass an `enabled` arg.
 - `WatchlistButton` accepts a discriminated union prop — narrow through `props`, not destructured variables, to preserve TypeScript type narrowing.
 
+### Error boundaries — do not add `.catch(() => null)` on detail pages
+Detail pages (`movies/[id]`, `tv/[id]`) distinguish TMDB 404s from real errors:
+- 404 → `.catch` returns `null` → `notFound()` (renders `not-found.tsx`)
+- Other errors → re-throw → caught by route-level `error.tsx`
+
+Do not swallow non-404 errors with `.catch(() => null)` — they must reach the error boundary.
+
 ### i18n — translations in both locale files
 Any new translation key must be added to both `messages/en.json` and `messages/hu.json`.
 
