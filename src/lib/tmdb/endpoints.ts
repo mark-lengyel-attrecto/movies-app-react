@@ -126,10 +126,11 @@ export function getWatchlistMovies(
   accountId: number,
   sessionId: string,
   locale = 'en',
+  page = 1,
 ): Promise<PaginatedResponse<Movie>> {
   return getTMDBClient().fetch(
     `/account/${accountId}/watchlist/movies`,
-    { language: localeToTmdb(locale), session_id: sessionId, page: 1 },
+    { language: localeToTmdb(locale), session_id: sessionId, page },
     { next: { revalidate: 0 } },
   );
 }
@@ -138,10 +139,11 @@ export function getWatchlistTV(
   accountId: number,
   sessionId: string,
   locale = 'en',
+  page = 1,
 ): Promise<PaginatedResponse<TVSeries>> {
   return getTMDBClient().fetch(
     `/account/${accountId}/watchlist/tv`,
-    { language: localeToTmdb(locale), session_id: sessionId, page: 1 },
+    { language: localeToTmdb(locale), session_id: sessionId, page },
     { next: { revalidate: 0 } },
   );
 }

@@ -14,14 +14,25 @@ export async function GET(request: NextRequest) {
   const locale = searchParams.get('locale') ?? 'en';
   const { sessionId, accountId } = session.user;
 
-  const [moviesData, tvData] = await Promise.all([
-    getWatchlistMovies(accountId, sessionId, locale),
-    getWatchlistTV(accountId, sessionId, locale),
+  const [moviesPage, tvPage] = await Promise.all([
+    getWatchlistMovies(accountId, sessionId, locale, 1),
+    getWatchlistTV(accountId, sessionId, locale, 1),
   ]);
 
+  const movieExtraPages = Array.from({ length: moviesPage.total_pages - 1 }, (_, i) =>
+    getWatchlistMovies(accountId, sessionId, locale, i + 2),
+  );
+  const tvExtraPages = Array.from({ length: tvPage.total_pages - 1 }, (_, i) =>
+    getWatchlistTV(accountId, sessionId, locale, i + 2),
+  );
+
+  const extraResults = await Promise.all([...movieExtraPages, ...tvExtraPages]);
+  const extraMovies = extraResults.slice(0, moviesPage.total_pages - 1);
+  const extraTV = extraResults.slice(moviesPage.total_pages - 1);
+
   return NextResponse.json({
-    movies: moviesData.results ?? [],
-    tvShows: tvData.results ?? [],
+    movies: [moviesPage.results, ...extraMovies.map((p) => p.results)].flat(),
+    tvShows: [tvPage.results, ...extraTV.map((p) => p.results)].flat(),
   });
 }
 
