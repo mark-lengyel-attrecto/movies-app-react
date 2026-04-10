@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { MediaCard } from '@/components/media/MediaCard';
 import { movieToMedia, tvToMedia } from '@/components/media/normalize';
 
-import { useTMDBWatchlist } from '../api/use-tmdb-watchlist';
+import { useWatchlist } from '../api/use-tmdb-watchlist';
 
 function Skeleton() {
   return (
@@ -22,7 +22,7 @@ function Skeleton() {
 
 export default function WatchlistPageClient() {
   const t = useTranslations('Watchlist');
-  const { data, isPending, isError } = useTMDBWatchlist();
+  const { data, isPending, isError } = useWatchlist();
 
   if (isPending) return <Skeleton />;
 

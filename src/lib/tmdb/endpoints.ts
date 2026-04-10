@@ -120,6 +120,44 @@ export function getTVVideos(id: number, locale = 'en'): Promise<TVVideos> {
   );
 }
 
+// ─── Account Watchlist ────────────────────────────────────────────────────────
+
+export function getWatchlistMovies(
+  accountId: number,
+  sessionId: string,
+  locale = 'en',
+): Promise<PaginatedResponse<Movie>> {
+  return getTMDBClient().fetch(
+    `/account/${accountId}/watchlist/movies`,
+    { language: localeToTmdb(locale), session_id: sessionId, page: 1 },
+    { next: { revalidate: 0 } },
+  );
+}
+
+export function getWatchlistTV(
+  accountId: number,
+  sessionId: string,
+  locale = 'en',
+): Promise<PaginatedResponse<TVSeries>> {
+  return getTMDBClient().fetch(
+    `/account/${accountId}/watchlist/tv`,
+    { language: localeToTmdb(locale), session_id: sessionId, page: 1 },
+    { next: { revalidate: 0 } },
+  );
+}
+
+export function updateWatchlist(
+  accountId: number,
+  sessionId: string,
+  body: { media_type: 'movie' | 'tv'; media_id: number; watchlist: boolean },
+): Promise<unknown> {
+  return getTMDBClient().fetch(
+    `/account/${accountId}/watchlist`,
+    { session_id: sessionId },
+    { method: 'POST', body: JSON.stringify(body), next: { revalidate: 0 } },
+  );
+}
+
 // ─── Multi-Search ─────────────────────────────────────────────────────────────
 
 export function multiSearch(

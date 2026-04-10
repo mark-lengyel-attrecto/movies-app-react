@@ -1,6 +1,6 @@
 'use client';
 
-import { useTMDBWatchlist } from '@/features/watchlist/api/use-tmdb-watchlist';
+import { useWatchlist } from '@/features/watchlist/api/use-tmdb-watchlist';
 
 import type { NormalizedMedia } from './normalize';
 
@@ -13,7 +13,7 @@ function parseHref(href: string): { mediaType: 'movie' | 'tv'; id: number } | nu
 }
 
 export function WatchlistBadge({ item }: { item: NormalizedMedia }) {
-  const { data } = useTMDBWatchlist();
+  const { data } = useWatchlist();
 
   const parsed = parseHref(item.href);
   if (!parsed) return null;

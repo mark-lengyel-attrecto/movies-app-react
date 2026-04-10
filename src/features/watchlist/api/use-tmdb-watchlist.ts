@@ -1,36 +1,41 @@
 'use client';
 
+import { useLocale } from 'next-intl';
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { useSession } from '@/features/auth/hooks/use-session';
 import type { Movie, TVSeries } from '@/types/tmdb';
 
-export interface TMDBWatchlistData {
+export interface WatchlistData {
   movies: Movie[];
   tvShows: TVSeries[];
 }
 
 export const watchlistKeys = {
-  all: ['watchlist'] as const,
+  all: (locale: string) => ['watchlist', locale] as const,
 };
 
-async function fetchWatchlist(): Promise<TMDBWatchlistData> {
-  const res = await fetch('/api/watchlist');
+async function fetchWatchlist(locale: string): Promise<WatchlistData> {
+  const res = await fetch(`/api/watchlist?locale=${locale}`);
   if (!res.ok) throw new Error('Failed to fetch watchlist');
-  return res.json() as Promise<TMDBWatchlistData>;
+  return res.json() as Promise<WatchlistData>;
 }
 
-export function useTMDBWatchlist() {
+export function useWatchlist() {
   const { isAuthenticated } = useSession();
+  const locale = useLocale();
+
   return useQuery({
-    queryKey: watchlistKeys.all,
-    queryFn: fetchWatchlist,
+    queryKey: watchlistKeys.all(locale),
+    queryFn: () => fetchWatchlist(locale),
     enabled: isAuthenticated,
   });
 }
 
 export function useToggleWatchlist() {
   const queryClient = useQueryClient();
+  const locale = useLocale();
 
   return useMutation({
     mutationFn: async (params: {
@@ -46,7 +51,7 @@ export function useToggleWatchlist() {
       if (!res.ok) throw new Error('Failed to update watchlist');
     },
     onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: watchlistKeys.all });
+      void queryClient.invalidateQueries({ queryKey: watchlistKeys.all(locale) });
     },
   });
 }

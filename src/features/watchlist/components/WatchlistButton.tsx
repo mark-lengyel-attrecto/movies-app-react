@@ -6,7 +6,7 @@ import { useSession } from '@/features/auth/hooks/use-session';
 import { useWatchlistStore } from '@/stores/watchlist.store';
 import type { Movie, MovieDetails, TVSeries, TVSeriesDetails } from '@/types/tmdb';
 
-import { useTMDBWatchlist, useToggleWatchlist } from '../api/use-tmdb-watchlist';
+import { useWatchlist, useToggleWatchlist } from '../api/use-tmdb-watchlist';
 
 // Both MovieDetails and TVSeriesDetails extend Omit<Base, 'genre_ids'> and
 // replace it with genres: Genre[]. Reconstruct genre_ids for the Zustand store.
@@ -27,7 +27,7 @@ export function WatchlistButton(props: WatchlistButtonProps) {
   const { isAuthenticated, isLoading: isSessionLoading } = useSession();
 
   // ── TMDB path (authenticated) ──────────────────────────────────────────────
-  const { data: watchlistData, isPending: isWatchlistPending } = useTMDBWatchlist();
+  const { data: watchlistData, isPending: isWatchlistPending } = useWatchlist();
   const toggleMutation = useToggleWatchlist();
 
   // ── Zustand path (unauthenticated) ────────────────────────────────────────

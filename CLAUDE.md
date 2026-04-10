@@ -113,7 +113,7 @@ src/
 │   └── media/            # Shared media display components (cross-feature)
 │       ├── MediaCard.tsx # Single card — renders poster, rating, type badge, watchlist badge
 │       ├── InfiniteGrid.tsx # Generic infinite-scroll grid — accepts a toMedia adapter; handles scroll restoration on back-navigation
-│       ├── WatchlistBadge.tsx # ✓ overlay inside MediaCard; reads useTMDBWatchlist cache
+│       ├── WatchlistBadge.tsx # ✓ overlay inside MediaCard; reads useWatchlist cache
 │       └── normalize.ts  # NormalizedMedia type + movieToMedia / tvToMedia / multiSearchResultToMedia
 │
 ├── messages/
@@ -263,12 +263,12 @@ The watchlist is **authenticated-only** — the `/watchlist` route is in `protec
 
 | Context | Data source |
 |---|---|
-| Watchlist page (always authenticated) | TMDB API via `useTMDBWatchlist()` |
+| Watchlist page (always authenticated) | TMDB API via `useWatchlist()` |
 | `WatchlistButton` on detail pages — authenticated | TMDB API toggle via `useToggleWatchlist()` |
 | `WatchlistButton` on detail pages — unauthenticated | Zustand localStorage (`watchlist.store.ts`) |
-| `WatchlistBadge` inside `MediaCard` on list pages | `useTMDBWatchlist()` cache (no-op when not authenticated) |
+| `WatchlistBadge` inside `MediaCard` on list pages | `useWatchlist()` cache (no-op when not authenticated) |
 
-**`useTMDBWatchlist()` is self-managing** — it calls `useSession()` internally and sets `enabled: isAuthenticated`. Callers never pass an `enabled` flag.
+**`useWatchlist()` is self-managing** — it calls `useSession()` and `useLocale()` internally; sets `enabled: isAuthenticated` and includes locale in the query key so results are locale-aware. Callers never pass an `enabled` flag or locale.
 
 **`WatchlistButton` props are a discriminated union** — narrow through `props` (not destructured variables) to preserve TypeScript narrowing:
 ```ts
