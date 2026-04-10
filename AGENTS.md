@@ -70,4 +70,4 @@ import { movieToMedia } from '@/components/media/normalize';
 Any new translation key must be added to both `messages/en.json` and `messages/hu.json`.
 
 ## Stack (quick ref)
-Next.js 16 · TypeScript (strict) · Tailwind CSS v4 · TanStack Query v5 · Zustand · Auth.js v5 · next-intl v4 · ESLint v9 flat config
+Node.js 22.22.0 · Next.js 16 · TypeScript (strict) · Tailwind CSS v4 · TanStack Query v5 · Zustand · Auth.js v5 · next-intl v4 · ESLint v9 flat config

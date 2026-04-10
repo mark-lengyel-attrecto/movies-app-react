@@ -108,7 +108,7 @@ export default async function TVPage({ params }: TVPageProps) {
             {topCast.map((member) => {
               const profile = profileUrl(member.profile_path, 'w185');
               return (
-                <div key={member.id} className="flex flex-col items-center gap-1 text-center">
+                <div key={`${member.id}-${member.character}`} className="flex flex-col items-center gap-1 text-center">
                   <div className="bg-subtle relative h-16 w-16 overflow-hidden rounded-full">
                     {profile && (
                       <Image
