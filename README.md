@@ -9,7 +9,8 @@ A Next.js app for discovering movies, powered by the [TMDB API](https://www.them
 - **Next.js 16** (App Router) — routing, Server Components
 - **TanStack Query v5** — server state, caching, and data fetching
 - **Zustand** — client UI state and persisted watchlist
-- **Auth.js v5** — authentication (Google, GitHub, Credentials)
+- **Auth.js v5** — authentication (TMDB credentials)
+- **next-intl v4** — i18n with URL-prefix routing (`/en/`, `/hu/`)
 - **Tailwind CSS v4** — styling
 
 ## Getting Started
@@ -32,8 +33,7 @@ Fill in the values:
 |---|---|
 | `TMDB_ACCESS_TOKEN` | [themoviedb.org/settings/api](https://www.themoviedb.org/settings/api) → API Read Access Token |
 | `AUTH_SECRET` | Run `npx auth secret` |
-| `GOOGLE_CLIENT_ID/SECRET` | [Google Cloud Console](https://console.cloud.google.com) (optional) |
-| `GITHUB_CLIENT_ID/SECRET` | [GitHub OAuth Apps](https://github.com/settings/applications/new) (optional) |
+| `AUTH_URL` | Base URL for Auth.js callbacks — defaults to `http://localhost:3000` in dev |
 
 ### 3. Run the development server
 
