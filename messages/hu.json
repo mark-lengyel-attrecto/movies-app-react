@@ -5,6 +5,8 @@
     "tv": "Sorozatok",
     "popular": "Népszerű",
     "topRated": "Legjobb értékelésű",
+    "upcoming": "Közelgő",
+    "onTheAir": "Most futó",
     "watchlist": "Nézési lista",
     "openSearch": "Keresés megnyitása",
     "closeSearch": "Keresés bezárása",
@@ -49,6 +51,10 @@
     "heading": "Legjobban értékelt filmek",
     "subtitle": "A legjobb értékelésű filmek"
   },
+  "Upcoming": {
+    "heading": "Közelgő filmek",
+    "subtitle": "Amikre érdemes figyelni a jövőben"
+  },
   "MovieCard": {
     "noImage": "Nincs kép"
   },
@@ -66,6 +72,10 @@
   "TVTopRated": {
     "heading": "Legjobban értékelt sorozatok",
     "subtitle": "A legjobb értékelésű sorozatok"
+  },
+  "TVOnTheAir": {
+    "heading": "Most futó sorozatok",
+    "subtitle": "Napjainkban játszott sorozatok"
   },
   "TVDetail": {
     "cast": "Szereplők",

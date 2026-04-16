@@ -52,6 +52,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
           <Image
             src={backdrop}
             alt={movie.title}
+            loading="eager"
             fill
             sizes="100vw"
             className="object-cover"

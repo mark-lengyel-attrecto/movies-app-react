@@ -94,6 +94,10 @@ export function getTopRatedTV(page = 1, locale = 'en'): Promise<PaginatedRespons
   return getTMDBClient().fetch('/tv/top_rated', { page, language: localeToTmdb(locale) });
 }
 
+export function getOnTheAirTV(page = 1, locale = 'en'): Promise<PaginatedResponse<TVSeries>> {
+  return getTMDBClient().fetch('/tv/on_the_air', { page, language: localeToTmdb(locale) });
+}
+
 // ─── TV Details ──────────────────────────────────────────────────────────────
 
 export function getTVDetails(id: number, locale = 'en'): Promise<TVSeriesDetails> {

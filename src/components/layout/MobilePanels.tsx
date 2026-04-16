@@ -46,6 +46,9 @@ export function MobilePanels({ hasWatchlist, user }: MobilePanelsProps) {
             <Link href="/movies/top-rated" className={subItemCls}>
               {t('topRated')}
             </Link>
+            <Link href="/movies/upcoming" className={subItemCls}>
+              {t('upcoming')}
+            </Link>
 
             <p className="text-muted px-3 pt-4 pb-1 text-xs font-semibold tracking-wider uppercase">
               {t('tv')}
@@ -55,6 +58,9 @@ export function MobilePanels({ hasWatchlist, user }: MobilePanelsProps) {
             </Link>
             <Link href="/tv/top-rated" className={subItemCls}>
               {t('topRated')}
+            </Link>
+            <Link href="/tv/on-the-air" className={subItemCls}>
+              {t('onTheAir')}
             </Link>
 
             <div className="border-ui mt-3 border-t pt-2" />

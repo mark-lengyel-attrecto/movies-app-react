@@ -5,6 +5,8 @@
     "tv": "TV Shows",
     "popular": "Popular",
     "topRated": "Top Rated",
+    "upcoming": "Upcoming",
+    "onTheAir": "On The Air",
     "watchlist": "Watchlist",
     "openSearch": "Open search",
     "closeSearch": "Close search",
@@ -49,6 +51,10 @@
     "heading": "Top Rated Movies",
     "subtitle": "The best rated movies"
   },
+  "Upcoming": {
+    "heading": "Upcoming Movies",
+    "subtitle": "Movies to look out for"
+  },
   "MovieCard": {
     "noImage": "No Image"
   },
@@ -66,6 +72,10 @@
   "TVTopRated": {
     "heading": "Top Rated TV Shows",
     "subtitle": "The best rated series of all time"
+  },
+  "TVOnTheAir": {
+    "heading": "On The Air TV Shows",
+    "subtitle": "Currently airing series"
   },
   "TVDetail": {
     "cast": "Cast",

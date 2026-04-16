@@ -26,6 +26,7 @@ export async function Header({ isDark }: { isDark: boolean }) {
             items={[
               { href: '/movies/popular', label: t('popular') },
               { href: '/movies/top-rated', label: t('topRated') },
+              { href: '/movies/upcoming', label: t('upcoming') },
             ]}
           />
           <NavDropdown
@@ -33,6 +34,7 @@ export async function Header({ isDark }: { isDark: boolean }) {
             items={[
               { href: '/tv/popular', label: t('popular') },
               { href: '/tv/top-rated', label: t('topRated') },
+              { href: '/tv/on-the-air', label: t('onTheAir') },
             ]}
           />
         </nav>
@@ -50,7 +52,6 @@ export async function Header({ isDark }: { isDark: boolean }) {
           <MobileMenuButtons />
         </div>
       </div>
-
     </header>
   );
 }

@@ -56,9 +56,11 @@ src/
 │   │   ├── tv/[id]/      # Dynamic route for TV detail — has error.tsx for TMDB errors (listed below)
 │   │   ├── movies/popular/   # Popular movies page
 │   │   ├── movies/top-rated/ # Top rated movies page
+│   │   ├── movies/upcoming/  # Upcoming movies page
 │   │   ├── search/       # Search results page — multi-search (movies + TV), driven by ?q= param
 │   │   ├── tv/popular/   # Popular TV shows page
 │   │   ├── tv/top-rated/ # Top rated TV shows page
+│   │   ├── tv/on-the-air/ # Currently airing TV shows page
 │   │   ├── tv/[id]/      # Dynamic route for TV show detail (error.tsx noted above)
 │   │   ├── watchlist/    # Auth-protected watchlist page (TMDB-synced)
 │   │   ├── [...rest]/    # Catch-all — calls notFound() so locale 404 renders with full layout
@@ -67,8 +69,8 @@ src/
 │   │   └── layout.tsx    # Root layout — QueryProvider, NextIntlClientProvider, Header/Footer
 │   ├── global-error.tsx  # Root error boundary — no providers available, hard-coded English
 │   ├── api/auth/         # Auth.js route handler (no locale prefix)
-│   ├── api/movies/       # Route handlers for popular, top-rated (used by TanStack Query)
-│   ├── api/tv/           # Route handlers for tv/popular, tv/top-rated
+│   ├── api/movies/       # Route handlers for popular, top-rated, upcoming (used by TanStack Query)
+│   ├── api/tv/           # Route handlers for tv/popular, tv/top-rated, tv/on-the-air
 │   ├── api/search/       # Multi-search route handler (TMDB /search/multi)
 │   └── api/watchlist/    # GET + POST to TMDB account watchlist (requires auth session)
 │
@@ -79,11 +81,11 @@ src/
 │
 ├── features/             # All domain logic lives here
 │   ├── movies/
-│   │   ├── api/          # TanStack Query hooks — use-popular-movies, use-top-rated-movies
-│   │   └── components/   # PopularPageClient, TopRatedPageClient
+│   │   ├── api/          # TanStack Query hooks — use-popular-movies, use-top-rated-movies, use-upcoming-movies
+│   │   └── components/   # PopularPageClient, TopRatedPageClient, UpcomingPageClient
 │   ├── tv/
-│   │   ├── api/          # use-popular-tv, use-top-rated-tv
-│   │   └── components/   # PopularTVPageClient, TopRatedTVPageClient
+│   │   ├── api/          # use-popular-tv, use-top-rated-tv, use-on-the-air-tv
+│   │   └── components/   # PopularTVPageClient, TopRatedTVPageClient, OnTheAirTVPageClient
 │   ├── search/
 │   │   ├── api/          # use-multi-search (TMDB /search/multi — movies + TV, filters out persons)
 │   │   └── components/   # SearchPageClient
@@ -164,7 +166,7 @@ A `loading.tsx` sibling to a `page.tsx` acts as its automatic Suspense fallback 
 
 Pages that have `loading.tsx`:
 - `movies/[id]/` and `tv/[id]/` — hero bar, poster, meta, genre badges, overview, 8 cast circles
-- `movies/popular/`, `movies/top-rated/`, `tv/popular/`, `tv/top-rated/` — heading + 20-card grid
+- `movies/popular/`, `movies/top-rated/`, `movies/upcoming/`, `tv/popular/`, `tv/top-rated/`, `tv/on-the-air/` — heading + 20-card grid
 
 The detail pages benefit most (they `await` two TMDB calls). The list pages are synchronous shells so their `loading.tsx` is future-proofing; client-side pending state is handled by `InfiniteGrid`'s own `isPending` skeleton.
 
