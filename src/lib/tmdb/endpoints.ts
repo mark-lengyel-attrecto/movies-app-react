@@ -1,5 +1,6 @@
 import { localeToTmdb } from '@/i18n/routing';
 import type {
+  EpisodeDetails,
   Movie,
   MovieCredits,
   MovieDetails,
@@ -134,6 +135,24 @@ export function getTVSeasonDetails(
     `/tv/${id}/season/${seasonNumber}`,
     { language: localeToTmdb(locale) },
     { next: { revalidate: 86400, tags: [`tv-${id}-season-${seasonNumber}`] } },
+  );
+}
+
+export function getTVEpisodeDetails(
+  id: number,
+  seasonNumber: number,
+  episodeNumber: number,
+  locale = 'en',
+): Promise<EpisodeDetails> {
+  return getTMDBClient().fetch(
+    `/tv/${id}/season/${seasonNumber}/episode/${episodeNumber}`,
+    { language: localeToTmdb(locale) },
+    {
+      next: {
+        revalidate: 86400,
+        tags: [`tv-${id}-season-${seasonNumber}-episode-${episodeNumber}`],
+      },
+    },
   );
 }
 

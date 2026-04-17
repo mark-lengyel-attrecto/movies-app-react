@@ -56,24 +56,18 @@ export function SeasonsAccordion({ showId, seasons }: SeasonsAccordionProps) {
                     />
                   )}
                 </div>
-                <button
-                  type="button"
-                  onClick={() => toggle(season.season_number)}
-                  aria-expanded={isOpen}
-                  className="flex min-w-0 flex-1 flex-col gap-1 text-left"
-                >
-                  <p className="text-foreground font-medium">{season.name}</p>
+                <div className="flex min-w-0 flex-1 flex-col gap-1">
+                  <Link
+                    href={`/tv/${showId}/seasons/${season.season_number}`}
+                    className="text-foreground hover:text-secondary w-fit font-medium underline-offset-4 hover:underline"
+                  >
+                    {season.name}
+                  </Link>
                   <p className="text-muted text-sm">
                     {t('episodes', { count: season.episode_count })}
                     {year ? ` · ${year}` : ''}
                   </p>
-                </button>
-                <Link
-                  href={`/tv/${showId}/seasons/${season.season_number}`}
-                  className="text-secondary hover:text-foreground text-sm underline-offset-4 hover:underline"
-                >
-                  {t('viewSeason')}
-                </Link>
+                </div>
                 <button
                   type="button"
                   onClick={() => toggle(season.season_number)}
@@ -116,5 +110,5 @@ function SeasonEpisodes({ showId, seasonNumber }: { showId: number; seasonNumber
     return <p className="bg-error-surface text-error p-4 text-sm">{t('episodesError')}</p>;
   }
 
-  return <EpisodeList episodes={data.episodes} />;
+  return <EpisodeList showId={showId} seasonNumber={seasonNumber} episodes={data.episodes} />;
 }

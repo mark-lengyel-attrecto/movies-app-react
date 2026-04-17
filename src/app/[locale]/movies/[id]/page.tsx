@@ -3,8 +3,10 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { CastGrid } from '@/components/CastGrid';
+import { Hero } from '@/components/Hero';
 import { WatchlistButton } from '@/features/watchlist/components/WatchlistButton';
-import { backdropUrl, posterUrl, profileUrl } from '@/lib/tmdb/client';
+import { backdropUrl, posterUrl } from '@/lib/tmdb/client';
 import { getMovieCredits, getMovieDetails } from '@/lib/tmdb/endpoints';
 
 interface MoviePageProps {
@@ -42,25 +44,11 @@ export default async function MoviePage({ params }: MoviePageProps) {
   const backdrop = backdropUrl(movie.backdrop_path, 'w1280');
   const poster = posterUrl(movie.poster_path, 'w500');
   const director = credits?.crew.find((c) => c.job === 'Director');
-  const topCast = credits?.cast.slice(0, 8) ?? [];
+  const topCast = credits?.cast ?? [];
 
   return (
     <div className="flex flex-col gap-8">
-      {/* Hero */}
-      <div className="relative -mx-[calc(50vw-50%)] -mt-8 h-72 sm:h-96">
-        {backdrop && (
-          <Image
-            src={backdrop}
-            alt={movie.title}
-            loading="eager"
-            fill
-            sizes="100vw"
-            className="object-cover"
-            priority
-          />
-        )}
-        <div className="from-base via-base/60 absolute inset-0 bg-gradient-to-t to-transparent" />
-      </div>
+      <Hero src={backdrop} alt={movie.title} />
 
       {/* Details */}
       <div className="flex flex-col gap-6 sm:flex-row">
@@ -104,28 +92,7 @@ export default async function MoviePage({ params }: MoviePageProps) {
       {topCast.length > 0 && (
         <div className="flex flex-col gap-4">
           <h2 className="text-xl font-semibold">{t('cast')}</h2>
-          <div className="grid grid-cols-4 gap-3 sm:grid-cols-8">
-            {topCast.map((member) => {
-              const profile = profileUrl(member.profile_path, 'w185');
-              return (
-                <div key={member.id} className="flex flex-col items-center gap-1 text-center">
-                  <div className="bg-subtle relative h-16 w-16 overflow-hidden rounded-full">
-                    {profile && (
-                      <Image
-                        src={profile}
-                        alt={member.name}
-                        fill
-                        sizes="64px"
-                        className="object-cover"
-                      />
-                    )}
-                  </div>
-                  <p className="text-foreground text-xs font-medium">{member.name}</p>
-                  <p className="text-muted text-xs">{member.character}</p>
-                </div>
-              );
-            })}
-          </div>
+          <CastGrid cast={topCast} limit={8} />
         </div>
       )}
     </div>

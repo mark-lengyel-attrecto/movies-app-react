@@ -87,11 +87,14 @@
     "episodeNumber": "E{number}",
     "episodesError": "Failed to load episodes. Please try again.",
     "noEpisodes": "No episodes available.",
-    "viewSeason": "View season",
     "expandSeason": "Expand season",
     "collapseSeason": "Collapse season",
-    "backToShow": "Back to {name}",
-    "seasonMetaTitle": "{show} — {season}"
+    "seasonMetaTitle": "{show} — {season}",
+    "episodeMetaTitle": "{show} — S{season}E{episode} {name}",
+    "episodeBreadcrumb": "Season {season} · Episode {episode}",
+    "guestStars": "Guest stars",
+    "directedBy": "Directed by {name}",
+    "writtenBy": "Written by {name}"
   },
   "NotFound": {
     "heading": "Page not found",

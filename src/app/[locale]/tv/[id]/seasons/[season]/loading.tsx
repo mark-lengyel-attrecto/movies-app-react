@@ -1,8 +1,6 @@
 export default function Loading() {
   return (
     <div className="flex flex-col gap-8">
-      <div className="bg-subtle h-4 w-32 animate-pulse rounded" />
-
       <div className="flex flex-col gap-6 sm:flex-row">
         <div className="bg-subtle h-64 w-44 flex-shrink-0 animate-pulse rounded-lg" />
         <div className="flex flex-col gap-3">

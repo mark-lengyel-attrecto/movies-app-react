@@ -63,6 +63,7 @@ src/
 │   │   ├── tv/on-the-air/ # Currently airing TV shows page
 │   │   ├── tv/[id]/      # Dynamic route for TV show detail (error.tsx noted above)
 │   │   ├── tv/[id]/seasons/[season]/ # Dedicated season page — hero + full EpisodeList (has loading.tsx + error.tsx)
+│   │   ├── tv/[id]/seasons/[season]/episodes/[episode]/ # Episode detail — still hero, meta, crew, guest stars (has loading.tsx + error.tsx)
 │   │   ├── watchlist/    # Auth-protected watchlist page (TMDB-synced)
 │   │   ├── [...rest]/    # Catch-all — calls notFound() so locale 404 renders with full layout
 │   │   ├── error.tsx     # Locale-level error boundary — catches unhandled errors in any page
@@ -113,6 +114,8 @@ src/
 │   ├── layout/           # Header, Footer, ThemeToggle, HeaderSearch, LocaleSwitcher,
 │   │                     # MobileMenuButtons, MobilePanels, MobilePanelsServer, Dropdown, NavDropdown
 │   ├── ErrorDisplay.tsx  # Shared error UI (500 card + Try again / Back to home); used by all error.tsx files
+│   ├── CastGrid.tsx      # Shared cast/guest-star avatar grid — used by movie detail, TV detail, episode detail
+│   ├── Hero.tsx          # Shared full-bleed hero image with bottom gradient — used by all detail pages
 │   └── media/            # Shared media display components (cross-feature)
 │       ├── MediaCard.tsx # Single card — renders poster, rating, type badge, watchlist badge
 │       ├── InfiniteGrid.tsx # Generic infinite-scroll grid — accepts a toMedia adapter; handles scroll restoration on back-navigation
@@ -304,19 +307,20 @@ function toMovie(detail: MovieDetails): Movie {
 
 ## TV Seasons & Episodes
 
-Two entry points share one episode renderer:
+Three levels of navigation: show → season → episode.
 
-- **Inline accordion** — `SeasonsAccordion` on the TV detail page. Client Component; lazy-loads per-season episodes via `useTVSeason(showId, seasonNumber, enabled)` hitting `/api/tv/[id]/season/[season]`. Each row also exposes a "View season" link to the dedicated page.
-- **Dedicated page** — `/tv/[id]/seasons/[season]` Server Component. Parallel `getTVDetails` + `getTVSeasonDetails`, 404 → `notFound()`, other errors bubble to `error.tsx`. Has its own `loading.tsx` skeleton and `generateMetadata`.
+- **Inline accordion** — `SeasonsAccordion` on the TV detail page. Client Component; lazy-loads per-season episodes via `useTVSeason(showId, seasonNumber, enabled)` hitting `/api/tv/[id]/season/[season]`. Each row also exposes a "View season" link to the dedicated season page.
+- **Dedicated season page** — `/tv/[id]/seasons/[season]` Server Component. Parallel `getTVDetails` + `getTVSeasonDetails`, 404 → `notFound()`, other errors bubble to `error.tsx`. Has its own `loading.tsx` skeleton and `generateMetadata`.
+- **Episode detail page** — `/tv/[id]/seasons/[season]/episodes/[episode]` Server Component. Parallel `getTVDetails` + `getTVEpisodeDetails`, same 404/error contract. Shows still-image hero, crew (director/writers), and guest stars via the shared `CastGrid`.
 
-Both render the full episode list through `EpisodeList` (`features/tv/components/EpisodeList.tsx`) — a shared component that works from either a Server or Client parent (it uses `useTranslations` which is RSC-safe in next-intl v4).
+The accordion and the season page both render episodes through `EpisodeList` (`features/tv/components/EpisodeList.tsx`) — a shared component that works from either a Server or Client parent (it uses `useTranslations`, which is RSC-safe in next-intl v4). `EpisodeList` takes `showId` + `seasonNumber` so each title can be a `<Link>` to the episode page; the rest of the row stays non-interactive to keep text selectable.
 
 **Key points:**
 - `SeasonEpisodes` (inside the accordion) is only mounted when a row is open — TanStack Query caches by `['tv', 'season', showId, seasonNumber, locale]`, so collapse/re-expand within `staleTime` is free.
 - Specials (`season_number === 0`) are filtered out of the accordion, but remain reachable via direct URL (`/tv/[id]/seasons/0`).
-- Per-season TMDB responses are tagged `tv-{id}-season-{n}` with 24h ISR (`getTVSeasonDetails` in `lib/tmdb/endpoints.ts`). The accordion's client fetch and the dedicated page's server fetch both benefit from this shared cache.
+- Per-season responses are tagged `tv-{id}-season-{n}`, per-episode responses `tv-{id}-season-{n}-episode-{m}`, both 24h ISR (`getTVSeasonDetails` / `getTVEpisodeDetails` in `lib/tmdb/endpoints.ts`). The accordion's client fetch and the server pages share the Next.js data cache.
 - Episode still images use `stillUrl(path, size)` in `lib/tmdb/client.ts` (sizes: `w92 | w185 | w300 | original`).
-- Translations live under the `TVDetail` namespace: `seasonsHeading`, `episodesHeading`, `episodeNumber`, `episodesError`, `noEpisodes`, `viewSeason`, `expandSeason`, `collapseSeason`, `backToShow`, `seasonMetaTitle` (plus the existing `episodes` plural form reused for per-season counts).
+- Translations live under the `TVDetail` namespace and cover all three levels (seasons, episodes list, episode detail). See `messages/en.json` for the current set.
 
 ---
 

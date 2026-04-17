@@ -168,6 +168,11 @@ export interface SeasonDetails extends Season {
   episodes: Episode[];
 }
 
+export interface EpisodeDetails extends Episode {
+  guest_stars: CastMember[];
+  crew: CrewMember[];
+}
+
 export interface Creator {
   id: number;
   name: string;

@@ -1,14 +1,17 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
+import { Link } from '@/i18n/navigation';
 import { stillUrl } from '@/lib/tmdb/client';
 import type { Episode } from '@/types/tmdb';
 
 interface EpisodeListProps {
+  showId: number;
+  seasonNumber: number;
   episodes: Episode[];
 }
 
-export function EpisodeList({ episodes }: EpisodeListProps) {
+export function EpisodeList({ showId, seasonNumber, episodes }: EpisodeListProps) {
   const t = useTranslations('TVDetail');
 
   if (episodes.length === 0) {
@@ -37,7 +40,14 @@ export function EpisodeList({ episodes }: EpisodeListProps) {
                 <span className="text-muted text-sm">
                   {t('episodeNumber', { number: episode.episode_number })}
                 </span>
-                <h3 className="text-foreground font-medium">{episode.name}</h3>
+                <h3 className="font-medium">
+                  <Link
+                    href={`/tv/${showId}/seasons/${seasonNumber}/episodes/${episode.episode_number}`}
+                    className="text-foreground hover:text-secondary underline-offset-4 hover:underline"
+                  >
+                    {episode.name}
+                  </Link>
+                </h3>
               </div>
               <div className="text-muted flex flex-wrap gap-3 text-xs">
                 {episode.air_date && <span>{episode.air_date}</span>}

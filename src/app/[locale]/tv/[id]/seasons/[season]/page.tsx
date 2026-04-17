@@ -4,7 +4,6 @@ import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
 import { EpisodeList } from '@/features/tv/components/EpisodeList';
-import { Link } from '@/i18n/navigation';
 import { posterUrl } from '@/lib/tmdb/client';
 import { getTVDetails, getTVSeasonDetails } from '@/lib/tmdb/endpoints';
 
@@ -51,13 +50,6 @@ export default async function SeasonPage({ params }: SeasonPageProps) {
 
   return (
     <div className="flex flex-col gap-8">
-      <Link
-        href={`/tv/${showId}`}
-        className="text-secondary hover:text-foreground w-fit text-sm underline-offset-4 hover:underline"
-      >
-        ← {t('backToShow', { name: show.name })}
-      </Link>
-
       <div className="flex flex-col gap-6 sm:flex-row">
         {poster && (
           <div className="relative h-64 w-44 flex-shrink-0 overflow-hidden rounded-lg shadow-lg">
@@ -85,7 +77,11 @@ export default async function SeasonPage({ params }: SeasonPageProps) {
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">{t('episodesHeading')}</h2>
         <div className="border-ui overflow-hidden rounded-lg border">
-          <EpisodeList episodes={seasonData.episodes} />
+          <EpisodeList
+            showId={showId}
+            seasonNumber={seasonNumber}
+            episodes={seasonData.episodes}
+          />
         </div>
       </div>
     </div>

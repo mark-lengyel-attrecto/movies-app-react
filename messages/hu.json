@@ -87,11 +87,14 @@
     "episodeNumber": "E{number}",
     "episodesError": "Nem sikerült betölteni az epizódokat. Kérjük, próbáld újra.",
     "noEpisodes": "Nincsenek elérhető epizódok.",
-    "viewSeason": "Évad megnyitása",
     "expandSeason": "Évad kibontása",
     "collapseSeason": "Évad összecsukása",
-    "backToShow": "Vissza: {name}",
-    "seasonMetaTitle": "{show} — {season}"
+    "seasonMetaTitle": "{show} — {season}",
+    "episodeMetaTitle": "{show} — S{season}E{episode} {name}",
+    "episodeBreadcrumb": "{season}. évad · {episode}. epizód",
+    "guestStars": "Vendégszereplők",
+    "directedBy": "Rendezte: {name}",
+    "writtenBy": "Írta: {name}"
   },
   "NotFound": {
     "heading": "Az oldal nem található",
