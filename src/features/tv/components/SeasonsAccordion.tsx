@@ -4,10 +4,12 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
-import { posterUrl, stillUrl } from '@/lib/tmdb/client';
+import { Link } from '@/i18n/navigation';
+import { posterUrl } from '@/lib/tmdb/client';
 import type { Season } from '@/types/tmdb';
 
 import { useTVSeason } from '../api/use-tv-season';
+import { EpisodeList } from './EpisodeList';
 
 interface SeasonsAccordionProps {
   showId: number;
@@ -42,12 +44,7 @@ export function SeasonsAccordion({ showId, seasons }: SeasonsAccordionProps) {
 
           return (
             <div key={season.id} className="bg-elevated">
-              <button
-                type="button"
-                onClick={() => toggle(season.season_number)}
-                aria-expanded={isOpen}
-                className="hover:bg-surface flex w-full items-center gap-4 p-3 text-left transition-colors"
-              >
+              <div className="hover:bg-surface flex w-full items-center gap-4 p-3 transition-colors">
                 <div className="bg-subtle relative h-20 w-14 flex-shrink-0 overflow-hidden rounded">
                   {poster && (
                     <Image
@@ -59,20 +56,39 @@ export function SeasonsAccordion({ showId, seasons }: SeasonsAccordionProps) {
                     />
                   )}
                 </div>
-                <div className="flex min-w-0 flex-1 flex-col gap-1">
+                <button
+                  type="button"
+                  onClick={() => toggle(season.season_number)}
+                  aria-expanded={isOpen}
+                  className="flex min-w-0 flex-1 flex-col gap-1 text-left"
+                >
                   <p className="text-foreground font-medium">{season.name}</p>
                   <p className="text-muted text-sm">
                     {t('episodes', { count: season.episode_count })}
                     {year ? ` · ${year}` : ''}
                   </p>
-                </div>
-                <span
-                  aria-hidden
-                  className={`text-muted transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                </button>
+                <Link
+                  href={`/tv/${showId}/seasons/${season.season_number}`}
+                  className="text-secondary hover:text-foreground text-sm underline-offset-4 hover:underline"
                 >
-                  ▾
-                </span>
-              </button>
+                  {t('viewSeason')}
+                </Link>
+                <button
+                  type="button"
+                  onClick={() => toggle(season.season_number)}
+                  aria-expanded={isOpen}
+                  aria-label={isOpen ? t('collapseSeason') : t('expandSeason')}
+                  className="text-muted hover:text-foreground px-1"
+                >
+                  <span
+                    aria-hidden
+                    className={`inline-block transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                  >
+                    ▾
+                  </span>
+                </button>
+              </div>
               {isOpen && <SeasonEpisodes showId={showId} seasonNumber={season.season_number} />}
             </div>
           );
@@ -100,46 +116,5 @@ function SeasonEpisodes({ showId, seasonNumber }: { showId: number; seasonNumber
     return <p className="bg-error-surface text-error p-4 text-sm">{t('episodesError')}</p>;
   }
 
-  if (data.episodes.length === 0) {
-    return <p className="text-muted p-4 text-sm">{t('noEpisodes')}</p>;
-  }
-
-  return (
-    <ul className="divide-ui flex flex-col divide-y">
-      {data.episodes.map((episode) => {
-        const still = stillUrl(episode.still_path, 'w300');
-        return (
-          <li key={episode.id} className="flex flex-col gap-3 p-4 sm:flex-row">
-            <div className="bg-subtle relative h-28 w-full flex-shrink-0 overflow-hidden rounded sm:w-48">
-              {still && (
-                <Image
-                  src={still}
-                  alt={episode.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, 192px"
-                  className="object-cover"
-                />
-              )}
-            </div>
-            <div className="flex min-w-0 flex-1 flex-col gap-1">
-              <div className="flex flex-wrap items-baseline gap-2">
-                <span className="text-muted text-sm">
-                  {t('episodeNumber', { number: episode.episode_number })}
-                </span>
-                <h3 className="text-foreground font-medium">{episode.name}</h3>
-              </div>
-              <div className="text-muted flex flex-wrap gap-3 text-xs">
-                {episode.air_date && <span>{episode.air_date}</span>}
-                {episode.runtime ? <span>{episode.runtime} min</span> : null}
-                {episode.vote_count > 0 && <span>★ {episode.vote_average.toFixed(1)}</span>}
-              </div>
-              {episode.overview && (
-                <p className="text-secondary mt-1 text-sm">{episode.overview}</p>
-              )}
-            </div>
-          </li>
-        );
-      })}
-    </ul>
-  );
+  return <EpisodeList episodes={data.episodes} />;
 }

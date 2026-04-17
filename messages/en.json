@@ -83,9 +83,15 @@
     "seasons": "{count, plural, one {# season} other {# seasons}}",
     "episodes": "{count, plural, one {# episode} other {# episodes}}",
     "seasonsHeading": "Seasons",
+    "episodesHeading": "Episodes",
     "episodeNumber": "E{number}",
     "episodesError": "Failed to load episodes. Please try again.",
-    "noEpisodes": "No episodes available."
+    "noEpisodes": "No episodes available.",
+    "viewSeason": "View season",
+    "expandSeason": "Expand season",
+    "collapseSeason": "Collapse season",
+    "backToShow": "Back to {name}",
+    "seasonMetaTitle": "{show} — {season}"
   },
   "NotFound": {
     "heading": "Page not found",
