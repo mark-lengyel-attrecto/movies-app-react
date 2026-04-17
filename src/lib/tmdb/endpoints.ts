@@ -6,6 +6,7 @@ import type {
   MovieVideos,
   MultiSearchResult,
   PaginatedResponse,
+  SeasonDetails,
   TVCredits,
   TVSeries,
   TVSeriesDetails,
@@ -121,6 +122,18 @@ export function getTVVideos(id: number, locale = 'en'): Promise<TVVideos> {
     `/tv/${id}/videos`,
     { language: localeToTmdb(locale) },
     { next: { revalidate: 86400, tags: [`tv-${id}-videos`] } },
+  );
+}
+
+export function getTVSeasonDetails(
+  id: number,
+  seasonNumber: number,
+  locale = 'en',
+): Promise<SeasonDetails> {
+  return getTMDBClient().fetch(
+    `/tv/${id}/season/${seasonNumber}`,
+    { language: localeToTmdb(locale) },
+    { next: { revalidate: 86400, tags: [`tv-${id}-season-${seasonNumber}`] } },
   );
 }
 

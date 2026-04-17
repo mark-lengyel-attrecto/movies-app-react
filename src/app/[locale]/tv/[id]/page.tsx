@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { SeasonsAccordion } from '@/features/tv/components/SeasonsAccordion';
 import { WatchlistButton } from '@/features/watchlist/components/WatchlistButton';
 import { backdropUrl, posterUrl, profileUrl } from '@/lib/tmdb/client';
 import { getTVCredits, getTVDetails } from '@/lib/tmdb/endpoints';
@@ -102,6 +103,9 @@ export default async function TVPage({ params }: TVPageProps) {
           <p className="text-secondary max-w-2xl">{show.overview}</p>
         </div>
       </div>
+
+      {/* Seasons */}
+      <SeasonsAccordion showId={showId} seasons={show.seasons} />
 
       {/* Cast */}
       {topCast.length > 0 && (

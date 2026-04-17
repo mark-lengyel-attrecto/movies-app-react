@@ -81,7 +81,11 @@
     "cast": "Szereplők",
     "createdBy": "Készítette: {name}",
     "seasons": "{count} évad",
-    "episodes": "{count} epizód"
+    "episodes": "{count} epizód",
+    "seasonsHeading": "Évadok",
+    "episodeNumber": "E{number}",
+    "episodesError": "Nem sikerült betölteni az epizódokat. Kérjük, próbáld újra.",
+    "noEpisodes": "Nincsenek elérhető epizódok."
   },
   "NotFound": {
     "heading": "Az oldal nem található",

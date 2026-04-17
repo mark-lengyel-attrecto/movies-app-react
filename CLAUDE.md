@@ -70,7 +70,7 @@ src/
 │   ├── global-error.tsx  # Root error boundary — no providers available, hard-coded English
 │   ├── api/auth/         # Auth.js route handler (no locale prefix)
 │   ├── api/movies/       # Route handlers for popular, top-rated, upcoming (used by TanStack Query)
-│   ├── api/tv/           # Route handlers for tv/popular, tv/top-rated, tv/on-the-air
+│   ├── api/tv/           # Route handlers for tv/popular, tv/top-rated, tv/on-the-air, tv/[id]/season/[season]
 │   ├── api/search/       # Multi-search route handler (TMDB /search/multi)
 │   └── api/watchlist/    # GET + POST to TMDB account watchlist (requires auth session)
 │
@@ -84,8 +84,8 @@ src/
 │   │   ├── api/          # TanStack Query hooks — use-popular-movies, use-top-rated-movies, use-upcoming-movies
 │   │   └── components/   # PopularPageClient, TopRatedPageClient, UpcomingPageClient
 │   ├── tv/
-│   │   ├── api/          # use-popular-tv, use-top-rated-tv, use-on-the-air-tv
-│   │   └── components/   # PopularTVPageClient, TopRatedTVPageClient, OnTheAirTVPageClient
+│   │   ├── api/          # use-popular-tv, use-top-rated-tv, use-on-the-air-tv, use-tv-season
+│   │   └── components/   # PopularTVPageClient, TopRatedTVPageClient, OnTheAirTVPageClient, SeasonsAccordion
 │   ├── search/
 │   │   ├── api/          # use-multi-search (TMDB /search/multi — movies + TV, filters out persons)
 │   │   └── components/   # SearchPageClient
@@ -301,6 +301,21 @@ function toMovie(detail: MovieDetails): Movie {
 
 ---
 
+## TV Seasons & Episodes
+
+The TV detail page renders `SeasonsAccordion` (`features/tv/components/SeasonsAccordion.tsx`) between the header block and the cast grid. Each row is a season summary; clicking expands it and lazy-loads episodes via `useTVSeason(showId, seasonNumber, enabled)` against `/api/tv/[id]/season/[season]`.
+
+**Key points:**
+- `SeasonEpisodes` is only mounted when a row is open — TanStack Query caches the result keyed by `['tv', 'season', showId, seasonNumber, locale]`, so collapse/re-expand within `staleTime` is free.
+- Specials (`season_number === 0`) are filtered out before rendering.
+- Per-season TMDB responses are tagged `tv-{id}-season-{n}` with 24h ISR (`getTVSeasonDetails` in `lib/tmdb/endpoints.ts`).
+- Episode still images use a new `stillUrl(path, size)` helper in `lib/tmdb/client.ts` (sizes: `w92 | w185 | w300 | original`).
+- Translations live under the `TVDetail` namespace: `seasonsHeading`, `episodeNumber`, `episodesError`, `noEpisodes` (plus the existing `episodes` plural form reused for per-season counts).
+
+A dedicated `/tv/[id]/seasons/[season]` route is still on the roadmap for deep-linking (see Next Steps).
+
+---
+
 ## Environment Variables
 
 Copy `.env.local.example` to `.env.local` and fill in the values.
@@ -412,7 +427,7 @@ On mobile (`< md`) the header collapses to: **logo — locale — theme — sear
 
 ## Next Steps
 
-- [ ] Add TV season/episode detail pages (`/tv/[id]/seasons/[season]`)
+- [ ] Add dedicated TV season/episode pages (`/tv/[id]/seasons/[season]`) — episodes are currently shown via the inline `SeasonsAccordion` on the TV detail page; a standalone route would enable deep-linking to a season
 - [ ] Display app version in Footer — push a semver git tag before deploying (`git tag v1.x.x && git push origin v1.x.x`), then read `NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF` at build time; fall back to `'dev'` locally
 - [ ] Upgrade ESLint 9 → 10 — check flat config API changes and `eslint-plugin-simple-import-sort` v13 compatibility at the same time (the `@typescript-eslint` peer dep conflict also resolves here)
 - [ ] Upgrade TypeScript 5 → 6 — isolate in its own PR; fix any new strict type errors before merging

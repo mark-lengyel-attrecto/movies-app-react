@@ -81,7 +81,11 @@
     "cast": "Cast",
     "createdBy": "Created by {name}",
     "seasons": "{count, plural, one {# season} other {# seasons}}",
-    "episodes": "{count, plural, one {# episode} other {# episodes}}"
+    "episodes": "{count, plural, one {# episode} other {# episodes}}",
+    "seasonsHeading": "Seasons",
+    "episodeNumber": "E{number}",
+    "episodesError": "Failed to load episodes. Please try again.",
+    "noEpisodes": "No episodes available."
   },
   "NotFound": {
     "heading": "Page not found",

@@ -151,6 +151,23 @@ export interface Season {
   air_date: string | null;
 }
 
+export interface Episode {
+  id: number;
+  name: string;
+  overview: string;
+  episode_number: number;
+  season_number: number;
+  air_date: string | null;
+  still_path: string | null;
+  runtime: number | null;
+  vote_average: number;
+  vote_count: number;
+}
+
+export interface SeasonDetails extends Season {
+  episodes: Episode[];
+}
+
 export interface Creator {
   id: number;
   name: string;
@@ -202,3 +219,4 @@ export interface PaginatedResponse<T> {
 export type PosterSize = 'w92' | 'w154' | 'w185' | 'w342' | 'w500' | 'w780' | 'original';
 export type BackdropSize = 'w300' | 'w780' | 'w1280' | 'original';
 export type ProfileSize = 'w45' | 'w185' | 'h632' | 'original';
+export type StillSize = 'w92' | 'w185' | 'w300' | 'original';
