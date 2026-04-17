@@ -52,7 +52,7 @@ export function LocaleSwitcher() {
         };
       })}
       align="right"
-panelClassName="min-w-32"
+      panelClassName="min-w-32"
     />
   );
 }

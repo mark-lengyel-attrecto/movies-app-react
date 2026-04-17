@@ -19,13 +19,18 @@ async function catch404<T>(promise: Promise<T>): Promise<T | null> {
 }
 
 export async function generateMetadata({ params }: EpisodePageProps): Promise<Metadata> {
-  const { id, season, episode } = await params;
+  const { id, season, episode, locale } = await params;
+  const showId = Number(id);
+
   const [show, episodeData] = await Promise.all([
-    catch404(getTVDetails(Number(id))),
-    catch404(getTVEpisodeDetails(Number(id), Number(season), Number(episode))),
+    catch404(getTVDetails(showId, locale)),
+    catch404(getTVEpisodeDetails(showId, Number(season), Number(episode), locale)),
   ]);
+
   if (!show || !episodeData) return {};
+
   const t = await getTranslations('TVDetail');
+
   return {
     title: t('episodeMetaTitle', {
       show: show.name,
@@ -71,9 +76,7 @@ export default async function EpisodePage({ params }: EpisodePageProps) {
         <div className="text-muted flex flex-wrap gap-4 text-sm">
           {episodeData.air_date && <span>{episodeData.air_date}</span>}
           {episodeData.runtime ? <span>{episodeData.runtime} min</span> : null}
-          {episodeData.vote_count > 0 && (
-            <span>★ {episodeData.vote_average.toFixed(1)}</span>
-          )}
+          {episodeData.vote_count > 0 && <span>★ {episodeData.vote_average.toFixed(1)}</span>}
         </div>
         {(directors.length > 0 || writers.length > 0) && (
           <div className="text-secondary flex flex-col gap-1 text-sm">
@@ -85,9 +88,7 @@ export default async function EpisodePage({ params }: EpisodePageProps) {
             )}
           </div>
         )}
-        {episodeData.overview && (
-          <p className="text-secondary max-w-2xl">{episodeData.overview}</p>
-        )}
+        {episodeData.overview && <p className="text-secondary max-w-2xl">{episodeData.overview}</p>}
       </div>
 
       {episodeData.guest_stars.length > 0 && (

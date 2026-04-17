@@ -19,13 +19,18 @@ function catch404<T>(promise: Promise<T>): Promise<T | null> {
 }
 
 export async function generateMetadata({ params }: SeasonPageProps): Promise<Metadata> {
-  const { id, season } = await params;
+  const { id, season, locale } = await params;
+  const showId = Number(id);
+
   const [show, seasonData] = await Promise.all([
-    catch404(getTVDetails(Number(id))),
-    catch404(getTVSeasonDetails(Number(id), Number(season))),
+    catch404(getTVDetails(showId, locale)),
+    catch404(getTVSeasonDetails(showId, Number(season), locale)),
   ]);
+
   if (!show || !seasonData) return {};
+
   const t = await getTranslations('TVDetail');
+
   return {
     title: t('seasonMetaTitle', { show: show.name, season: seasonData.name }),
     description: seasonData.overview || show.overview,
@@ -77,11 +82,7 @@ export default async function SeasonPage({ params }: SeasonPageProps) {
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-semibold">{t('episodesHeading')}</h2>
         <div className="border-ui overflow-hidden rounded-lg border">
-          <EpisodeList
-            showId={showId}
-            seasonNumber={seasonNumber}
-            episodes={seasonData.episodes}
-          />
+          <EpisodeList showId={showId} seasonNumber={seasonNumber} episodes={seasonData.episodes} />
         </div>
       </div>
     </div>

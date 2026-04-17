@@ -15,8 +15,10 @@ interface TVPageProps {
 }
 
 export async function generateMetadata({ params }: TVPageProps): Promise<Metadata> {
-  const { id } = await params;
-  const show = await getTVDetails(Number(id)).catch(() => null);
+  const { id, locale } = await params;
+  const showId = Number(id);
+
+  const show = await getTVDetails(showId, locale).catch(() => null);
   if (!show) return {};
   return {
     title: show.name,
