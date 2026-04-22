@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { Check, ChevronDown } from 'lucide-react';
+
 import { Link } from '@/i18n/navigation';
 
 export interface DropdownItem {
@@ -53,21 +55,11 @@ export function Dropdown({
         className={triggerClassName}
       >
         {trigger}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="12"
-          height="12"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        <ChevronDown
+          size={12}
           aria-hidden="true"
           className={`transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        />
       </button>
 
       {open && (
@@ -79,21 +71,7 @@ export function Dropdown({
               <>
                 {item.label}
                 {item.active && (
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="12"
-                    height="12"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                    className="ml-auto"
-                  >
-                    <path d="M20 6 9 17l-5-5" />
-                  </svg>
+                  <Check size={12} aria-hidden="true" className="ml-auto" />
                 )}
               </>
             );

@@ -1,6 +1,8 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
+import { Star } from 'lucide-react';
+
 import { Link } from '@/i18n/navigation';
 import { stillUrl } from '@/lib/tmdb/client';
 import type { Episode } from '@/types/tmdb';
@@ -52,7 +54,12 @@ export function EpisodeList({ showId, seasonNumber, episodes }: EpisodeListProps
               <div className="text-muted flex flex-wrap gap-3 text-xs">
                 {episode.air_date && <span>{episode.air_date}</span>}
                 {episode.runtime ? <span>{episode.runtime} min</span> : null}
-                {episode.vote_count > 0 && <span>★ {episode.vote_average.toFixed(1)}</span>}
+                {episode.vote_count > 0 && (
+                  <span className="flex items-center gap-1">
+                    <Star size={10} fill="currentColor" aria-hidden="true" />
+                    {episode.vote_average.toFixed(1)}
+                  </span>
+                )}
               </div>
               {episode.overview && (
                 <p className="text-secondary mt-1 text-sm">{episode.overview}</p>

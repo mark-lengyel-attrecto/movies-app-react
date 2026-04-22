@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { Star } from 'lucide-react';
+
 import { CastGrid } from '@/components/CastGrid';
 import { Hero } from '@/components/Hero';
 import { stillUrl } from '@/lib/tmdb/client';
@@ -76,7 +78,12 @@ export default async function EpisodePage({ params }: EpisodePageProps) {
         <div className="text-muted flex flex-wrap gap-4 text-sm">
           {episodeData.air_date && <span>{episodeData.air_date}</span>}
           {episodeData.runtime ? <span>{episodeData.runtime} min</span> : null}
-          {episodeData.vote_count > 0 && <span>★ {episodeData.vote_average.toFixed(1)}</span>}
+          {episodeData.vote_count > 0 && (
+            <span className="flex items-center gap-1">
+              <Star size={12} fill="currentColor" aria-hidden="true" />
+              {episodeData.vote_average.toFixed(1)}
+            </span>
+          )}
         </div>
         {(directors.length > 0 || writers.length > 0) && (
           <div className="text-secondary flex flex-col gap-1 text-sm">

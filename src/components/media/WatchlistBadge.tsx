@@ -1,5 +1,7 @@
 'use client';
 
+import { Check } from 'lucide-react';
+
 import { useWatchlist } from '@/features/watchlist/api/use-tmdb-watchlist';
 
 import type { NormalizedMedia } from './normalize';
@@ -26,8 +28,8 @@ export function WatchlistBadge({ item }: { item: NormalizedMedia }) {
   if (!inWatchlist) return null;
 
   return (
-    <div className="absolute top-2 left-2 rounded bg-black/70 px-1.5 py-0.5 text-xs font-semibold text-green-400">
-      ✓
+    <div className="absolute top-2 left-2 flex min-h-5 items-center rounded bg-black/70 px-1.5 py-0.5 text-xs font-semibold text-green-400">
+      <Check size={10} aria-hidden="true" />
     </div>
   );
 }

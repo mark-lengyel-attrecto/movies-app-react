@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
+import { ChevronDown } from 'lucide-react';
+
 import { Link } from '@/i18n/navigation';
 import { posterUrl } from '@/lib/tmdb/client';
 import type { Season } from '@/types/tmdb';
@@ -75,12 +77,11 @@ export function SeasonsAccordion({ showId, seasons }: SeasonsAccordionProps) {
                   aria-label={isOpen ? t('collapseSeason') : t('expandSeason')}
                   className="text-muted hover:text-foreground px-1"
                 >
-                  <span
-                    aria-hidden
-                    className={`inline-block transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                  >
-                    ▾
-                  </span>
+                  <ChevronDown
+                    size={16}
+                    aria-hidden="true"
+                    className={`transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                  />
                 </button>
               </div>
               {isOpen && <SeasonEpisodes showId={showId} seasonNumber={season.season_number} />}

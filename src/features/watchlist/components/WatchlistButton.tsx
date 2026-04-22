@@ -2,6 +2,8 @@
 
 import { useTranslations } from 'next-intl';
 
+import { Check, Plus } from 'lucide-react';
+
 import { useSession } from '@/features/auth/hooks/use-session';
 import { useWatchlistStore } from '@/stores/watchlist.store';
 import type { Movie, MovieDetails, TVSeries, TVSeriesDetails } from '@/types/tmdb';
@@ -76,7 +78,7 @@ export function WatchlistButton(props: WatchlistButtonProps) {
           : 'bg-elevated border-ui text-foreground border hover:opacity-80'
       }`}
     >
-      <span>{inWatchlist ? '✓' : '+'}</span>
+      {inWatchlist ? <Check size={14} aria-hidden="true" /> : <Plus size={14} aria-hidden="true" />}
       <span>{inWatchlist ? t('inWatchlist') : t('add')}</span>
     </button>
   );

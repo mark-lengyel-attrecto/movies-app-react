@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { Star } from 'lucide-react';
+
 import { CastGrid } from '@/components/CastGrid';
 import { Hero } from '@/components/Hero';
 import { SeasonsAccordion } from '@/features/tv/components/SeasonsAccordion';
@@ -71,7 +73,10 @@ export default async function TVPage({ params }: TVPageProps) {
           <h1 className="text-3xl font-bold">{show.name}</h1>
           {show.tagline && <p className="text-muted italic">{show.tagline}</p>}
           <div className="text-muted flex flex-wrap gap-4 text-sm">
-            <span>★ {show.vote_average.toFixed(1)}</span>
+            <span className="flex items-center gap-1">
+              <Star size={12} fill="currentColor" aria-hidden="true" />
+              {show.vote_average.toFixed(1)}
+            </span>
             {year && <span>{year}</span>}
             {runtime && <span>{runtime} min</span>}
             <span>{t('seasons', { count: show.number_of_seasons })}</span>

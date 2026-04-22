@@ -3,6 +3,8 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 
+import { Star } from 'lucide-react';
+
 import { CastGrid } from '@/components/CastGrid';
 import { Hero } from '@/components/Hero';
 import { WatchlistButton } from '@/features/watchlist/components/WatchlistButton';
@@ -68,7 +70,10 @@ export default async function MoviePage({ params }: MoviePageProps) {
           <h1 className="text-3xl font-bold">{movie.title}</h1>
           {movie.tagline && <p className="text-muted italic">{movie.tagline}</p>}
           <div className="text-muted flex flex-wrap gap-4 text-sm">
-            <span>★ {movie.vote_average.toFixed(1)}</span>
+            <span className="flex items-center gap-1">
+              <Star size={12} fill="currentColor" aria-hidden="true" />
+              {movie.vote_average.toFixed(1)}
+            </span>
             {movie.runtime && <span>{movie.runtime} min</span>}
             {movie.release_date && <span>{new Date(movie.release_date).getFullYear()}</span>}
             {director && <span>{t('director', { name: director.name })}</span>}

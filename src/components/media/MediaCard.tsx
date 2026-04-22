@@ -3,6 +3,8 @@
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
+import { Star } from 'lucide-react';
+
 import { Link } from '@/i18n/navigation';
 import { posterUrl } from '@/lib/tmdb/client';
 
@@ -39,13 +41,13 @@ export function MediaCard({ item, index }: MediaCardProps) {
         )}
 
         {rating && (
-          <div className="absolute top-2 right-2 rounded bg-black/70 px-1.5 py-0.5 text-xs font-semibold text-yellow-400">
-            ★ {rating}
+          <div className="absolute top-2 right-2 flex min-h-5 items-center gap-1 rounded bg-black/70 px-1.5 py-0.5 text-xs font-semibold text-yellow-400">
+            <Star size={10} fill="currentColor" aria-hidden="true" /> {rating}
           </div>
         )}
 
         {item.mediaTypeBadge && (
-          <div className="absolute bottom-2 left-2 rounded bg-black/70 px-1.5 py-0.5 text-xs font-medium text-white">
+          <div className="absolute bottom-2 left-2 min-h-5 rounded bg-black/70 px-1.5 py-0.5 text-xs font-medium text-white">
             {item.mediaTypeBadge === 'tv' ? 'TV' : 'Movie'}
           </div>
         )}
