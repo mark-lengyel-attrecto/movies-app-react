@@ -76,5 +76,13 @@ Do not swallow non-404 errors with `.catch(() => null)` — they must reach the 
 ### i18n — translations in both locale files
 Any new translation key must be added to both `messages/en.json` and `messages/hu.json`.
 
+### Shared detail-page components — do not duplicate
+Hero backdrop and cast avatar grid are shared across all detail pages (movie, TV, episode):
+
+- **`Hero`** (`components/Hero.tsx`) — full-bleed backdrop image with bottom gradient. Used on movie detail, TV detail, season, and episode pages. Pass `src` + `alt`.
+- **`CastGrid`** (`components/CastGrid.tsx`) — avatar grid for cast, crew, or guest stars. Accepts `cast: CastMember[]` and optional `limit`. Used on movie detail, TV detail, and episode detail.
+
+Never recreate these in a new detail page.
+
 ## Stack (quick ref)
-Node.js 22.22.0 · Next.js 16 · TypeScript (strict) · Tailwind CSS v4 · TanStack Query v5 · Zustand · Auth.js v5 · next-intl v4 · ESLint v9 flat config
+Node.js 22.22.0 · Next.js 16 · TypeScript v6 (strict) · Tailwind CSS v4 · TanStack Query v5 · Zustand · Auth.js v5 · next-intl v4 · ESLint v9 flat config · lucide-react (icons)

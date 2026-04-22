@@ -15,7 +15,8 @@ Built as a learning project with production-grade patterns.
 |---|---|---|
 | Runtime | Node.js 22.22.0 | LTS — pinned in `.nvmrc` and `package.json#engines` |
 | Framework | Next.js 16 (App Router) | File-based routing, Server Components, built-in image/font optimisation |
-| Language | TypeScript (strict) | Type safety, autocompletion, catch bugs at compile time |
+| Language | TypeScript v6 (strict) | Type safety, autocompletion, catch bugs at compile time |
+| Icons | lucide-react | Consistent icon set used across layout, media, and TV components |
 | Styling | Tailwind CSS v4 | Utility-first, no context-switching, Prettier plugin for class sorting |
 | Server state | TanStack Query v5 | Caching, deduplication, loading/error states, pagination |
 | Client state | Zustand | Minimal boilerplate, TypeScript-first, `persist` middleware for localStorage |
@@ -436,5 +437,4 @@ On mobile (`< md`) the header collapses to: **logo — locale — theme — sear
 ## Next Steps
 
 - [ ] Display app version in Footer — push a semver git tag before deploying (`git tag v1.x.x && git push origin v1.x.x`), then read `NEXT_PUBLIC_VERCEL_GIT_COMMIT_REF` at build time; fall back to `'dev'` locally
-- [ ] Upgrade ESLint 9 → 10 — check flat config API changes and `eslint-plugin-simple-import-sort` v13 compatibility at the same time (the `@typescript-eslint` peer dep conflict also resolves here)
-- [ ] Upgrade TypeScript 5 → 6 — isolate in its own PR; fix any new strict type errors before merging
+- [ ] Upgrade ESLint 9 → 10 — blocked on `eslint-plugin-react` ESLint 10 support (`context.getFilename()` removed in ESLint 10; `eslint-config-next` uses the plugin internally so there is no workaround until upstream releases a fix)
